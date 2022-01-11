@@ -1,0 +1,46 @@
+body{
+  background: url('./../img/learn_to_think.jpg');
+  background-attachment: fixed;
+  color: #fff;
+}
+
+table, td{
+  border: 1px solid #fff;
+}
+
+#field{
+  display: flex;
+  justify-content: flex-start;
+}
+
+#field .form-check{
+  margin-right: 2em;
+}
+
+table{
+
+  height: 40em !important;
+  background: url('./../img/never_stop_lerning.jpg');
+}
+
+td{
+  width: 10em !important;
+  text-align: center;
+  font-size: 1.1em;
+  font-weight: bold;
+  background: yellowgreen;
+}
+
+.align-center{
+  display: flex;
+  justify-content: center;
+}
+
+.hide-card{
+  background: transparent;
+  color: transparent;
+}
+
+.card-turkis{
+  background-color:rgba(37, 207, 242, 0.7);
+}

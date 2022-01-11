@@ -1,0 +1,13 @@
+body{
+  background: url('./../img/im-possible.jpg');
+  background-attachment: fixed;
+  color: #fff;
+}
+
+td.btn-light{
+  width: 5%;
+}
+
+td.language{
+  width: 45%;
+}

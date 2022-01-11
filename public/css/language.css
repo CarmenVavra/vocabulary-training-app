@@ -1,0 +1,8 @@
+body{
+  background: url('./../img/have_a_wonderful_day.jpg');
+  background-attachment: fixed;
+}
+
+label{
+    display: block;
+}

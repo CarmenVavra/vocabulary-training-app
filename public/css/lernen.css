@@ -1,0 +1,33 @@
+body{
+  background: url('./../img/never_stop_learning_children.jpg');
+  background-attachment: fixed;
+  color: #fff;
+}
+
+td.language{
+  width: 47%;
+}
+
+td.row-marker{
+  width: 6%;
+}
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-accent-bg: transparent;
+  --bs-table-striped-color: #dee2e6;
+  --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+  --bs-table-active-color: #dee2e6;
+  --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+  --bs-table-hover-color: #dee2e6;
+  --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #dee2e6;
+  vertical-align: top;
+  border-color: #dee2e6;
+}
+
+#tbl-container .alert.dark-bg{
+  background-color: rgb(52, 58, 64, 1);
+}

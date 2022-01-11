@@ -1,0 +1,81 @@
+.bg-turkis{
+  background-color:rgba(37, 207, 242, 0.7);
+  color: #212529;
+}
+
+.bg-darkgray{
+  color: #fff;
+}
+
+#card-content{
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+#card-content .card-title, #card-content .card-text{
+  color:#212529;
+}
+/**
+*   MODAL-START
+*/
+#overlay-profile, #overlay-edit{
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.8);
+  color: #212529;
+}
+
+#overlay-profile.show, #overlay-edit.show{
+  display: flex;
+}
+
+#overlay-profile-container, #overlay-edit-container{
+  position: relative;
+  width:100vw;
+  height:100vh;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#closeProfile, #closeEdit{
+  position: fixed;
+  top:20px;
+  right:20px;
+  z-index: 10000;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  color: black;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#overlay-profile-container form, #overlay-edit-container form{
+  padding: 30px 20px;
+  height:auto;
+  width: auto;
+  max-width:100%;
+  max-height:100%;
+
+}
+/**
+* MODAL-END
+*/
+
+
+button.btn-logout{
+    background: #e14b46;
+    border-color: #e14b46;
+    border-radius: 5px;
+}

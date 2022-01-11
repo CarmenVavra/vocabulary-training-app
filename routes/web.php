@@ -1,0 +1,89 @@
+<?php
+
+use App\Http\Controllers\CustomAuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HangmanController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\LearningController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PairController;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VocabularyController;
+use App\Http\Controllers\VocabularyVocabularyController;
+use App\Http\Controllers\WelcomeController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+/* Route::get('/', function () {
+    return view('welcome');
+});
+ */
+Auth::routes();
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+/* Route::get('/home', [HomeController::class, 'index'])->name('home'); */
+
+
+
+
+
+
+
+
+
+Route::get('/home', [LanguageController::class, 'index'])->name('get.language.index');
+//Route::get('/home', [LanguageController::class, 'index'])->name('language.idx');
+
+
+/* Route::get('/', [UserController::class, 'create'])->name('user.create');
+Route::get('/user', [UserController::class, 'create'])->name('user.create');
+Route::post('/user', [UserController::class, 'store'])->name('user.store');
+ */
+Route::post('/home', [LanguageController::class, 'index'])->name('post.language.index');
+//Route::get('/language/index', [LanguageController::class, 'index'])->name('language.index');
+//Route::get('/language/{language}', [LanguageController::class, 'show'])->name('language.show');
+Route::post('/language/cookie', [LanguageController::class, 'setCookie'])->name('language.setCookie');
+Route::get('/language', [LanguageController::class, 'create'])->name('language.create');
+Route::post('/language', [LanguageController::class, 'store'])->name('language.store');
+
+
+Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
+Route::post('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
+
+Route::get('/vocabulary', [VocabularyController::class, 'index'])->name('vocabulary.index');
+Route::get('/vocabulary/{word1}/edit', [VocabularyController::class, 'edit'])->name('vocabulary.edit');
+Route::post('/vocabulary', [VocabularyController::class, 'store'])->name('vocabulary.store');
+Route::put('/vocabulary/{word1}', [VocabularyController::class, 'update'])->name('vocabulary.update');
+Route::delete('/vocabulary/{word1}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
+
+Route::get('/training', [TrainingController::class, 'index'])->name('training.index');
+
+Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
+
+Route::get('/pair', [PairController::class, 'index'])->name('pair.index');
+
+Route::get('/learning', [LearningController::class, 'index'])->name('learning.index');
+
+Route::get('/hangman', [HangmanController::class, 'index'])->name('hangman.index');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+/**
+ * Authentification
+ */
+/* Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
+ */

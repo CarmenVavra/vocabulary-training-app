@@ -1,0 +1,39 @@
+body{
+  background: url('./../img/plan_a_b_c.jpg');
+  background-attachment: fixed;
+  color: #fff;
+}
+
+.hangman-container {
+  display: flex;
+}
+
+.jumbotron{
+  padding: 20px;
+  margin: 0 20px;
+  border-radius: 5px;
+}
+
+canvas{
+  background: rgba(52, 58, 64, 0.9);
+  border-radius: 5px;
+}
+
+.btn-keyboard{
+  margin: 3px;
+  width: 32px;
+  height: 32px;
+  border-radius: 2px;
+  border: none;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+button:disabled, button:disabled:hover{
+  background: rgba(52, 58, 64, 0.9);
+  color:rgba(135, 140, 145, 0.9);
+}
+
+.btn-hint{
+  font-weight: bold;
+}

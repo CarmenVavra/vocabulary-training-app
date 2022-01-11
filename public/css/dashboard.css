@@ -1,0 +1,16 @@
+body{
+  background: url('./../img/success.jpg');
+  background-attachment: fixed;
+  color: #fff;
+}
+
+.bg-darkgray{
+  background: rgba(52, 58, 64, 0.9);
+  color: #fff;
+}
+
+.chart{
+  width: 60em;
+  height: 30em;
+}
+
