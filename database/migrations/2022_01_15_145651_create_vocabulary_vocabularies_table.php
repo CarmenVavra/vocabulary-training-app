@@ -15,8 +15,8 @@ class CreateVocabularyVocabulariesTable extends Migration
     {
         Schema::create('vocabulary_vocabularies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vocabulary_id');
-            $table->foreignId('vocabulary_learn_id');
+            $table->foreignId('vocabulary_id')->references('id')->on('vocabularies');
+            $table->foreignId('vocabulary_learn_id')->references('id')->on('vocabularies');
             $table->foreignId('marker_id')->default(0);
             $table->timestamps();
         });

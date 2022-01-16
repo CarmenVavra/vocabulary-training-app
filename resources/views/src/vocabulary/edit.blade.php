@@ -39,12 +39,12 @@
                 @method('put')
               <div class="col-md-6">
                 <label for="deutsch" class="form-label">Deutsch</label>
-                <input type="text" class="form-control is-invalid" id="deutschEdit" name="firstLangEdit" value="{{ $word1->name }}" required minlength="2">
+                <input type="text" class="form-control is-invalid" id="deutschEdit" name="firstLangEdit" value="{{ $word2->name }}" required minlength="2">
                 <div class="invalid-feedback">Das Feld <italic>Deutsch</italic> darf nicht leer sein!</div>
               </div>
               <div class="col-md-6">
                 <label for="spanisch" class="form-label">Spanisch</label>
-                <input type="text" class="form-control is-invalid" id="spanischEdit" name="secondLangEdit" value="{{ $word2->name }}" required minlength="2">
+                <input type="text" class="form-control is-invalid" id="spanischEdit" name="secondLangEdit" value="{{ $word1->name }}" required minlength="2">
                 <div class="invalid-feedback">Das Feld <italic>Spanisch</italic> darf nicht leer sein!</div>
               </div>
               <div class="col-12">
