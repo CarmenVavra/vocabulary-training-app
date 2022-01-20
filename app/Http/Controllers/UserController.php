@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Training;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class TrainingController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class TrainingController extends Controller
      */
     public function index()
     {
-        return view('src.training.training');
+        //
     }
 
     /**
@@ -41,21 +41,24 @@ class TrainingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Training  $training
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Training $training)
+    public function show(User $user)
     {
-        //
+        $user = User::where('id', $user);
+        return view('layouts.modals.users.show', compact('user'));
+        //return redirect()->back()->with(compact('user'));
+        //return redirect()->back()->withInput(compact('user'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Training  $training
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Training $training)
+    public function edit(User $user)
     {
         //
     }
@@ -64,10 +67,10 @@ class TrainingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Training  $training
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Training $training)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -75,10 +78,10 @@ class TrainingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Training  $training
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Training $training)
+    public function destroy($id)
     {
         //
     }

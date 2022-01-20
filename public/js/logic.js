@@ -93,7 +93,7 @@ $(document).ready(function(){
     $(e.target).closest('tr').removeClass('red-row');
   });
 
-
+  $('input[name="dates"]').daterangepicker();
 
 
 

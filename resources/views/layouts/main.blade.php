@@ -32,19 +32,19 @@
           <!-- Left links -->
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a id="nav_1" class="nav-link" href="#">Vokabel</a>
+              <a id="nav_1" class="nav-link" href="{{ route('vocabulary.index') }}">Vokabel</a>
             </li>
             <li class="nav-item">
-              <a id="nav_2" class="nav-link" href="#">Training</a>
+              <a id="nav_2" class="nav-link" href="{{ route('training.index') }}">Training</a>
               <div class="dropdown-menu">
-                <a id="nav_2_1" class="dropdown-item" href="/learning">Lernen</a>
-                <a id="nav_2_2" class="dropdown-item" href="/quiz">Quiz</a>
-                <a id="nav_2_3" class="dropdown-item" href="/hangman">Hangman</a>
-                <a id="nav_2_4" class="dropdown-item" href="/pair">Pairs</a>
+                <a id="nav_2_1" class="dropdown-item" href="{{ route('learning.index') }}">Lernen</a>
+                <a id="nav_2_2" class="dropdown-item" href="{{ route('quiz.index') }}">Quiz</a>
+                <a id="nav_2_3" class="dropdown-item" href="{{ route('hangman.index') }}">Hangman</a>
+                <a id="nav_2_4" class="dropdown-item" href="{{ route('pair.index') }}">Pairs</a>
               </div>
             </li>
             <li class="nav-item">
-              <a id="nav_3" class="nav-link" href="#">Dashboard</a>
+              <a id="nav_3" class="nav-link" href="{{ route('dashboard.index') }}">Dashboard</a>
             </li>
           </ul>
         </div>
@@ -56,8 +56,9 @@
               <img src="{{ asset('img/user_icon3_klein.png') }}" height="25" alt="" loading="lazy" />
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a id="profile" class="dropdown-item" href="#">Profil</a>
-              <a id="edit" class="dropdown-item" href="#">Daten ändern</a>
+
+              <a id="profile" class="dropdown-item" href="{{ route('user.show', Auth::user()->id) }}">Profil</a>
+              <a id="edit" class="dropdown-item" href="{{-- {{ route('user.edit') }} --}}">Daten ändern</a>
               <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.querySelector('#logout-form').submit();">
                {{ __('Logout') }}
               </a>
@@ -79,14 +80,15 @@
     </nav>
   </header>
   <!-- modal -->
-  <div id="overlay-profile">
+  @include('layouts.modals.users.show')
+{{--   <div id="overlay-profile" @if(!empty($errors->all())) style="display:block;" @endif>
     <div id="overlay-profile-container">
       <div id="close">X</div>
       <div class="alert bg-turkis">
         <div id="card-content">
           <div class="card-body">
             <h5 class="card-title">Dein Profil</h5>
-            <p class="card-text">Name: $name</p>
+            <p class="card-text">Name: {{ $user->name }}</p>
             <p class="card-text">E-Mail: $email</p>
             <p><small>Rolle: $role</small></p>
             <hr>
@@ -98,11 +100,11 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> --}}
   <!-- modal -->
 
   <!-- modal -->
-  <div id="overlay-edit">
+  <div id="overlay-edit" @if(!empty($errors->all())) style="display:block;" @endif>
     <div id="overlay-edit-container">
       <div id="close">X</div>
       <div class="alert bg-turkis">

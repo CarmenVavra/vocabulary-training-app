@@ -35,31 +35,16 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-/* Route::get('/home', [HomeController::class, 'index'])->name('home'); */
-
-
-
-
-
-
-
-
 
 Route::get('/home', [LanguageController::class, 'index'])->name('get.language.index');
-//Route::get('/home', [LanguageController::class, 'index'])->name('language.idx');
-
-
-/* Route::get('/', [UserController::class, 'create'])->name('user.create');
-Route::get('/user', [UserController::class, 'create'])->name('user.create');
-Route::post('/user', [UserController::class, 'store'])->name('user.store');
- */
 Route::post('/home', [LanguageController::class, 'index'])->name('post.language.index');
-//Route::get('/language/index', [LanguageController::class, 'index'])->name('language.index');
-//Route::get('/language/{language}', [LanguageController::class, 'show'])->name('language.show');
 Route::post('/language/cookie', [LanguageController::class, 'setCookie'])->name('language.setCookie');
 Route::get('/language', [LanguageController::class, 'create'])->name('language.create');
 Route::post('/language', [LanguageController::class, 'store'])->name('language.store');
 
+Route::get('/user', [UserController::class, 'index'])->name('user.index');
+Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
+/* Route::get('/user', [UserController::class, 'edit'])->name('user.edit'); */
 
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
 Route::post('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');

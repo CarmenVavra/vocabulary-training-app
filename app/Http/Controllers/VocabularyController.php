@@ -16,9 +16,7 @@ class VocabularyController extends Controller
      */
     public function index()
     {
-
         $vocabularies = Vocabulary::with('vocabularies')->where('user_Id', Auth::user()->id)->where('language_id', session('language_learn_id'))->get();
-
         return view('/src/vocabulary/vocabulary', compact('vocabularies'));
     }
 

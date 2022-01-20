@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/quiz.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @endsection
 @section('content')
   <div id="breadcrumb" aria-label="breadcrumb">
@@ -22,9 +23,16 @@
         <div class="collapse" id="collapseSelection">
           <div class="card card-body bg-transparent border-transparent">
 
-            <label for="vocRange" class="form-label">Welche Vokabel? </label><small>Angabe in Wochen</small>
+            {{-- <label for="vocRange" class="form-label">Welche Vokabel? </label><small>Angabe in Wochen</small>
             <input type="range" value="0" min="1" max="200" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+            <output>0</output> --}}
+
+            <div class="row">
+              <div class="col-md-6">
+                <label for="vocRange" class="form-label">Welche Vokabel?</label>
+                <input type="text" name="daterange" value="" id="vocRange" />
+              </div>
+            </div>
 
             <label for="questionRange" class="form-label">Wieviele Fragen?</label>
             <input type="range" value="0" min="1" max="200" oninput="this.nextElementSibling.value = this.value">
@@ -103,7 +111,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
     <script src="{{ asset('js/classes/CardSet.js') }}"></script>
     <script src="{{ asset('js/logic_quiz.js') }}"></script>
-
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+        $(function() {
+          $('input[name="daterange"]').daterangepicker({
+            opens: 'left'
+          }, function(start, end, label) {
+            console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+          });
+        });
+    </script>
   <script>
     "use strict";
     let limit = 12;

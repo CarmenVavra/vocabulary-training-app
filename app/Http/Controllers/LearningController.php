@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Learning;
+use App\Models\Vocabulary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LearningController extends Controller
 {
@@ -14,7 +16,8 @@ class LearningController extends Controller
      */
     public function index()
     {
-        //
+        $vocabularies = Vocabulary::with('vocabularies')->where('user_Id', Auth::user()->id)->where('language_id', session('language_learn_id'))->get();
+        return view('src.training.learning', compact('vocabularies'));
     }
 
     /**

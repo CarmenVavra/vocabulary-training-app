@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Training;
+use App\Models\Hangman;
 use Illuminate\Http\Request;
 
-class TrainingController extends Controller
+class HangmanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class TrainingController extends Controller
      */
     public function index()
     {
-        return view('src.training.training');
+        return view('src.training.hangman');
     }
 
     /**
@@ -41,10 +41,10 @@ class TrainingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Training  $training
+     * @param  \App\Models\Hangman  $hangman
      * @return \Illuminate\Http\Response
      */
-    public function show(Training $training)
+    public function show(Hangman $hangman)
     {
         //
     }
@@ -52,10 +52,10 @@ class TrainingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Training  $training
+     * @param  \App\Models\Hangman  $hangman
      * @return \Illuminate\Http\Response
      */
-    public function edit(Training $training)
+    public function edit(Hangman $hangman)
     {
         //
     }
@@ -64,10 +64,10 @@ class TrainingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Training  $training
+     * @param  \App\Models\Hangman  $hangman
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Training $training)
+    public function update(Request $request, Hangman $hangman)
     {
         //
     }
@@ -75,10 +75,10 @@ class TrainingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Training  $training
+     * @param  \App\Models\Hangman  $hangman
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Training $training)
+    public function destroy(Hangman $hangman)
     {
         //
     }

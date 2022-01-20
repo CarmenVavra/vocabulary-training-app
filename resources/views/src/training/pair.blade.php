@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/pairs.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @endsection
 @section('content')
 <div id="breadcrumb" aria-label="breadcrumb">
@@ -21,9 +22,13 @@
         </p>
         <div class="collapse" id="collapseSelection">
           <div class="card card-body bg-transparent border-transparent">
-            <label for="vocRange" class="form-label">Welche Vokabel? </label><small>Angabe in Wochen</small>
-            <input type="range" value="0" min="1" max="200" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+            <div class="row">
+                <div class="col-md-6">
+                  <label for="vocRange" class="form-label">Welche Vokabel?</label>
+                  <input type="text" name="daterange" value="" id="vocRange" />
+                </div>
+              </div>
+
 
             <div class="row-marker">
               <div class="btn-group" role="group">
@@ -102,6 +107,18 @@
 @section('javascript')
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
   <script src="{{ asset('js/classes/Pair.js') }}"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <script>
+      $(function() {
+        $('input[name="daterange"]').daterangepicker({
+          opens: 'left'
+        }, function(start, end, label) {
+          console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        });
+      });
+  </script>
   <script>
     "use strict";
     //['Freund', 'Vater', 'Mutter', 'Onkel', 'Tante', 'Tochter', 'Sohn', 'Frage', 'ich lebe', 'Hallo', 'auf Wiedersehen', 'Großmutter']
