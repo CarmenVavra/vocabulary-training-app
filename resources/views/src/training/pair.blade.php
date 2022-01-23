@@ -23,13 +23,11 @@
         <div class="collapse" id="collapseSelection">
           <div class="card card-body bg-transparent border-transparent">
             <div class="row">
-                <div class="col-md-6">
-                  <label for="vocRange" class="form-label">Welche Vokabel?</label>
-                  <input type="text" name="daterange" value="" id="vocRange" />
-                </div>
+              <div class="col-md-6">
+                <label for="vocRange" class="form-label">Welche Vokabel?</label>
+                <input type="text" name="daterange" value="" id="vocRange" />
               </div>
-
-
+            </div>
             <div class="row-marker">
               <div class="btn-group" role="group">
                 <button type="button" class="btn btn-danger btn-lg"></button>

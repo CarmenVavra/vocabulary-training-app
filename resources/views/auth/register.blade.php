@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('E-Mail Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('E-Mail Adresse') }}</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Passwort') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -54,10 +54,22 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Passwort wiederholen') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="userLanguage" class="col-md-4 col-form-label text-md-end">{{ __('Ausgangs-Sprache') }}
+                                <button type="button" id="lblUserLanguage" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Basissprache, Muttersprache - kann nicht mehr geändert werden!">
+                                    <strong>?</strong>
+                                </button>
+                            </label>
+
+                            <div class="col-md-6">
+                                <input id="userLanguage" type="text" class="form-control" name="user_language" required autocomplete="new-language">
                             </div>
                         </div>
 

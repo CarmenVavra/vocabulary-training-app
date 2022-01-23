@@ -11,6 +11,8 @@ class Language extends Model
 
     protected $fillable = [
         'name',
-        'short_name'
+        'short_name',
+        'user_id', 
+        'main_language'
     ];
 }

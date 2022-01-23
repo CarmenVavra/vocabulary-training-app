@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -47,7 +48,8 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user = User::where('id', $user);
-        return view('layouts.modals.users.show', compact('user'));
+        return compact('user');
+        //return view('layouts.modals.users.show', compact('user'));
         //return redirect()->back()->with(compact('user'));
         //return redirect()->back()->withInput(compact('user'));
     }
@@ -81,8 +83,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
         //
     }
+
+
 }

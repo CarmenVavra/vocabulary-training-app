@@ -9,6 +9,10 @@ $(document).ready(function(){
       $('#addNewLanguage').toggle();
   });
 
+  $('#btnProfileClose').on('click', function(){
+    $('#overlay-profile').hide();
+  });
+
   $('#btnApplyHangmanFilter').on('click', function(){
     $('#contHangman').show();
     $('#collapseSelection').hide();
@@ -95,6 +99,14 @@ $(document).ready(function(){
 
   $('input[name="dates"]').daterangepicker();
 
+  $('#lblUserLanguage').on('mouseover', function(){
+    $('[data-toggle="tooltip"]').tooltip();
+  })
+
+/*   $('#btnSelectLanguagesCancel').on('click', function(){
+    window.location.href = '/login';
+  });
+ */
 
 
 

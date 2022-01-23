@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Language;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LanguageController extends Controller
 {
@@ -14,8 +15,8 @@ class LanguageController extends Controller
      */
     public function index()
     {
-        $languages = Language::orderBy('name')->get();
-        return view('src/language', compact('languages'));
+        $languages = Language::where('user_id', Auth::user()->id)->where('main_language', false)->orderBy('name')->get();
+        return view('/home', compact('languages'));
     }
 
     /**
@@ -24,9 +25,10 @@ class LanguageController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        $languages = Language::orderBy('name')->get();
-        return view('src/language', compact('languages'));
+    {   
+
+        $languages = Language::where('user_id', Auth::user()->id)->where('main_language', false)->orderBy('name')->get();
+        return view('/home', compact('languages'));
     }
 
     /**
@@ -37,12 +39,17 @@ class LanguageController extends Controller
      */
     public function store(Request $request)
     {
-         $request->validate([
-            'name'=>'required|min:3|max:50',
-            'short_name'=>'required|min:2|max:3'
-        ]);
+        $request->validate([
+            'name'=>'required|min:3|max:50'
+        ]); 
 
-        Language::create($request->all());
+        $data = [
+            'name' => $request->name,
+            'short_name' => substr($request->name, 0, 3),
+            'user_id' => Auth::user()->id
+        ];
+
+        Language::create($data);
         return redirect()->route('post.language.index')->with('success', 'Die Sprache '.$request->name.' wurde erstellt!');
     }
 
@@ -92,9 +99,8 @@ class LanguageController extends Controller
     }
 
     public function setCookie(Request $request){
-        $language_id = Language::select('id')->where('short_name', $request->selectFirstLang)->get();
-        $language_learn_id = Language::select('id')->where('short_name', $request->selectSecondLang)->get();
-        session(['language_id'=>$language_id[0]->id, 'language_learn_id'=>$language_learn_id[0]->id]);
+        $foreign_id = Language::select('id')->where('short_name', $request->foreignLanguage)->get();
+        session(['foreign_id'=>$foreign_id[0]->id]);
         return redirect()->route('welcome.index');
     }
 }

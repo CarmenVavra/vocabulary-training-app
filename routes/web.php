@@ -46,6 +46,12 @@ Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
 /* Route::get('/user', [UserController::class, 'edit'])->name('user.edit'); */
 
+Route::get('/profil', [UserController::class, 'profile'] )->name('user.profile');
+
+Route::middleware('auth')->group(function(){
+
+});
+
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
 Route::post('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
 
