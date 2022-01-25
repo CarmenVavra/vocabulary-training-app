@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ForeignVocabulary;
+use App\Models\Vocabulary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ForeignVocabularyController extends Controller
 {
@@ -14,7 +16,12 @@ class ForeignVocabularyController extends Controller
      */
     public function index()
     {
-        dd('here i anm');
+
+
+
+
+
+
     }
 
     /**

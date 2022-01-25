@@ -27,86 +27,95 @@
           <div class="collapse" id="collapseSelection">
             <div class="card card-body bg-transparent border-transparent">
 
-{{--               <label for="vocRange" class="form-label">Welche Vokabel? </label><small>Angabe in Wochen</small>
-              <input type="range" value="0" min="1" max="200" oninput="this.nextElementSibling.value = this.value">
-              <output>0</output>
- --}}
-              <div class="row">
-                  <div class="col-md-6">
-                    <label for="vocRange" class="form-label">Welche Vokabel?</label>
-                    <input type="text" name="daterange" value="" id="vocRange" />
-                  </div>
-              </div>
+              <form action="{{ route('learning.filter.select') }}" method="post">
+                @csrf
 
-              <div class="row-marker">
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-danger btn-lg"></button>
-                  <button type="button" class="btn btn-warning btn-lg"></button>
-                  <button type="button" class="btn btn-success btn-lg"></button>
+                <div class="row">
+                    <div class="col-md-6">
+                      <label for="vocRange" class="form-label">Welche Vokabel? </label>
+                      <input type="text" name="daterange" value="" id="vocRange" />
+                    </div>
                 </div>
-                <button type="button" class="btn btn-light btn-lg btn-all">ALLE</button>
-              </div>
 
-              <div class="row vertical-spacer">
-                <div class="col">
-                  <h6>Welche Richtung?</h6>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection1" value="dir1"
-                      checked>
-                    <label class="form-check-label" for="radioDirection1">
-                      Deutsch --> Spanisch
-                    </label>
+                @if(!empty($marker)) 
+                
+                <div class="row-marker">
+                  <label for="difficultyLevel" class="form-label">Welcher Schwierigkeitsgrad? </label>
+                  <div id="difficultyLevel" class="btn-group" role="group">
+                    <button name="diffRed" type="button" class="btn btn-danger btn-lg" data-value="red"></button>
+                    <button name="diffYellow" type="button" class="btn btn-warning btn-lg" data-value="yellow"></button>
+                    <button name="diffGreen" type="button" class="btn btn-success btn-lg" data-value="green"></button>
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection2" value="dir2">
-                    <label class="form-check-label" for="radioDirection2">
-                      Spanisch --> Deutsch
-                    </label>
+                  <button type="button" class="btn btn-light btn-lg btn-all">ALLE</button>
+                </div>
+                
+                @endif
+
+                <div class="row vertical-spacer">
+                  <div class="col">
+                    <h6>Welche Richtung?</h6>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection1" value="dir1"
+                        checked>
+                      <label class="form-check-label" for="radioDirection1">
+                        Deutsch --> {{ session('foreign_name') }}
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection2" value="dir2">
+                      <label class="form-check-label" for="radioDirection2">
+                        {{ session('foreign_name') }} --> Deutsch
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <h6>Welche Sortierung?</h6>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="radioSortorder" id="radioRandom" value="random"
+                        checked>
+                      <label class="form-check-label" for="radioRandom">
+                        zufällig
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="radioSortorder" id="radioASC" value="asc">
+                      <label class="form-check-label" for="radioASC">
+                        aufsteigend
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="radioSortorder" id="radioDESC" value="desc">
+                      <label class="form-check-label" for="radioDESC">
+                        absteigend
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <button type="submit" id="btnApplyLearningFilter" class="btn btn-turkis">anwenden</button>
                   </div>
                 </div>
-                <div class="col">
-                  <h6>Welche Sortierung?</h6>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radioSortorder" id="radioRandom" value="random"
-                      checked>
-                    <label class="form-check-label" for="radioRandom">
-                      zufällig
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radioSortorder" id="radioASC" value="asc">
-                    <label class="form-check-label" for="radioASC">
-                      aufsteigend
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radioSortorder" id="radioDESC" value="desc">
-                    <label class="form-check-label" for="radioDESC">
-                      absteigend
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radioSortorder" id="radioDate" value="date">
-                    <label class="form-check-label" for="radioDate">
-                      nach Datum sortiert
-                    </label>
-                  </div>
-                </div>
-                <div class="col">
-                  <button id="btnApplyLearningFilter" class="btn btn-turkis">anwenden</button>
-                </div>
-              </div>
+                
+              </form>
+
             </div>
           </div>
         </div>
       </div>
+      
+      @if(isset($vocabularies))
+
       <div id="contTblLearning" class="container">
         <div class="alert dark-bg">
           <table class="table table-striped table-hover">
             <thead>
               <tr>
-                <th>Deutsch</th>
-                <th>Spanisch</th>
+                @if('dir1' == $direction)
+                  <th>Deutsch</th>
+                  <th>{{ session('foreign_name') }}</th>
+                @else
+                  <th>{{ session('foreign_name') }}</th>
+                  <th>Deutsch</th>
+                @endif
                 <th>Marker</th>
               </tr>
             </thead>
@@ -114,8 +123,13 @@
               
               @foreach ($vocabularies as $vocabulary)
                 <tr>
+                  @if('dir1' == $direction)
                   <td id="v_{{ $vocabulary['vid'] }}" class="language">{{ $vocabulary['vn'] }}</td>
                   <td id="fv_{{ $vocabulary['fvid'] }}" class="language">{{ $vocabulary['fvn'] }}</td>
+                  @else
+                    <td id="v_{{ $vocabulary['fvid'] }}" class="language">{{ $vocabulary['fvn'] }}</td>
+                    <td id="fv_{{ $vocabulary['vid'] }}" class="language">{{ $vocabulary['vn'] }}</td>
+                  @endif
                   <td class="row-marker">
                     <div class="btn-group" role="group">
                       <button type="button" class="btn btn-danger btn-sm"></button>
@@ -129,6 +143,7 @@
           </table>
         </div>
       </div>
+      @endif
     </main>
   @endsection
 

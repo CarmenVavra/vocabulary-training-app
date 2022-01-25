@@ -56,7 +56,7 @@
         <thead>
           <tr>
             <th>Deutsch</th>
-            <th>Spanisch</th>
+            <th>{{ session('foreign_name') }}</th>
             <th></th>
             <th>
               <button type="button" class="btn btn-success btn-sm btn-new">

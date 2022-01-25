@@ -44,22 +44,23 @@ Route::post('/language', [LanguageController::class, 'store'])->name('language.s
 
 Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
-/* Route::get('/user', [UserController::class, 'edit'])->name('user.edit'); */
+Route::get('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit'); 
 
-Route::get('/profil', [UserController::class, 'profile'] )->name('user.profile');
+Route::get('/profile', [UserController::class, 'profile'] )->name('user.profile');
+Route::put('/user/{user}', [UserController::class, 'update'] )->name('user.update');
 
 Route::middleware('auth')->group(function(){
 
+    Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
+    Route::post('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
+
+    Route::get('/vocabulary', [VocabularyController::class, 'index'])->name('vocabulary.index');
+    Route::get('/vocabulary/{vocabulary}/edit', [VocabularyController::class, 'edit'])->name('vocabulary.edit');
+    Route::post('/vocabulary', [VocabularyController::class, 'store'])->name('vocabulary.store');
+    Route::put('/vocabulary/{vocabularies}', [VocabularyController::class, 'update'])->name('vocabulary.update');
+    Route::delete('/vocabulary/{vocabulary}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
+
 });
-
-Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
-Route::post('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
-
-Route::get('/vocabulary', [VocabularyController::class, 'index'])->name('vocabulary.index');
-Route::get('/vocabulary/{vocabulary}/edit', [VocabularyController::class, 'edit'])->name('vocabulary.edit');
-Route::post('/vocabulary', [VocabularyController::class, 'store'])->name('vocabulary.store');
-Route::put('/vocabulary/{vocabularies}', [VocabularyController::class, 'update'])->name('vocabulary.update');
-Route::delete('/vocabulary/{vocabulary}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
 
 Route::get('/training', [TrainingController::class, 'index'])->name('training.index');
 
@@ -68,13 +69,10 @@ Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
 Route::get('/pair', [PairController::class, 'index'])->name('pair.index');
 
 Route::get('/learning', [LearningController::class, 'index'])->name('learning.index');
+Route::post('/learning', [LearningController::class, 'filterSelect'])->name('learning.filter.select');
 
 Route::get('/hangman', [HangmanController::class, 'index'])->name('hangman.index');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-/**
- * Authentification
- */
-/* Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
- */
+

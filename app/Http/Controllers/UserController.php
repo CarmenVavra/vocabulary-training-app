@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -48,10 +49,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user = User::where('id', $user);
-        return compact('user');
-        //return view('layouts.modals.users.show', compact('user'));
-        //return redirect()->back()->with(compact('user'));
-        //return redirect()->back()->withInput(compact('user'));
+        return route('user.profile', compact('user'));
     }
 
     /**
@@ -62,7 +60,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return $user;
     }
 
     /**
@@ -74,7 +72,19 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name'=> 'required|min:2|max:100',
+            'email'=> 'required|min:2|max:255',
+            'password'=>'required|min:8|max:255'
+        ]);
+
+        $data['name'] = $request->name;
+        $data['email'] = $request->email;
+        $data['password'] = Hash::make($request->password);
+
+        $user->update($data);
+        
+        return redirect()->back();
     }
 
     /**
@@ -86,6 +96,11 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+
+    public function profile(){
+        return true;
     }
 
 

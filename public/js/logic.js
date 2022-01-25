@@ -1,6 +1,6 @@
 $(document).ready(function(){
   $('#contTblPairs').hide();
-  $('#contTblLearning').hide();
+  //$('#contTblLearning').hide();
   $('#contHangman').hide();
   $('#overlay-select-language').show();
   $('#addNewLanguage').hide();
@@ -8,9 +8,25 @@ $(document).ready(function(){
   $('#btnSelectLanguagesNew').on('click', function(){
       $('#addNewLanguage').toggle();
   });
+ 
+  $('#profile').on('click', function(e){
+    e.preventDefault();
+    $('#dropdownUser').hide();
+    $('#overlay-profile').show();
+  }) 
 
   $('#btnProfileClose').on('click', function(){
     $('#overlay-profile').hide();
+  });
+
+  $('#userEdit').on('click', function(e){
+    e.preventDefault();
+    $('#dropdownUser').hide();
+    $('#overlay-edit').show();
+  })
+
+  $('#btnEditUser').on('click', function(e){
+    $('#overlay-edit').hide();
   });
 
   $('#btnApplyHangmanFilter').on('click', function(){
@@ -22,10 +38,10 @@ $(document).ready(function(){
     $('#contTblPairs').show();
   });
 
-  $('#btnApplyLearningFilter').on('click', function(){
+   $('#btnApplyLearningFilter').on('click', function(){
     $('#contTblLearning').show();
     $('#collapseSelection').hide();
-  });
+  }); 
 
   $('.dropdown-toggle').on('click', function(e){
     $(e.target).siblings().toggle();
@@ -103,10 +119,6 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
   })
 
-/*   $('#btnSelectLanguagesCancel').on('click', function(){
-    window.location.href = '/login';
-  });
- */
 
 
 

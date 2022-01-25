@@ -12,9 +12,9 @@
             <div class="invalid-feedback">Das Feld <italic>Deutsch</italic> darf nicht leer sein!</div>
           </div>
           <div class="col-md-6">
-            <label for="spanisch" class="form-label">Spanisch</label>
-            <input type="text" class="form-control @error('secondLangNew') is-invalid @enderror" id="spanisch" name="secondLangNew" value="{{ old('secondLangNew')}}" required minlength="2">
-            <div class="invalid-feedback">Das Feld <italic>Spanisch</italic> darf nicht leer sein!</div>
+            <label for="{{ session('foreign_name') }}" class="form-label">{{ session('foreign_name') }}</label>
+            <input type="text" class="form-control @error('secondLangNew') is-invalid @enderror" id="{{ session('foreign_name') }}" name="secondLangNew" value="{{ old('secondLangNew')}}" required minlength="2">
+            <div class="invalid-feedback">Das Feld <italic>{{ session('foreign_name') }}</italic> darf nicht leer sein!</div>
           </div>
           <div class="col-12">
             <button class="btn btn-turkis" type="submit" formnovalidate>senden</button>

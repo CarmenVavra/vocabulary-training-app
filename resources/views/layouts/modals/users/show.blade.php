@@ -5,12 +5,11 @@
         <div id="card-content">
           <div class="card-body">
             <h5 class="card-title">Dein Profil</h5>
-            <p class="card-text">Name:  {{-- $user->name --}} </p>
-            <p class="card-text">E-Mail: $email</p>
-            <p><small>Rolle: $role</small></p>
+            <p class="card-text">Name:  {{ Auth::user()->name }} </p>
+            <p class="card-text">E-Mail: {{ Auth::user()->email }} </p>
             <hr>
-            <p class="card-text">angemeldet seit: $date</p>
-            <p class="card-text">letzter Login: $date</p>
+            <p class="card-text">angemeldet seit: {{ Auth::user()->created_at }}</p>
+            <p class="card-text">letzter Login: {{ Auth::user()->name }}</p>
             <hr>
             <a href="#" id="btnProfileClose" class="btn btn-turkis" >OK</a>
           </div>

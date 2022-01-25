@@ -99,8 +99,8 @@ class LanguageController extends Controller
     }
 
     public function setCookie(Request $request){
-        $foreign_id = Language::select('id')->where('short_name', $request->foreignLanguage)->get();
-        session(['foreign_id'=>$foreign_id[0]->id]);
+        $foreign_id = Language::select('id', 'name')->where('short_name', $request->foreignLanguage)->get();
+        session(['foreign_id'=>$foreign_id[0]->id, 'foreign_name'=>$foreign_id[0]->name]);
         return redirect()->route('welcome.index');
     }
 }

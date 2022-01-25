@@ -12,7 +12,8 @@ class ForeignVocabulary extends Model
     protected $fillable = [
         'name', 
         'language_id', 
-        'vocabulary_id'
+        'vocabulary_id', 
+        'marker_id'
     ];
 
     public function vocabularies(){
