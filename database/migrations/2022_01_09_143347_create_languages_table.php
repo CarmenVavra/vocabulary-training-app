@@ -17,6 +17,8 @@ class CreateLanguagesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('short_name');
+            $table->foreignId('user_id');
+            $table->boolean('main_language')->default(false);
             $table->timestamps();
         });
     }

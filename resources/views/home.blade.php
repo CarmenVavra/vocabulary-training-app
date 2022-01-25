@@ -10,7 +10,7 @@
           <div class="alert bg-darkgray">
             <div id="card-content">
               <div class="card-body">
-                <h5 class="card-title"> home Blade - Wähle deine Fremdsprache</h5>
+                <h5 class="card-title">Wähle eine Fremdsprache</h5>
                 <div class="row">
 
                   <div class="col">

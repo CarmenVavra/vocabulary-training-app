@@ -25,10 +25,9 @@ class Vocabulary extends Model
         return $this->belongsTo(Language::class, 'language_id', 'id');
     }
 
-    /* ::Peter:: Eloquent Abfrage mit Pivot Tabelle */
-    public function vocabularies(){
 
-        return $this->belongsToMany(Vocabulary::class,'vocabulary_vocabularies','vocabulary_learn_id', 'vocabulary_id');
+    public function foreignVocabularies(){
+        return $this->belongsToMany(ForeignVocabulary::class, 'id', 'vocabulary_id');
     }
 
 

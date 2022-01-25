@@ -56,10 +56,10 @@ Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome.index
 Route::post('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
 
 Route::get('/vocabulary', [VocabularyController::class, 'index'])->name('vocabulary.index');
-Route::get('/vocabulary/{word1}/edit', [VocabularyController::class, 'edit'])->name('vocabulary.edit');
+Route::get('/vocabulary/{vocabulary}/edit', [VocabularyController::class, 'edit'])->name('vocabulary.edit');
 Route::post('/vocabulary', [VocabularyController::class, 'store'])->name('vocabulary.store');
-Route::put('/vocabulary/{word1}', [VocabularyController::class, 'update'])->name('vocabulary.update');
-Route::delete('/vocabulary/{word1}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
+Route::put('/vocabulary/{vocabularies}', [VocabularyController::class, 'update'])->name('vocabulary.update');
+Route::delete('/vocabulary/{vocabulary}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
 
 Route::get('/training', [TrainingController::class, 'index'])->name('training.index');
 

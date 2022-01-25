@@ -111,11 +111,11 @@
               </tr>
             </thead>
             <tbody>
+              
               @foreach ($vocabularies as $vocabulary)
-              {{-- @php dd($vocabulary->vocabularies[0]->name);@endphp --}}
                 <tr>
-                  <td class="language">{{ $vocabulary->vocabularies[0]->name }}</td>
-                  <td class="language">{{ $vocabulary->name }}</td>
+                  <td id="v_{{ $vocabulary['vid'] }}" class="language">{{ $vocabulary['vn'] }}</td>
+                  <td id="fv_{{ $vocabulary['fvid'] }}" class="language">{{ $vocabulary['fvn'] }}</td>
                   <td class="row-marker">
                     <div class="btn-group" role="group">
                       <button type="button" class="btn btn-danger btn-sm"></button>
@@ -127,12 +127,6 @@
               @endforeach
             </tbody>
           </table>
-          <div class="row">
-            <div class="col-md-9"></div>
-            <div class="col-md-3">
-              <button id="saveMarks" class="btn btn-turkis" name="saveMarks" type="button">Markierungen speichern</button>
-            </div>
-          </div>
         </div>
       </div>
     </main>

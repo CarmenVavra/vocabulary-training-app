@@ -34,17 +34,17 @@
         <div id="overlay-edit-language-container">
           <div id="close">X</div>
           <div class="alert">
-            <form class="row g-3" action="{{ route('vocabulary.update', $word1->id) }}" method="post">
+            <form class="row g-3" action="{{ route('vocabulary.update', $vocabularies[0]->vid) }}" method="post">
                 @csrf
                 @method('put')
               <div class="col-md-6">
                 <label for="deutsch" class="form-label">Deutsch</label>
-                <input type="text" class="form-control is-invalid" id="deutschEdit" name="firstLangEdit" value="{{ $word2->name }}" required minlength="2">
+                <input type="text" class="form-control is-invalid" id="{{ $vocabularies[0]->vid }}_vEdit" name="firstLangEdit" value="{{ $vocabularies[0]->vn }}" required minlength="2">
                 <div class="invalid-feedback">Das Feld <italic>Deutsch</italic> darf nicht leer sein!</div>
               </div>
               <div class="col-md-6">
                 <label for="spanisch" class="form-label">Spanisch</label>
-                <input type="text" class="form-control is-invalid" id="spanischEdit" name="secondLangEdit" value="{{ $word1->name }}" required minlength="2">
+                <input type="text" class="form-control is-invalid" id="{{ $vocabularies[0]->fvid }}_fvEdit" name="secondLangEdit" value="{{ $vocabularies[0]->fvn }}" required minlength="2">
                 <div class="invalid-feedback">Das Feld <italic>Spanisch</italic> darf nicht leer sein!</div>
               </div>
               <div class="col-12">
@@ -79,14 +79,14 @@
             <td class="language">{{ $vocabulary->voca }}</td>
             <td class="language">{{ $vocabulary->vocalearn }}</td>
             <td>
-              <a href="{{ route('vocabulary.vocabulary.show', $vocabulary->id) }}" data-toggle="modal" data-target="#overlay-edit"><button type="button" class="btn btn-info btn-sm btn-edit">
+              <a href="{{-- route('vocabulary.vocabulary.show', $vocabulary->id) --}}" data-toggle="modal" data-target="#overlay-edit"><button type="button" class="btn btn-info btn-sm btn-edit">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
                   <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
                 </svg>
               </button></a>
             </td>
             <td>
-                <form action="{{ route('vocabulary.delete', $vocabulary->id) }}" method="post">
+                <form action="{{-- route('vocabulary.delete', $vocabulary->id) --}}" method="post">
                     @csrf
                     @method('delete')
                     <button type="submit" class="btn btn-danger btn-sm btn-delete">

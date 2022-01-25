@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ForeignVocabulary;
 use App\Models\Vocabulary;
-use App\Models\VocabularyVocabulary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +16,11 @@ class VocabularyController extends Controller
      */
     public function index()
     {
-        $vocabularies = Vocabulary::with('vocabularies')->where('user_Id', Auth::user()->id)->where('language_id', session('language_learn_id'))->get();
+        $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                    ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
+                                    ->where('vocabularies.user_id', Auth::user()->id)
+                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))->get();
+   
         return view('/src/vocabulary/vocabulary', compact('vocabularies'));
     }
 
@@ -52,13 +56,10 @@ class VocabularyController extends Controller
 
         $voc2 = [
             'name' => $request->secondLangNew,
-            'user_id' => Auth::user()->id,
-            'language_id' => session('language_learn_id')
+            'language_id' => session('foreign_id'),
+            'vocabulary_id' => $vocInsert1->id,
         ];
-        $vocInsert2 =  Vocabulary::create($voc2);
-
-        //::Peter:: vocabularies() Methode im Model vocalbulary und attach erwartet ein Array mit ID's. Durch attach wird die Pivot Tabelle befüllt
-        $vocInsert2->vocabularies()->attach([$vocInsert1->id]);
+        ForeignVocabulary::create($voc2);
 
         return redirect()->route('vocabulary.index');
     }
@@ -80,10 +81,14 @@ class VocabularyController extends Controller
      * @param  \App\Models\Vocabulary  $vocabulary
      * @return \Illuminate\Http\Response
      */
-    public function edit(Vocabulary $word1)
+    public function edit(Vocabulary $vocabulary)
     {
-        $word2 = $word1->vocabularies()->first();
-        return view('/src/vocabulary/edit', compact('word1','word2'));
+        $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                    ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
+                                    ->where('vocabularies.user_id', Auth::user()->id)
+                                    ->where('vocabularies.id', $vocabulary->id)->get();
+        
+        return view('/src/vocabulary/edit', compact('vocabularies'));
     }
 
     /**
@@ -93,26 +98,22 @@ class VocabularyController extends Controller
      * @param  \App\Models\Vocabulary  $vocabulary
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Vocabulary $word1)
+    public function update(Request $request, Vocabulary $vocabularies)
     {
-        //dd($vocabularyVocabularies->vocabulary_id, $vocabularyVocabularies->vocabulary_learn_id, $request);
-        //dd($request, $vocabularyVocabularies);
         $request->validate([
             'firstLangEdit'=>'required|min:1|max:30',
             'secondLangEdit'=>'required|min:1|max:30'
         ]);
+        
+        $vData['name'] = $request->firstLangEdit;
+        $vocabularies->update($vData);
+         
+        $fvData['name'] = $request->secondLangEdit;
+        $fvoc = ForeignVocabulary::where('vocabulary_id', $vocabularies->id)->get();
 
-        //Datensatz aus DB lesen
-        $word2 = $word1->vocabularies()->first();
-
-
-        $word2->name = $request->firstLangEdit;
-        $word2->save();
-        $word1->name = $request->secondLangEdit;
-        $word1->save();
+        $fvoc[0]->update($fvData);
 
         return redirect()->route('vocabulary.index')->with('success', 'Vokabeln wurden geändert!');
-
     }
 
     /**
@@ -121,12 +122,11 @@ class VocabularyController extends Controller
      * @param  \App\Models\Vocabulary  $vocabulary
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vocabulary $word1)
+    public function destroy(Vocabulary $vocabulary)
     {
-        $word2 = $word1->vocabularies()->first();
-        $word1->vocabularies()->detach([$word2->id]);
-        $word1->delete();
-        $word2->delete();
+        $fvoc = ForeignVocabulary::where('vocabulary_id', $vocabulary->id)->get();
+        $vocabulary->delete();
+        $fvoc[0]->delete();
 
         return redirect()->route('vocabulary.index')->with('success', 'Die Vokabeln wurden gelöscht!');
     }

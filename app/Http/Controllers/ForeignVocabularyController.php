@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Learning;
-use App\Models\Vocabulary;
+use App\Models\ForeignVocabulary;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class LearningController extends Controller
+class ForeignVocabularyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +14,7 @@ class LearningController extends Controller
      */
     public function index()
     {
-        $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                    ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
-                                    ->where('vocabularies.user_id', Auth::user()->id)
-                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))->get();
-
-        return view('src.training.learning', compact('vocabularies'));
+        dd('here i anm');
     }
 
     /**
@@ -48,10 +41,10 @@ class LearningController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Learning  $learning
+     * @param  \App\Models\ForeignVocabulary  $foreignVocabulary
      * @return \Illuminate\Http\Response
      */
-    public function show(Learning $learning)
+    public function show(ForeignVocabulary $foreignVocabulary)
     {
         //
     }
@@ -59,10 +52,10 @@ class LearningController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Learning  $learning
+     * @param  \App\Models\ForeignVocabulary  $foreignVocabulary
      * @return \Illuminate\Http\Response
      */
-    public function edit(Learning $learning)
+    public function edit(ForeignVocabulary $foreignVocabulary)
     {
         //
     }
@@ -71,10 +64,10 @@ class LearningController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Learning  $learning
+     * @param  \App\Models\ForeignVocabulary  $foreignVocabulary
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Learning $learning)
+    public function update(Request $request, ForeignVocabulary $foreignVocabulary)
     {
         //
     }
@@ -82,10 +75,10 @@ class LearningController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Learning  $learning
+     * @param  \App\Models\ForeignVocabulary  $foreignVocabulary
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Learning $learning)
+    public function destroy(ForeignVocabulary $foreignVocabulary)
     {
         //
     }
