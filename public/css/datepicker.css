@@ -1,0 +1,11 @@
+#vocRange{
+  color: #212529;
+}
+
+.daterangepicker td, .daterangepicker td.active, .daterangepicker td.active:hover{
+  color: #212529;
+}
+
+th.month{
+    color: #212529;
+}

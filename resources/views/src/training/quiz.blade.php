@@ -2,6 +2,7 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/quiz.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}">
 @endsection
 @section('content')
   <div id="breadcrumb" aria-label="breadcrumb">
@@ -23,21 +24,19 @@
         <div class="collapse" id="collapseSelection">
           <div class="card card-body bg-transparent border-transparent">
 
-            {{-- <label for="vocRange" class="form-label">Welche Vokabel? </label><small>Angabe in Wochen</small>
-            <input type="range" value="0" min="1" max="200" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output> --}}
-
             <div class="row">
               <div class="col-md-6">
                 <label for="vocRange" class="form-label">Welche Vokabel?</label>
                 <input type="text" name="daterange" value="" id="vocRange" />
               </div>
             </div>
-
-            <label for="questionRange" class="form-label">Wieviele Fragen?</label>
-            <input type="range" value="0" min="1" max="200" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
-
+            <div class="row">
+              <div class="col-md-6">
+              <label for="questionRange" class="form-label">Wieviele Fragen?</label>
+              <input type="range" value="4" min="4" max="200" step="4" oninput="this.nextElementSibling.value = this.value">
+              <output>4</output>
+            </div>
+            </div>
             <div class="row-marker">
               <div class="btn-group" role="group">
                 <button type="button" class="btn btn-danger btn-lg"></button>
@@ -50,22 +49,17 @@
             <div class="row vertical-spacer">
               <div class="col">
                 <h6>Welche Reihenfolge?</h6>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radioDirection" id="radioBoth" value="both" checked>
-                  <label class="form-check-label" for="radioBoth">
-                    beide
-                  </label>
-                </div>
+
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection1" value="dir1">
                   <label class="form-check-label" for="radioDirection1">
-                    Deutsch --> Spanisch
+                    Deutsch --> {{ session('foreign_name') }}
                   </label>
                 </div>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection2" value="dir2">
                   <label class="form-check-label" for="radioDirection2">
-                    Spanisch --> Deutsch
+                  {{ session('foreign_name') }} --> Deutsch
                   </label>
                 </div>
               </div>
@@ -87,12 +81,6 @@
                   <input class="form-check-input" type="radio" name="radioSortorder" id="radioDESC" value="desc">
                   <label class="form-check-label" for="radioDESC">
                     absteigend
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radioSortorder" id="radioDate" value="date">
-                  <label class="form-check-label" for="radioDate">
-                    nach Datum sortiert
                   </label>
                 </div>
               </div>

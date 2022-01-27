@@ -17,13 +17,12 @@ table, td{
   margin-right: 2em;
 }
 
-table{
-
+table .tblPairs{
   height: 40em !important;
   background: url('./../img/never_stop_lerning.jpg');
 }
 
-td{
+table .tblPairs td{
   width: 10em !important;
   text-align: center;
   font-size: 1.1em;

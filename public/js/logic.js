@@ -1,6 +1,5 @@
 $(document).ready(function(){
   $('#contTblPairs').hide();
-  //$('#contTblLearning').hide();
   $('#contHangman').hide();
   $('#overlay-select-language').show();
   $('#addNewLanguage').hide();
