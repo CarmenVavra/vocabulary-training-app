@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  $('#outputQuiz').hide();
+  /* $('#outputQuiz').hide(); */
 
   $('#btnApplyQuizFilter').on('click', function(){
     $('#outputQuiz').show();

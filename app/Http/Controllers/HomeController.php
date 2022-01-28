@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Language;
+use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,9 +26,14 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
+    {        
+        $user = User::where('id', Auth::user()->id)->first();
+        $data['last_login'] = new DateTime($user->login_date);
+        $data['login_date'] = new DateTime('now');
+        $user->update($data);
+        
         $language = Language::where('user_id', Auth::user()->id)->where('main_language', true)->get();
-        session(['language_id'=>$language[0]->id]);
+        session(['language_id'=>$language[0]->id, 'language_name'=>$language[0]->name]);
         
         $languages = Language::where('user_id', Auth::user()->id)->where('main_language', false)->orderBy('name')->get();
         return view('/home', compact('languages'));

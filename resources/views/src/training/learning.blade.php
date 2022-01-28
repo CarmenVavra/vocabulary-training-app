@@ -43,11 +43,11 @@
                 <div class="row-marker">
                   <label for="difficultyLevel" class="form-label">Welcher Schwierigkeitsgrad? </label>
                   <div id="difficultyLevel" class="btn-group" role="group">
-                    <button name="diffRed" type="button" class="btn btn-danger btn-lg" data-value="red"></button>
-                    <button name="diffYellow" type="button" class="btn btn-warning btn-lg" data-value="yellow"></button>
-                    <button name="diffGreen" type="button" class="btn btn-success btn-lg" data-value="green"></button>
+                    <button name="diffRed" type="button" class="btn-difficulty-danger btn-lg" data-value="red"></button>
+                    <button name="diffYellow" type="button" class="btn-difficulty-warning btn-lg" data-value="yellow"></button>
+                    <button name="diffGreen" type="button" class="btn-difficulty-success btn-lg" data-value="green"></button>
                   </div>
-                  <button type="button" class="btn btn-light btn-lg btn-all">ALLE</button>
+                  <button name="selectAll" id="selectAll" type="button" class="btn btn-light btn-lg btn-all">ALLE</button>
                 </div>
                 
                 @endif
@@ -59,13 +59,13 @@
                       <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection1" value="dir1"
                         checked>
                       <label class="form-check-label" for="radioDirection1">
-                        Deutsch --> {{ session('foreign_name') }}
+                      {{ session('language_name') }} --> {{ session('foreign_name') }}
                       </label>
                     </div>
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection2" value="dir2">
                       <label class="form-check-label" for="radioDirection2">
-                        {{ session('foreign_name') }} --> Deutsch
+                        {{ session('foreign_name') }} --> {{ session('language_name') }}
                       </label>
                     </div>
                   </div>

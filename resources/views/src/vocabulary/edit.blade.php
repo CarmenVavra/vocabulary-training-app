@@ -38,12 +38,12 @@
                 @csrf
                 @method('put')
               <div class="col-md-6">
-                <label for="deutsch" class="form-label">Deutsch</label>
+                <label for="{{ $vocabularies[0]->vid }}_vEdit" class="form-label">{{ session('language_name') }}</label>
                 <input type="text" class="form-control is-invalid" id="{{ $vocabularies[0]->vid }}_vEdit" name="firstLangEdit" value="{{ $vocabularies[0]->vn }}" required minlength="2">
-                <div class="invalid-feedback">Das Feld <italic>Deutsch</italic> darf nicht leer sein!</div>
+                <div class="invalid-feedback">Das Feld <italic>{{ session('language_name') }}</italic> darf nicht leer sein!</div>
               </div>
               <div class="col-md-6">
-                <label for="{{ session('foreign_name') }}" class="form-label">{{ session('foreign_name') }}</label>
+                <label for="{{ $vocabularies[0]->fvid }}_fvEdit" class="form-label">{{ session('foreign_name') }}</label>
                 <input type="text" class="form-control is-invalid" id="{{ $vocabularies[0]->fvid }}_fvEdit" name="secondLangEdit" value="{{ $vocabularies[0]->fvn }}" required minlength="2">
                 <div class="invalid-feedback">Das Feld <italic>{{ session('foreign_name') }}</italic> darf nicht leer sein!</div>
               </div>

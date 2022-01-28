@@ -60,18 +60,21 @@ Route::middleware('auth')->group(function(){
     Route::put('/vocabulary/{vocabularies}', [VocabularyController::class, 'update'])->name('vocabulary.update');
     Route::delete('/vocabulary/{vocabulary}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
 
+    Route::get('/training', [TrainingController::class, 'index'])->name('training.index');
 });
 
-Route::get('/training', [TrainingController::class, 'index'])->name('training.index');
 
 Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
+Route::post('/quiz', [QuizController::class, 'filterSelect'])->name('quiz.filter.select');
 
 Route::get('/pair', [PairController::class, 'index'])->name('pair.index');
+Route::post('/pair', [PairController::class, 'filterSelect'])->name('pair.filter.select');
 
 Route::get('/learning', [LearningController::class, 'index'])->name('learning.index');
 Route::post('/learning', [LearningController::class, 'filterSelect'])->name('learning.filter.select');
 
 Route::get('/hangman', [HangmanController::class, 'index'])->name('hangman.index');
+Route::post('/hangman', [HangmanController::class, 'filterSelect'])->name('hangman.filter.select');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 

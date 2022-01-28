@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quiz;
+use App\Models\Vocabulary;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
@@ -14,7 +17,11 @@ class QuizController extends Controller
      */
     public function index()
     {
-        return view('src.training.quiz');
+        $marker = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                ->where('vocabularies.user_id', Auth::user()->id)
+                                ->where('foreign_vocabularies.marker_id', '>', 0)->first();
+
+        return view('src.training.quiz', compact('marker'));
     }
 
     /**
@@ -82,4 +89,44 @@ class QuizController extends Controller
     {
         //
     }
+
+    public function filterSelect(Request $request){
+
+        //dd($request);
+        $rangeDate = explode(' - ', $request->daterange);
+
+        $fromDate = DateTime::createFromFormat('m/d/Y', $rangeDate[0]);
+        $error = DateTime::getLastErrors();
+        if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
+            $fromDate->format('Y-m-d');
+        }
+        else{
+            echo 'Hier ist ein Fehler passiert';
+        }
+
+        
+
+        $toDate = DateTime::createFromFormat('m/d/Y', $rangeDate[1]);
+        $error = DateTime::getLastErrors();
+        if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
+            $toDate->format('Y-m-d');
+        }
+        else{
+            echo 'Hier ist ein Fehler passiert';
+        }
+        
+        $direction = $request->radioDirection;
+       
+        //marker
+        $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+        ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+        ->where('vocabularies.user_id', Auth::user()->id)
+        ->where('foreign_vocabularies.language_id', session('foreign_id'))
+        ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])->get();
+        
+        return view('src.training.quiz', compact('vocabularies', 'direction'));
+    }
+
+
+
 }

@@ -16,12 +16,7 @@ class ForeignVocabularyController extends Controller
      */
     public function index()
     {
-
-
-
-
-
-
+        //
     }
 
     /**

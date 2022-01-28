@@ -25,43 +25,48 @@
         </p>
         <div class="collapse" id="collapseSelection">
           <div class="card card-body bg-transparent border-transparent">
-
+          <form action="{{ route('hangman.filter.select') }}" method="post">
+            @csrf
           <div class="row">
               <div class="col-md-6">
                 <label for="vocRange" class="form-label">Welche Vokabel?</label>
                 <input type="text" name="daterange" value="" id="vocRange" />
               </div>
             </div>
-
+            @if(!empty($marker))
             <div class="row-marker">
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-danger btn-lg"></button>
-                <button type="button" class="btn btn-warning btn-lg"></button>
-                <button type="button" class="btn btn-success btn-lg"></button>
+              <label for="difficultyLevel" class="form-label">Welcher Schwierigkeitsgrad? </label>
+              <div id="difficultyLevel" class="btn-group" role="group">
+                <button type="button" class="btn-difficulty-danger btn-lg"></button>
+                <button type="button" class="btn-difficulty-warning btn-lg"></button>
+                <button type="button" class="btn-difficulty-success btn-lg"></button>
               </div>
-              <button type="button" class="btn btn-light btn-lg btn-all">ALLE</button>
+              <button name="selectAll" id="selectAll" type="button" class="btn btn-light btn-lg btn-all">ALLE</button>
             </div>
-
+            @endif
             <div class="row vertical-spacer">
               <div class="col">
                 <h6>Welche Reihenfolge?</h6>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection1" value="dir1">
                   <label class="form-check-label" for="radioDirection1">
-                    Deutsch --> {{ session('foreign_name') }}
+                  {{ session('language_name') }} --> {{ session('foreign_name') }}
                   </label>
                 </div>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection2" value="dir2">
                   <label class="form-check-label" for="radioDirection2">
-                  {{ session('foreign_name') }} --> Deutsch
+                  {{ session('foreign_name') }} --> {{ session('language_name') }}
                   </label>
                 </div>
               </div>
               <div class="col">
-                <button id="btnApplyHangmanFilter" class="btn btn-turkis">anwenden</button>
+                <button type="submit" id="btnApplyHangmanFilter" class="btn btn-turkis">anwenden</button>
               </div>
             </div>
+
+            </form>
+
           </div>
         </div>
       </div>
@@ -85,6 +90,8 @@
     </div>
 
     <!-- MODAL END -->
+    @if(isset($vocabularies))
+    {{-- dd($vocabularies) --}}
     <div id="contHangman" class="container">
       <div class="hangman-container">
         <canvas id="hangman" width="300" height="400"></canvas>
@@ -109,6 +116,7 @@
         </div>
       </div>
     </div>
+    @endif
   </main>
   @endsection
   @section('javascript')

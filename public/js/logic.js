@@ -1,6 +1,4 @@
 $(document).ready(function(){
-  $('#contTblPairs').hide();
-  $('#contHangman').hide();
   $('#overlay-select-language').show();
   $('#addNewLanguage').hide();
 
@@ -35,6 +33,7 @@ $(document).ready(function(){
 
   $('#btnApplyPairsFilter').on('click', function(){
     $('#contTblPairs').show();
+    $('#collapseSelection').hide();
   });
 
    $('#btnApplyLearningFilter').on('click', function(){
@@ -110,6 +109,14 @@ $(document).ready(function(){
     $(e.target).closest('tr').toggleClass('green-row');
     $(e.target).closest('tr').removeClass('yellow-row');
     $(e.target).closest('tr').removeClass('red-row');
+  });
+
+  $('#difficultyLevel').on('click', function(e){
+    $(e.target).toggleClass('active');
+  });
+
+  $('#selectAll').on('click', function(){
+    $('#difficultyLevel').children().removeClass('active');
   });
 
   $('input[name="dates"]').daterangepicker();

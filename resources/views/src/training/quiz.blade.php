@@ -23,76 +23,63 @@
         </p>
         <div class="collapse" id="collapseSelection">
           <div class="card card-body bg-transparent border-transparent">
+            <form action="{{ route('quiz.filter.select') }}" method="post">
+              @csrf
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="vocRange" class="form-label">Welche Vokabel?</label>
+                  <input type="text" name="daterange" value="{{ old('daterange')}}" id="vocRange" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="questionRange" class="form-label">Wieviele Fragen?</label>
+                  <input name="countQuestions" type="range" value="4" min="4" max="200" step="4" oninput="this.nextElementSibling.value = this.value">
+                  <output>4</output>
+                </div>
+              </div>
+              @if(!empty($marker)) 
+                <div class="row-marker">
+                  <label for="difficultyLevel" class="form-label">Welcher Schwierigkeitsgrad? </label>
+                  <div id="difficultyLevel" class="btn-group" role="group">
+                    <button type="button" class="btn-difficulty-danger btn-lg"></button>
+                    <button type="button" class="btn-difficulty-warning btn-lg"></button>
+                    <button type="button" class="btn-difficulty-success btn-lg"></button>
+                  </div>
+                  <button name="selectAll" id="selectAll" type="button"class="btn btn-light btn-lg btn-all">ALLE</button>
+                </div>
+              @endif
+              <div class="row vertical-spacer">
+                <div class="col">
+                  <h6>Welche Reihenfolge?</h6>
 
-            <div class="row">
-              <div class="col-md-6">
-                <label for="vocRange" class="form-label">Welche Vokabel?</label>
-                <input type="text" name="daterange" value="" id="vocRange" />
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection1" value="dir1" checked>
+                    <label class="form-check-label" for="radioDirection1">
+                    {{ session('language_name') }} --> {{ session('foreign_name') }}
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection2" value="dir2">
+                    <label class="form-check-label" for="radioDirection2">
+                    {{ session('foreign_name') }} --> {{ session('language_name') }}
+                    </label>
+                  </div>
+                </div>
+                <div class="col">
+                  <button id="btnApplyQuizFilter" class="btn btn-turkis">anwenden</button>
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-              <label for="questionRange" class="form-label">Wieviele Fragen?</label>
-              <input type="range" value="4" min="4" max="200" step="4" oninput="this.nextElementSibling.value = this.value">
-              <output>4</output>
-            </div>
-            </div>
-            <div class="row-marker">
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-danger btn-lg"></button>
-                <button type="button" class="btn btn-warning btn-lg"></button>
-                <button type="button" class="btn btn-success btn-lg"></button>
-              </div>
-              <button type="button"class="btn btn-light btn-lg btn-all">ALLE</button>
-            </div>
 
-            <div class="row vertical-spacer">
-              <div class="col">
-                <h6>Welche Reihenfolge?</h6>
+            </form>
 
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection1" value="dir1">
-                  <label class="form-check-label" for="radioDirection1">
-                    Deutsch --> {{ session('foreign_name') }}
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection2" value="dir2">
-                  <label class="form-check-label" for="radioDirection2">
-                  {{ session('foreign_name') }} --> Deutsch
-                  </label>
-                </div>
-              </div>
-              <div class="col">
-                <h6>Welche Sortierung?</h6>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radioSortorder" id="radioRandom" value="random" checked>
-                  <label class="form-check-label" for="radioRandom">
-                    zufällig
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radioSortorder" id="radioASC" value="asc">
-                  <label class="form-check-label" for="radioASC">
-                    aufsteigend
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radioSortorder" id="radioDESC" value="desc">
-                  <label class="form-check-label" for="radioDESC">
-                    absteigend
-                  </label>
-                </div>
-              </div>
-              <div class="col">
-                <button id="btnApplyQuizFilter" class="btn btn-turkis">anwenden</button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
-    <div id="outputQuiz" class="container"></div>
+    @if(isset($vocabularies))
+      <div id="outputQuiz" class="container"></div>
+    @endif
   </main>
   @endsection
   @section('javascript')
@@ -113,7 +100,7 @@
     </script>
   <script>
     "use strict";
-    let limit = 12;
+    let limit = <?php echo ($_POST['countQuestions']) ?? 0 ?>;
     let cardSet = new CardSet();
     let question = cardSet.getQuestion();
     let answer = cardSet.getAnswer();

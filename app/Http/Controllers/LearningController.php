@@ -21,6 +21,7 @@ class LearningController extends Controller
 
         $marker = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                 ->where('vocabularies.user_id', Auth::user()->id)
+                                ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                 ->where('foreign_vocabularies.marker_id', '>', 0)->first();
 
 /*         $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')

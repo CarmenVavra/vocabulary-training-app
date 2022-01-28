@@ -55,7 +55,7 @@
       <table id="tblVocs" class="table table-striped table-dark table-hover">
         <thead>
           <tr>
-            <th>Deutsch</th>
+            <th>{{ session('language_name') }}</th>
             <th>{{ session('foreign_name') }}</th>
             <th></th>
             <th>

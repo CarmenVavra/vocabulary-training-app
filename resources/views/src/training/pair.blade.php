@@ -1,8 +1,8 @@
 @extends('layouts.main')
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/pairs.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pairs.css') }}">
 @endsection
 @section('content')
 <div id="breadcrumb" aria-label="breadcrumb">
@@ -23,21 +23,25 @@
         </p>
         <div class="collapse" id="collapseSelection">
           <div class="card card-body bg-transparent border-transparent">
+            <form action="{{ route('pair.filter.select') }}" method="post">
+              @csrf
             <div class="row">
               <div class="col-md-6">
                 <label for="vocRange" class="form-label">Welche Vokabel?</label>
                 <input type="text" name="daterange" value="" id="vocRange" />
               </div>
             </div>
+            @if(!empty($marker))
             <div class="row-marker">
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-danger btn-lg"></button>
-                <button type="button" class="btn btn-warning btn-lg"></button>
-                <button type="button" class="btn btn-success btn-lg"></button>
+              <label for="difficultyLevel" class="form-label">Welcher Schwierigkeitsgrad? </label>
+              <div id="difficultyLevel" class="btn-group" role="group">
+                <button type="button" class="btn-difficulty-danger btn-lg"></button>
+                <button type="button" class="btn-difficulty-warning btn-lg"></button>
+                <button type="button" class="btn-difficulty-success btn-lg"></button>
               </div>
-              <button type="button" class="btn btn-light btn-lg btn-all">ALLE</button>
+              <button name="selectAll" id="selectAll" type="button" class="btn btn-light btn-lg btn-all">ALLE</button>
             </div>
-
+            @endif
             <label for="field" class="form-label vertical-spacer">Wie groß soll das Feld sein? </label>
             <div id="field">
               <div class="form-check">
@@ -63,9 +67,11 @@
             </div>
             <div class="row vertical-spacer">
               <div class="col">
-                <button id="btnApplyPairsFilter" class="btn btn-turkis">anwenden</button>
+                <button type="submit" id="btnApplyPairsFilter" class="btn btn-turkis">anwenden</button>
               </div>
             </div>
+
+            </form>
           </div>
         </div>
       </div>
@@ -91,24 +97,24 @@
     </div>
     <!-- MODAL END -->
 
-    <div id="contTblPairs" class="container table-responsive">
-      <div class="table-responsive alert turkis-bg align-center">
-        <table id="tblPairs" class="table">
+    @if(isset($vocabularies))
+    {{-- dd($vocabularies) --}}
+      <div id="contTblPairs" class="container table-responsive">
+        <div class="table-responsive alert turkis-bg align-center">
+          <table id="tblPairs" class="table">
 
-        </table>
+          </table>
+        </div>
       </div>
-    </div>
-<!--     <div class="container">
-      <button id="pairsReplay" class="btn btn-turkis">noch einmal</button>
-    </div> -->
+    @endif
   </main>
 @endsection
 @section('javascript')
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
-  <script src="{{ asset('js/classes/Pair.js') }}"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <script src="{{ asset('js/classes/Pair.js') }}"></script>
   <script>
       $(function() {
         $('input[name="daterange"]').daterangepicker({
@@ -120,6 +126,7 @@
   </script>
   <script>
     "use strict";
+    <?php if(!empty($_POST)) { $countColumns = substr($_POST['fieldSize'], 0, 1); }?>
     //['Freund', 'Vater', 'Mutter', 'Onkel', 'Tante', 'Tochter', 'Sohn', 'Frage', 'ich lebe', 'Hallo', 'auf Wiedersehen', 'Großmutter']
     //['el amigo', 'el padre', 'la madre', 'el tio', 'la tia', 'la hija', 'el hijo', 'la pregunta', 'vivo', 'Hola', 'adios', 'la abuela']
     const german = ['Freund', 'Vater', 'Mutter', 'Onkel', 'Tante', 'Tochter', 'Sohn', 'Frage'];
@@ -131,19 +138,21 @@
     const table = document.querySelector('#tblPairs');
     const btnPairsApply = document.querySelector('#btnApplyPairsFilter');
     const filterSettings = document.querySelector('#collapseSelection');
-    const radioField = document.querySelectorAll('#field .form-check-input');
+    //const radioField = document.querySelectorAll('#field .form-check-input');
     let indexCount = 0;
     let countColumns = 0;
     let checkedRadio;
 
-    radioField.forEach(function(value, index) {
+/*     radioField.forEach(function(value, index) {
       value.onclick = function(e) {
         checkedRadio = e.target;
       };
-    });
+    }); */
+    let jsVariable = <?php echo ($jsVariable) ?? '' ?>;
+    if(jsVariable === 1){
+    //btnPairsApply.onclick = function() {
+      countColumns = <?= ($countColumns) ?? '' ?>;
 
-    btnPairsApply.onclick = function() {
-      countColumns = checkedRadio.getAttribute('data-col');
       filterSettings.style.display = 'none';
       // für die Anzeige --> Vokabel aus beiden Tabellen werden in ein gemeinsames Array gespeichert
       german.forEach(function(value, index) {
@@ -160,16 +169,12 @@
 
       let tr;
       let td;
-/*       let btnReplay = document.querySelector('#pairsReplay');
-
-      btnReplay.onclick = function(e) {
-        window.location.href = "pairs.php";
-      }; */
-
+      
       shuffledMixedWords.forEach(function(value, index) {
         if (index % countColumns === 0) {
           tr = document.createElement('tr');
           table.appendChild(tr);
+
         }
         tr.insertAdjacentHTML('beforeend', '<td id="td_' + index + '" class="td-pairs">' + value + '</td>');
 
@@ -190,19 +195,21 @@
 
       btnOK.onclick = function(){
         pairsModal.closeModal();
-        window.location.href = './pairs.php';
+        window.location.href = '/pair';
       }
 
       closeCont.onclick = function(e) {
         if (e.target.id == 'overlay-container' || e.target.id == 'close') {
           pairsModal.closeModal();
-          window.location.href = './pairs.php';
+          window.location.href = '/pair';
         }
       };
 
       let interval;
       tds.forEach(function(value, index) {
+        
         value.onclick = function(e) {
+          console.log(e.target);
           if (pairsCounter == 0) {
             interval = setInterval(function() {
               pairsCounter++;
