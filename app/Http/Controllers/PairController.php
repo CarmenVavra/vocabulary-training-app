@@ -92,8 +92,16 @@ class PairController extends Controller
 
     public function filterSelect(Request $request){
 
-        $rangeDate = explode(' - ', $request->daterange);
+        //dd($request);
+        $fieldSize = explode('x', $request->fieldSize);
+        $fieldColumn = $fieldSize[0];
+        $fieldRow = $fieldSize[1];
 
+        $limit = ($fieldSize[0] * $fieldSize[1])/2;
+
+        
+        $rangeDate = explode(' - ', $request->daterange);
+        
         $fromDate = DateTime::createFromFormat('m/d/Y', $rangeDate[0]);
         $error = DateTime::getLastErrors();
         if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
@@ -102,7 +110,7 @@ class PairController extends Controller
         else{
             echo 'Hier ist ein Fehler passiert';
         }        
-
+        
         $toDate = DateTime::createFromFormat('m/d/Y', $rangeDate[1]);
         $error = DateTime::getLastErrors();
         if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
@@ -111,15 +119,29 @@ class PairController extends Controller
         else{
             echo 'Hier ist ein Fehler passiert';
         }
-        
+    
+        $countVocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                        ->select('vocabularies.id')
+                                        ->where('vocabularies.user_id', Auth::user()->id)
+                                        ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                        ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])->groupBy('vocabularies.id')->get()->count();
         //marker
-        $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                    ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
-                                    ->where('vocabularies.user_id', Auth::user()->id)
-                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                    ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])->get();
-        $jsVariable = 1;                  
-        return view('src.training.pair', compact('vocabularies', 'jsVariable'));
+        
+        if($limit > $countVocabularies){
+            //Fehler
+        }else{
+            $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                        ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                        ->where('vocabularies.user_id', Auth::user()->id)
+                                        ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                        ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])->limit($limit)->get();
+            //dd($vocabularies[0]->vn);
+        $jsVariable = 1;
+        $jsonStringPHP = json_encode($vocabularies);             
+        return view('src.training.pair', compact('vocabularies','jsonStringPHP', 'jsVariable'));
+
+        }
+                                 
     }
 
 }

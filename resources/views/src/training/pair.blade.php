@@ -96,9 +96,9 @@
       </div>
     </div>
     <!-- MODAL END -->
-
     @if(isset($vocabularies))
-    {{-- dd($vocabularies) --}}
+
+    {{-- dd($vocabularies[0]) --}}
       <div id="contTblPairs" class="container table-responsive">
         <div class="table-responsive alert turkis-bg align-center">
           <table id="tblPairs" class="table">
@@ -129,12 +129,23 @@
     <?php if(!empty($_POST)) { $countColumns = substr($_POST['fieldSize'], 0, 1); }?>
     //['Freund', 'Vater', 'Mutter', 'Onkel', 'Tante', 'Tochter', 'Sohn', 'Frage', 'ich lebe', 'Hallo', 'auf Wiedersehen', 'Großmutter']
     //['el amigo', 'el padre', 'la madre', 'el tio', 'la tia', 'la hija', 'el hijo', 'la pregunta', 'vivo', 'Hola', 'adios', 'la abuela']
-    const german = ['Freund', 'Vater', 'Mutter', 'Onkel', 'Tante', 'Tochter', 'Sohn', 'Frage'];
-    const spain = ['el amigo', 'el padre', 'la madre', 'el tio', 'la tia', 'la hija', 'el hijo', 'la pregunta'];
+    //const language = ['Freund', 'Vater', 'Mutter', 'Onkel', 'Tante', 'Tochter', 'Sohn', 'Frage'];
+    //const foreign = ['el amigo', 'el padre', 'la madre', 'el tio', 'la tia', 'la hija', 'el hijo', 'la pregunta'];
+    let vocabularies = <?= ($jsonStringPHP) ?? ''; ?>;
+    let language = [];
+    let foreign = [];
+
+    //vocabularies = JSON.parse();
+    console.log(vocabularies.length);
+    for(let i=0; i<vocabularies.length; i++){
+      language.push(vocabularies[i].vn);
+      foreign.push(vocabularies[i].fvn);
+    }
+
     let mixedWords = [];
-    const germanLen = german.length;
-    const spainLen = spain.length;
-    const mixedLen = germanLen + spainLen;
+    const languageLen = language.length;
+    const foreignLen = foreign.length;
+    const mixedLen = languageLen + foreignLen;
     const table = document.querySelector('#tblPairs');
     const btnPairsApply = document.querySelector('#btnApplyPairsFilter');
     const filterSettings = document.querySelector('#collapseSelection');
@@ -148,19 +159,19 @@
         checkedRadio = e.target;
       };
     }); */
-    let jsVariable = <?php echo ($jsVariable) ?? '' ?>;
-    if(jsVariable === 1){
+    let jsVariable = <?= ($jsVariable) ?? ''; ?>;
+    if(jsVariable == 1){
     //btnPairsApply.onclick = function() {
-      countColumns = <?= ($countColumns) ?? '' ?>;
+      countColumns = <?= ($countColumns) ?? ''; ?>;
 
       filterSettings.style.display = 'none';
       // für die Anzeige --> Vokabel aus beiden Tabellen werden in ein gemeinsames Array gespeichert
-      german.forEach(function(value, index) {
+      language.forEach(function(value, index) {
         mixedWords[index] = value;
         indexCount++;
       });
 
-      spain.forEach(function(value, index) {
+      foreign.forEach(function(value, index) {
         mixedWords[indexCount] = value;
         indexCount++;
       });
@@ -221,7 +232,7 @@
             cardElements[idxCards] = e.target;
             if (idxCards == 1) {
               let pair = new Pair(cards[0], cards[1]);
-              let isPair = pair.compareCards(german, spain);
+              let isPair = pair.compareCards(language, foreign);
 
               if (isPair == true) {
                 cardElements.forEach(function(value, index) {
