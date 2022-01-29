@@ -12,7 +12,6 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VocabularyController;
-use App\Http\Controllers\VocabularyVocabularyController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -68,6 +67,7 @@ Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
 Route::post('/quiz', [QuizController::class, 'filterSelect'])->name('quiz.filter.select');
 
 Route::get('/pair', [PairController::class, 'index'])->name('pair.index');
+Route::get('/pairdatecheck', [PairController::class, 'checkDate'])->name('pair.check.date');
 Route::post('/pair', [PairController::class, 'filterSelect'])->name('pair.filter.select');
 
 Route::get('/learning', [LearningController::class, 'index'])->name('learning.index');
@@ -77,5 +77,7 @@ Route::get('/hangman', [HangmanController::class, 'index'])->name('hangman.index
 Route::post('/hangman', [HangmanController::class, 'filterSelect'])->name('hangman.filter.select');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+
 
 

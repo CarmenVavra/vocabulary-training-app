@@ -43,3 +43,9 @@ table, td{
 .card-turkis{
   background-color:rgba(37, 207, 242, 0.7) !important;
 }
+
+input[type="checkbox"]{
+  width: 20px;
+  height: 10px;
+  display: none;
+}

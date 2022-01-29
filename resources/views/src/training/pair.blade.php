@@ -16,6 +16,10 @@
     <div class="container">
       <div class="alert dark-bg" role="alert">
         <h4 class="alert-heading">Pairs</h4>
+        @if(isset($countDataRows) && $countDataRows < 6)
+          <div class="alert alert-danger">{{ 'Es sind zu wenige Vokabel vorhanden, um Pairs zu spielen. Leg noch ein paar Vokabeln an!' }}</div>
+        @endif
+        @if(isset($countDataRows) && $countDataRows >=6)
         <p>
           <button id="btnFilter" class="btn btn-outline-secondary btn-sm vertical-spacer" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             Filter
@@ -31,49 +35,71 @@
                 <input type="text" name="daterange" value="" id="vocRange" />
               </div>
             </div>
-            @if(!empty($marker))
-            <div class="row-marker">
+
+
+            <div class="row-marker" id="rowMarker">
               <label for="difficultyLevel" class="form-label">Welcher Schwierigkeitsgrad? </label>
               <div id="difficultyLevel" class="btn-group" role="group">
-                <button type="button" class="btn-difficulty-danger btn-lg"></button>
-                <button type="button" class="btn-difficulty-warning btn-lg"></button>
-                <button type="button" class="btn-difficulty-success btn-lg"></button>
+
+                <label for="diffRed" class="btn-difficulty-danger btn-lg">
+                  <input name="diffRed" id="diffRed" type="checkbox" value="1">
+                </label>
+                <label for="diffYellow" class="btn-difficulty-warning btn-lg">
+                  <input name="diffYellow" id="diffYellow" type="checkbox" value="2">
+                </label>
+                <label for="diffGreen" class="btn-difficulty-success btn-lg">
+                  <input name="diffGreen" id="diffGreen" type="checkbox" value="3">
+                </label>
               </div>
+
               <button name="selectAll" id="selectAll" type="button" class="btn btn-light btn-lg btn-all">ALLE</button>
             </div>
+
+            @if(isset($countDataRows) && $countDataRows >= 6)
+              <div id="fieldSizeContainer">
+                <label for="field" class="form-label vertical-spacer">Wie groß soll das Feld sein? </label>
+                <div id="field">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fieldSize" data-col="4" data-row="3" id="radio43" value="4x3">
+                    <label class="form-check-label" for="radio3x4">4 x 3</label>
+                  </div>
+                  @if($countDataRows >= 8)
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="fieldSize" data-col="4" data-row="4" id="radio44" value="4x4">
+                      <label class="form-check-label" for="radio4x4">4 x 4</label>
+                    </div>
+                    @if($countDataRows >= 10)
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="fieldSize" data-col="5" data-row="4" id="radio54" value="5x4">
+                        <label class="form-check-label" for="radio5x4">5 x 4</label>
+                      </div>
+                      @if($countDataRows >= 12)
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="fieldSize" data-col="6" data-row="4" id="radio64" value="6x4">
+                          <label class="form-check-label" for="radio6x4">6 x 4</label>
+                        </div>
+                        @if($countDataRows >= 14)
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="fieldSize" data-col="7" data-row="4" id="radio74" value="7x4">
+                            <label class="form-check-label" for="radio7x4">7 x 4</label>
+                          </div>
+                        @endif
+                      @endif
+                    @endif
+                  @endif
+                </div>
+              </div>
             @endif
-            <label for="field" class="form-label vertical-spacer">Wie groß soll das Feld sein? </label>
-            <div id="field">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="fieldSize" data-col="4" data-row="3" id="radio43" value="4x3">
-                <label class="form-check-label" for="radio3x4">4 x 3</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="fieldSize" data-col="4" data-row="4" id="radio44" value="4x4">
-                <label class="form-check-label" for="radio4x4">4 x 4</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="fieldSize" data-col="5" data-row="4" id="radio54" value="5x4">
-                <label class="form-check-label" for="radio5x4">5 x 4</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="fieldSize" data-col="6" data-row="4" id="radio64" value="6x4">
-                <label class="form-check-label" for="radio6x4">6 x 4</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="fieldSize" data-col="7" data-row="4" id="radio74" value="7x4">
-                <label class="form-check-label" for="radio7x4">7 x 4</label>
-              </div>
-            </div>
             <div class="row vertical-spacer">
               <div class="col">
                 <button type="submit" id="btnApplyPairsFilter" class="btn btn-turkis">anwenden</button>
               </div>
             </div>
-
-            </form>
-          </div>
+            
+          </form>
         </div>
+      </div>
+      @endif
       </div>
     </div>
 
@@ -115,17 +141,53 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <script src="{{ asset('js/classes/Pair.js') }}"></script>
+
   <script>
-      $(function() {
-        $('input[name="daterange"]').daterangepicker({
-          opens: 'left'
-        }, function(start, end, label) {
-          console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    $(function() {
+      $('input[name="daterange"]').daterangepicker({
+        format: 'DD.MM.YYYY',
+        opens: 'left'
+      }, function(start, end, label) {
+        //console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        start = start.format('YYYY-MM-DD');
+        end = end.format('YYYY-MM-DD');
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
+      
+        $("#vocRange").on('change', function(e){
+      
+            e.preventDefault();
+
+            $.ajax({
+              type:'GET',
+              url:"{{ route('pair.check.date') }}",
+              data:{start:start, end:end},
+              success:function(data){
+                if(data.dateDataRow < 6){
+                  $('#rowMarker').hide();
+                  
+                  console.log('Für den ausgewählten Zeitraum gibt es zu wenig Datensätze .. min. 6', data.dateDataRow);
+                }else{
+                  $('#rowMarker').show();
+                }
+              }
+            });
+
+        });        
       });
-  </script>
+    });
+</script>
+  <script type="text/javascript">
+   
+</script>
+
   <script>
     "use strict";
+
     <?php if(!empty($_POST)) { $countColumns = substr($_POST['fieldSize'], 0, 1); }?>
 
     let vocabularies = <?= ($jsonStringPHP) ?? ''; ?>;

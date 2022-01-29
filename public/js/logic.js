@@ -1,6 +1,8 @@
 $(document).ready(function(){
   $('#overlay-select-language').show();
   $('#addNewLanguage').hide();
+  $('#rowMarker').hide();
+  $('#fieldSizeContainer').hide();
 
   $('#btnSelectLanguagesNew').on('click', function(){
       $('#addNewLanguage').toggle();

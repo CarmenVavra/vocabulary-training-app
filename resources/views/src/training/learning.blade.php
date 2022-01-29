@@ -111,11 +111,11 @@
             <thead>
               <tr>
                 @if('dir1' == $direction)
-                  <th>Deutsch</th>
+                  <th>{{ session('language_name') }}</th>
                   <th>{{ session('foreign_name') }}</th>
                 @else
                   <th>{{ session('foreign_name') }}</th>
-                  <th>Deutsch</th>
+                  <th>{{ session('language_name') }}</th>
                 @endif
                 <th>Marker</th>
               </tr>
