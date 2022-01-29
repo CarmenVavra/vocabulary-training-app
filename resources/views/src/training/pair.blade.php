@@ -127,10 +127,7 @@
   <script>
     "use strict";
     <?php if(!empty($_POST)) { $countColumns = substr($_POST['fieldSize'], 0, 1); }?>
-    //['Freund', 'Vater', 'Mutter', 'Onkel', 'Tante', 'Tochter', 'Sohn', 'Frage', 'ich lebe', 'Hallo', 'auf Wiedersehen', 'Großmutter']
-    //['el amigo', 'el padre', 'la madre', 'el tio', 'la tia', 'la hija', 'el hijo', 'la pregunta', 'vivo', 'Hola', 'adios', 'la abuela']
-    //const language = ['Freund', 'Vater', 'Mutter', 'Onkel', 'Tante', 'Tochter', 'Sohn', 'Frage'];
-    //const foreign = ['el amigo', 'el padre', 'la madre', 'el tio', 'la tia', 'la hija', 'el hijo', 'la pregunta'];
+
     let vocabularies = <?= ($jsonStringPHP) ?? ''; ?>;
     let language = [];
     let foreign = [];
@@ -154,11 +151,6 @@
     let countColumns = 0;
     let checkedRadio;
 
-/*     radioField.forEach(function(value, index) {
-      value.onclick = function(e) {
-        checkedRadio = e.target;
-      };
-    }); */
     let jsVariable = <?= ($jsVariable) ?? ''; ?>;
     if(jsVariable == 1){
     //btnPairsApply.onclick = function() {
@@ -227,6 +219,7 @@
             }, 1000);
           }
           e.target.classList.add('card-turkis');
+          console.log(e.target);
           if (idxCards <= 1) {
             cards[idxCards] = e.target.innerHTML;
             cardElements[idxCards] = e.target;

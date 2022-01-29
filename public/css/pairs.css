@@ -17,12 +17,12 @@ table, td{
   margin-right: 2em;
 }
 
-table .tblPairs{
-  height: 40em !important;
+#tblPairs{
+  height: 36em !important;
   background: url('./../img/never_stop_lerning.jpg');
 }
 
-table .tblPairs td{
+#tblPairs td{
   width: 10em !important;
   text-align: center;
   font-size: 1.1em;
@@ -36,10 +36,10 @@ table .tblPairs td{
 }
 
 .hide-card{
-  background: transparent;
-  color: transparent;
+  background: transparent !important;
+  color: transparent !important;
 }
 
 .card-turkis{
-  background-color:rgba(37, 207, 242, 0.7);
+  background-color:rgba(37, 207, 242, 0.7) !important;
 }
