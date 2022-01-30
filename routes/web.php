@@ -68,6 +68,8 @@ Route::post('/quiz', [QuizController::class, 'filterSelect'])->name('quiz.filter
 
 Route::get('/pair', [PairController::class, 'index'])->name('pair.index');
 Route::get('/pairdatecheck', [PairController::class, 'checkDate'])->name('pair.check.date');
+Route::get('/pairdifflevel', [PairController::class, 'checkDifficultyLevel'])->name('pair.check.difflevel');
+Route::get('/pairselectall', [PairController::class, 'selectAll'])->name('pair.select.all');
 Route::post('/pair', [PairController::class, 'filterSelect'])->name('pair.filter.select');
 
 Route::get('/learning', [LearningController::class, 'index'])->name('learning.index');

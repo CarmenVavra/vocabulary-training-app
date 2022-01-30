@@ -113,9 +113,10 @@ $(document).ready(function(){
     $(e.target).closest('tr').removeClass('red-row');
   });
 
-  $('#difficultyLevel').on('click', function(e){
+/*   $('#difficultyLevel').on('click', function(e){
     $(e.target).toggleClass('active');
-  });
+ 
+  }); */
 
   $('#selectAll').on('click', function(){
     $('#difficultyLevel').children().removeClass('active');

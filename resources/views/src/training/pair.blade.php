@@ -53,9 +53,10 @@
               </div>
 
               <button name="selectAll" id="selectAll" type="button" class="btn btn-light btn-lg btn-all">ALLE</button>
+              <input type="hidden" name="hdSelectAll" id="hdSelectAll" value="">
             </div>
 
-            @if(isset($countDataRows) && $countDataRows >= 6)
+
               <div id="fieldSizeContainer">
                 <label for="field" class="form-label vertical-spacer">Wie groß soll das Feld sein? </label>
                 <div id="field">
@@ -63,33 +64,30 @@
                     <input class="form-check-input" type="radio" name="fieldSize" data-col="4" data-row="3" id="radio43" value="4x3">
                     <label class="form-check-label" for="radio3x4">4 x 3</label>
                   </div>
-                  @if($countDataRows >= 8)
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="fieldSize" data-col="4" data-row="4" id="radio44" value="4x4">
-                      <label class="form-check-label" for="radio4x4">4 x 4</label>
-                    </div>
-                    @if($countDataRows >= 10)
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="fieldSize" data-col="5" data-row="4" id="radio54" value="5x4">
-                        <label class="form-check-label" for="radio5x4">5 x 4</label>
-                      </div>
-                      @if($countDataRows >= 12)
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="fieldSize" data-col="6" data-row="4" id="radio64" value="6x4">
-                          <label class="form-check-label" for="radio6x4">6 x 4</label>
-                        </div>
-                        @if($countDataRows >= 14)
-                          <div class="form-check">
-                            <input class="form-check-input" type="radio" name="fieldSize" data-col="7" data-row="4" id="radio74" value="7x4">
-                            <label class="form-check-label" for="radio7x4">7 x 4</label>
-                          </div>
-                        @endif
-                      @endif
-                    @endif
-                  @endif
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fieldSize" data-col="4" data-row="4" id="radio44" value="4x4">
+                    <label class="form-check-label" for="radio4x4">4 x 4</label>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fieldSize" data-col="5" data-row="4" id="radio54" value="5x4">
+                    <label class="form-check-label" for="radio5x4">5 x 4</label>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fieldSize" data-col="6" data-row="4" id="radio64" value="6x4">
+                    <label class="form-check-label" for="radio6x4">6 x 4</label>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fieldSize" data-col="7" data-row="4" id="radio74" value="7x4">
+                    <label class="form-check-label" for="radio7x4">7 x 4</label>
+                  </div>
+
                 </div>
               </div>
-            @endif
+
             <div class="row vertical-spacer">
               <div class="col">
                 <button type="submit" id="btnApplyPairsFilter" class="btn btn-turkis">anwenden</button>
@@ -124,7 +122,7 @@
     <!-- MODAL END -->
     @if(isset($vocabularies))
 
-    {{-- dd($vocabularies[0]) --}}
+    {{-- dd($vocabularies) --}}
       <div id="contTblPairs" class="container table-responsive">
         <div class="table-responsive alert turkis-bg align-center">
           <table id="tblPairs" class="table">
@@ -158,10 +156,8 @@
             }
         });
       
-        $("#vocRange").on('change', function(e){
-      
+        $("#vocRange").on('change', function(e){      
             e.preventDefault();
-
             $.ajax({
               type:'GET',
               url:"{{ route('pair.check.date') }}",
@@ -169,15 +165,173 @@
               success:function(data){
                 if(data.dateDataRow < 6){
                   $('#rowMarker').hide();
-                  
+                  $('#fieldSizeContainer').hide();                 
                   console.log('Für den ausgewählten Zeitraum gibt es zu wenig Datensätze .. min. 6', data.dateDataRow);
                 }else{
                   $('#rowMarker').show();
                 }
               }
             });
+        });
+        
+        let dataCount = 0;
 
-        });        
+        $('#difficultyLevel input[type="checkbox"]').on('click', function(e){
+          $('#hdSelectAll').val('');
+          $(e.target).parent().toggleClass('active');
+          $(e.target).toggleClass('active');
+          if($(e.target).hasClass('active')){
+            $.ajax({
+              type:'GET',
+              url:"{{ route('pair.check.difflevel') }}",
+              data:{start:start, end:end, marker:$(e.target).val()},
+              success:function(data){
+                if(data.diffDataRow == 0){
+                  $(e.target).parent().prop('disabled', true).removeClass('active');
+                  $(e.target).prop('disabled', true).removeClass('active');
+                  
+                }else{
+                  //console.log('diffDataRow active', data.diffDataRow);
+                  dataCount += data.diffDataRow;
+                  //console.log('datacount active ', dataCount);
+                  if(dataCount >= 6){
+                    
+                    switch(dataCount){
+                      case 6:
+                      case 7: $('#radio43').parent().show();
+                              $('#radio43').parent().siblings().hide();
+                              break;
+                      case 8: 
+                      case 9: $('#radio44').parent().siblings().hide();
+                              $('#radio44').parent().show();
+                              $('#radio43').parent().show();
+                              break;
+                      case 10: 
+                      case 11: $('#radio54').parent().siblings().hide();
+                               $('#radio54').parent().show();
+                               $('#radio44').parent().show();
+                               $('#radio43').parent().show();
+                               break;
+                      case 12: 
+                      case 13: $('#radio64').parent().siblings().show();
+                               $('#radio64').parent().show();
+                               $('#radio74').parent().shiblings().hide();
+                               break;
+                      default: $('#radio74').parent().siblings().show();
+                               $('#radio74').parent().show();                     
+                      
+                    }
+
+                    $('#fieldSizeContainer').show();
+                  }
+
+                }
+              }
+            });               
+          }else{
+            if($(e.target).parent().siblings().children().hasClass('active')){
+              //console.log('value von den anderen', $(e.target).parent().siblings().children().val());
+              $.ajax({
+                type:'GET',
+                url:"{{ route('pair.check.difflevel') }}",
+                data:{start:start, end:end, marker:$(e.target).val()},
+                success:function(data){
+                  if(data.diffDataRow != 0){
+                    //console.log('diffDataRow not active ', data.diffDataRow);
+                    dataCount -= data.diffDataRow;
+                    console.log('dataCount in not active', dataCount);
+                    if(dataCount < 6){
+                      $('#fieldSizeContainer').hide();
+                    }
+
+                    switch(dataCount){
+                      case 6:
+                      case 7: $('#radio43').parent().show();
+                              $('#radio43').parent().siblings().hide();
+                              break;
+                      case 8: 
+                      case 9: $('#radio44').parent().siblings().hide();
+                              $('#radio44').parent().show();
+                              $('#radio43').parent().show();
+                              break;
+                      case 10: 
+                      case 11: $('#radio54').parent().siblings().hide();
+                               $('#radio54').parent().show();
+                               $('#radio44').parent().show();
+                               $('#radio43').parent().show();
+                               break;
+                      case 12: 
+                      case 13: $('#radio64').parent().siblings().show();
+                               $('#radio64').parent().show();
+                               $('#radio74').parent().shiblings().hide();
+                               break;
+                      default: $('#radio74').parent().siblings().show();
+                               $('#radio74').parent().show();
+                      
+                      
+                    }
+
+                  }
+                }
+              }); 
+            
+            }else{
+              dataCount = 0;
+
+            }            
+            
+          }
+
+        });
+
+        $('#selectAll').on('click', function(e){
+          e.preventDefault();
+          $('#selectAll').siblings().children().removeClass('active').children().removeClass('active');
+          $('#hdSelectAll').val('btnSelectAll');
+
+          $.ajax({
+            type:'GET',
+            url:"{{ route('pair.select.all') }}",
+            data:{start:start, end:end},
+            success:function(data){
+              console.log(data.vocabulariesCount);
+              if(data.vocabulariesCount >= 6){
+                switch(dataCount){
+                      case 6:
+                      case 7: $('#radio43').parent().show();
+                              $('#radio43').parent().siblings().hide();
+                              break;
+                      case 8: 
+                      case 9: $('#radio44').parent().siblings().hide();
+                              $('#radio44').parent().show();
+                              $('#radio43').parent().show();
+                              break;
+                      case 10: 
+                      case 11: $('#radio54').parent().siblings().hide();
+                               $('#radio54').parent().show();
+                               $('#radio44').parent().show();
+                               $('#radio43').parent().show();
+                               break;
+                      case 12: 
+                      case 13: $('#radio64').parent().siblings().show();
+                               $('#radio64').parent().show();
+                               $('#radio74').parent().shiblings().hide();
+                               break;
+                      default: $('#radio74').parent().siblings().show();
+                               $('#radio74').parent().show();                     
+                      
+                    }
+                    $('#fieldSizeContainer').show();
+              }
+            }
+          });    
+          
+          dataCount = 0;
+        });
+
+
+
+
       });
     });
 </script>
@@ -217,8 +371,8 @@
     if(jsVariable == 1){
     //btnPairsApply.onclick = function() {
       countColumns = <?= ($countColumns) ?? ''; ?>;
-
-      filterSettings.style.display = 'none';
+      console.log(countColumns);
+      //filterSettings.style.display = 'none';
       // für die Anzeige --> Vokabel aus beiden Tabellen werden in ein gemeinsames Array gespeichert
       language.forEach(function(value, index) {
         mixedWords[index] = value;

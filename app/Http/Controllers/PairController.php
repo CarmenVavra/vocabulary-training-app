@@ -19,16 +19,16 @@ class PairController extends Controller
     {
 
 
-        $marker = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+/*         $marker = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                 ->where('vocabularies.user_id', Auth::user()->id)
                                 ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                ->where('foreign_vocabularies.marker_id', '>', 0)->first();
+                                ->where('foreign_vocabularies.marker_id', '>', 0)->first(); */
         
         $countDataRows = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                     ->where('vocabularies.user_id', Auth::user()->id)
                                     ->where('foreign_vocabularies.language_id', session('foreign_id'))->get()->count();
 
-        return view('src.training.pair', compact('marker', 'countDataRows'));
+        return view('src.training.pair', compact('countDataRows'));
     }
 
     /**
@@ -111,25 +111,73 @@ class PairController extends Controller
                                         ->whereBetween('foreign_vocabularies.created_at', [$request->start, $request->end])->groupBy('foreign_vocabularies.id')->get()->count();
 
             return response()->json([
-                'dateDataRow'=>$dateDataRow
+                'dateDataRow'=>$dateDataRow,
+                'start'=>$request->start,
+                'end'=>$request->end
             ]);
           }
 
     }
 
+    public function checkDifficultyLevel(Request $request){
+        header('Content-Type, application/json; charset = utf-8');
+
+        if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
+        
+            $diffDataRow = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                        ->select('foreign_vocabularies.id')
+                                        ->where('vocabularies.user_id', Auth::user()->id)
+                                        ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                        ->whereBetween('foreign_vocabularies.created_at', [$request->start, $request->end])
+                                        ->where('foreign_vocabularies.marker_id', $request->marker)->groupBy('foreign_vocabularies.id')->get()->count();
+
+
+            return response()->json([
+                'diffDataRow'=>$diffDataRow,
+                'start'=>$request->start,
+                'end'=>$request->end,
+                'marker'=>$request->marker
+            ]);
+          }
+    }
+
+    public function selectAll(Request $request){
+
+        header('Content-Type, application/json; charset = utf-8');
+
+        if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
+
+        $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                    ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                    ->where('vocabularies.user_id', Auth::user()->id)
+                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                    ->whereBetween('foreign_vocabularies.created_at', [$request->start, $request->end])
+                                    ->inRandomOrder()->get();
+        return response()->json([
+            'vocabulariesCount'=>$vocabularies->count(),
+            'vocabularies'=>$vocabularies,
+            'start'=>$request->start,
+            'end'=>$request->end
+        ]);
+        
+        
+        }
+
+
+    }
+
     public function filterSelect(Request $request){
 
-        //dd($request);
+        //dd($request->hdSelectAll);
         $fieldSize = explode('x', $request->fieldSize);
         $fieldColumn = $fieldSize[0];
         $fieldRow = $fieldSize[1];
 
         $limit = ($fieldSize[0] * $fieldSize[1])/2;
-
         
         $rangeDate = explode(' - ', $request->daterange);
-        
-        $fromDate = DateTime::createFromFormat('d.m.Y', $rangeDate[0]);
+     
+        $fromDate = DateTime::createFromFormat('m/d/Y', $rangeDate[0]);
         $error = DateTime::getLastErrors();
         if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
             $fromDate->format('Y-m-d');
@@ -138,7 +186,7 @@ class PairController extends Controller
             echo 'Hier ist ein Fehler passiert';
         }        
         
-        $toDate = DateTime::createFromFormat('d.m.Y', $rangeDate[1]);
+        $toDate = DateTime::createFromFormat('m/d/Y', $rangeDate[1]);
         $error = DateTime::getLastErrors();
         if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
             $toDate->format('Y-m-d');
@@ -146,28 +194,63 @@ class PairController extends Controller
         else{
             echo 'Hier ist ein Fehler passiert';
         }
-    
-        $countVocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                        ->select('vocabularies.id')
+
+
+
+/* 
+
+        "daterange" => "01/23/2022 - 02/28/2022" --> $fromDate, $toDate
+        "diffRed" => "1"    isset($request->diffRed)               isset($request->diffYellow)
+        "diffGreen" => "3"  isset($request->diffGreen)
+        "fieldSize" => "4x3"  $limit
+ */
+        if(isset($request->diffRed)){
+            $markerRed = $request->diffRed;
+        }else{
+            $markerRed = 9;
+        }
+
+        if(isset($request->diffYellow)){
+            $markerYellow = $request->diffYellow;
+        }else{
+            $markerYellow = 9;
+        }
+
+        if(isset($request->diffGreen)){
+            $markerGreen = $request->diffGreen;
+        }else{
+            $markerGreen = 9;
+        }
+        
+        if($request->hdSelectAll == null){
+            $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                        ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
                                         ->where('vocabularies.user_id', Auth::user()->id)
                                         ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                        ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])->groupBy('vocabularies.id')->get()->count();
-        //marker
-        
-        if($limit > $countVocabularies){
-            //Fehler
+                                        ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
+                                        ->where('foreign_vocabularies.marker_id', $markerRed)
+                                        ->orWhere('foreign_vocabularies.marker_id', $markerYellow)
+                                        ->orWhere('foreign_vocabularies.marker_id', $markerGreen)->inRandomOrder()->limit($limit)->get();
+
         }else{
             $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                         ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
                                         ->where('vocabularies.user_id', Auth::user()->id)
                                         ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                        ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])->limit($limit)->get();
-            //dd($vocabularies[0]->vn);
+                                        ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
+                                        ->inRandomOrder()->limit($limit)->get();
+
+        }
+        
+        //dd($vocabularies->count());
+            
+
+        
         $jsVariable = 1;
         $jsonStringPHP = json_encode($vocabularies);             
         return view('src.training.pair', compact('vocabularies','jsonStringPHP', 'jsVariable'));
 
-        }
+  
                                  
     }
 
