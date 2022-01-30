@@ -193,7 +193,7 @@
                 }else{
                   //console.log('diffDataRow active', data.diffDataRow);
                   dataCount += data.diffDataRow;
-                  //console.log('datacount active ', dataCount);
+                  console.log('datacount active ', dataCount);
                   if(dataCount >= 6){
                     
                     switch(dataCount){
@@ -223,6 +223,8 @@
                     }
 
                     $('#fieldSizeContainer').show();
+                  }else{
+                    $('#fieldSizeContainer').hide();
                   }
 
                 }
@@ -237,7 +239,7 @@
                 data:{start:start, end:end, marker:$(e.target).val()},
                 success:function(data){
                   if(data.diffDataRow != 0){
-                    //console.log('diffDataRow not active ', data.diffDataRow);
+                    console.log('diffDataRow not active ', data.diffDataRow);
                     dataCount -= data.diffDataRow;
                     console.log('dataCount in not active', dataCount);
                     if(dataCount < 6){
@@ -288,15 +290,15 @@
           e.preventDefault();
           $('#selectAll').siblings().children().removeClass('active').children().removeClass('active');
           $('#hdSelectAll').val('btnSelectAll');
-
           $.ajax({
             type:'GET',
             url:"{{ route('pair.select.all') }}",
             data:{start:start, end:end},
             success:function(data){
-              console.log(data.vocabulariesCount);
+              //console.log(data.vocabulariesCount);
               if(data.vocabulariesCount >= 6){
-                switch(dataCount){
+                
+                switch(data.vocabulariesCount){
                       case 6:
                       case 7: $('#radio43').parent().show();
                               $('#radio43').parent().siblings().hide();
@@ -322,6 +324,8 @@
                       
                     }
                     $('#fieldSizeContainer').show();
+              }else{
+                $('#fieldSizeContainer').hide();
               }
             }
           });    
@@ -369,10 +373,8 @@
 
     let jsVariable = <?= ($jsVariable) ?? ''; ?>;
     if(jsVariable == 1){
-    //btnPairsApply.onclick = function() {
       countColumns = <?= ($countColumns) ?? ''; ?>;
       console.log(countColumns);
-      //filterSettings.style.display = 'none';
       // für die Anzeige --> Vokabel aus beiden Tabellen werden in ein gemeinsames Array gespeichert
       language.forEach(function(value, index) {
         mixedWords[index] = value;
