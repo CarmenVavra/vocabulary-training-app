@@ -17,7 +17,7 @@
         <div class="alert dark-bg" role="alert">
           <h4 class="alert-heading">Lernen</h4>
           @if(isset($countDataRows) && $countDataRows == 0)
-            <div class="alert alert-danger">{{ 'Es sind zu wenige Vokabel vorhanden, um Quiz zu spielen. Leg noch ein paar Vokabeln an!' }}</div>
+            <div class="alert alert-danger">{!! 'Leg erst ein paar <a href="/vocabulary">Vokabeln</a> an!' !!}</div>
           @endif
           @if(isset($countDataRows) && $countDataRows > 0)
           <p>
@@ -159,6 +159,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="{{ asset('js/helpers/filter.js') }}"></script>
     <script>
       $(function() {
         $('input[name="daterange"]').daterangepicker({
@@ -180,6 +181,7 @@
               $.ajax({
                 type:'GET',
                 url:"{{ route('learning.check.date') }}",
+                datatype:"json",
                 data:{start:start, end:end},
                 success:function(data){
                   console.log(data.dateDataRow);
@@ -209,6 +211,7 @@
               $.ajax({
                 type:'GET',
                 url:"{{ route('learning.check.difflevel') }}",
+                datatype:"json",
                 data:{start:start, end:end, marker:$(e.target).val()},
                 success:function(data){
                   if(data.diffDataRow == 0){
@@ -229,6 +232,7 @@
                 $.ajax({
                   type:'GET',
                   url:"{{ route('learning.check.difflevel') }}",
+                  datatype:"json",
                   data:{start:start, end:end, marker:$(e.target).val()},
                   success:function(data){
                     if(data.diffDataRow != 0){
@@ -259,6 +263,7 @@
             $.ajax({
               type:'GET',
               url:"{{ route('learning.select.all') }}",
+              datatype:"json",
               data:{start:start, end:end},
               success:function(data){
                 $('#direction').show();

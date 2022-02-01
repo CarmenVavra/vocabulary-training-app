@@ -27,6 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {        
+        
         $user = User::where('id', Auth::user()->id)->first();
         $data['last_login'] = new DateTime($user->login_date);
         $data['login_date'] = new DateTime('now');

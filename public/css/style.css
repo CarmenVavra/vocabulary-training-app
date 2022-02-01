@@ -317,3 +317,7 @@ div#breadcrumb{
 /**
 * MODAL-END
 */
+
+#editUserForm div.text-danger{
+    visibility: hidden;
+}

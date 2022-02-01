@@ -48,7 +48,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $user = User::where('id', $user);
+        //$user = User::where('id', $user);
+
+        $user = User::where('id', $user->id)->get();      
+
         return route('user.profile', compact('user'));
     }
 
@@ -67,7 +70,7 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  User $user
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)

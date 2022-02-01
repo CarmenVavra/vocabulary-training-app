@@ -9,6 +9,7 @@ use App\Models\Vocabulary;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 class HangmanController extends Controller
 {
@@ -20,9 +21,9 @@ class HangmanController extends Controller
      */
     public function index()
     {
-        $countDataRows = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                    ->where('vocabularies.user_id', Auth::user()->id)
-                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))->get()->count();
+
+        //dd(Route::currentRouteName());
+        $countDataRows = $this->getCountDataRows();
 
         return view('src.training.hangman', compact('countDataRows'));
     }
@@ -95,29 +96,17 @@ class HangmanController extends Controller
 
     public function filterSelect(Request $request){
 
-        $rangeDate = explode(' - ', $request->daterange);
+        $dateRange = $this->getStartAndEndDate($request);
+        $fromDate = $dateRange[0];
+        $toDate = $dateRange[1];
 
-        $fromDate = DateTime::createFromFormat('m/d/Y', $rangeDate[0]);
-        $error = DateTime::getLastErrors();
-        if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
-            $fromDate->format('Y-m-d');
-        }
-        else{
-            echo 'Hier ist ein Fehler passiert';
-        }        
-
-        $toDate = DateTime::createFromFormat('m/d/Y', $rangeDate[1]);
-        $error = DateTime::getLastErrors();
-        if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
-            $toDate->format('Y-m-d');
-        }
-        else{
-            echo 'Hier ist ein Fehler passiert';
-        }
-        
         $direction = $request->radioDirection;
        
-        //marker
+        $marker = $this->getMarker($request);
+        $markerRed = $marker[0];
+        $markerYellow = $marker[1];
+        $markerGreen = $marker[2];
+
         $vocabularies = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                             ->select('foreign_vocabularies.name as fvn')
                                             ->where('vocabularies.user_id', Auth::user()->id)

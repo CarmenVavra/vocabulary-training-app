@@ -21,9 +21,7 @@ class LearningController extends Controller
     public function index()
     {
 
-        $countDataRows = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                    ->where('vocabularies.user_id', Auth::user()->id)
-                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))->get()->count();
+        $countDataRows = $this->getCountDataRows();
 
         return view('src.training.learning', compact('countDataRows'));
     }
@@ -95,30 +93,19 @@ class LearningController extends Controller
     }
 
     public function filterSelect(Request $request){
-        $rangeDate = explode(' - ', $request->daterange);
 
-        $fromDate = DateTime::createFromFormat('m/d/Y', $rangeDate[0]);
-        $error = DateTime::getLastErrors();
-        if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
-            $fromDate->format('Y-m-d');
-        }
-        else{
-            echo 'Hier ist ein Fehler passiert';
-        }
-
-        $toDate = DateTime::createFromFormat('m/d/Y', $rangeDate[1]);
-        $error = DateTime::getLastErrors();
-        if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
-            $toDate->format('Y-m-d');
-        }
-        else{
-            echo 'Hier ist ein Fehler passiert';
-        }
+        $dateRange = $this->getStartAndEndDate($request);
+        $fromDate = $dateRange[0];
+        $toDate = $dateRange[1];
 
         $sortOrder = $request->radioSortorder;
         
         $direction = $request->radioDirection;
-        //marker
+
+        $marker = $this->getMarker($request);
+        $markerRed = $marker[0];
+        $markerYellow = $marker[1];
+        $markerGreen = $marker[2];
 
         if($sortOrder != 'random'){
             $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')

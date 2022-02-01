@@ -20,9 +20,7 @@ class PairController extends Controller
     public function index()
     {
         
-        $countDataRows = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                    ->where('vocabularies.user_id', Auth::user()->id)
-                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))->get()->count();
+        $countDataRows = $this->getCountDataRows();
 
         return view('src.training.pair', compact('countDataRows'));
     }
@@ -101,52 +99,21 @@ class PairController extends Controller
     */
 
     public function filterSelect(Request $request){
-
-
         $fieldSize = explode('x', $request->fieldSize);
+
         $fieldColumn = $fieldSize[0];
         $fieldRow = $fieldSize[1];
 
         $limit = ($fieldSize[0] * $fieldSize[1])/2;
         
-        $rangeDate = explode(' - ', $request->daterange);
-     
-        $fromDate = DateTime::createFromFormat('m/d/Y', $rangeDate[0]);
-        $error = DateTime::getLastErrors();
-        if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
-            $fromDate->format('Y-m-d');
-        }
-        else{
-            echo 'Hier ist ein Fehler passiert';
-        }        
-        
-        $toDate = DateTime::createFromFormat('m/d/Y', $rangeDate[1]);
-        $error = DateTime::getLastErrors();
-        if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
-            $toDate->format('Y-m-d');
-        }
-        else{
-            echo 'Hier ist ein Fehler passiert';
-        }
+        $dateRange = $this->getStartAndEndDate($request);
+        $fromDate = $dateRange[0];
+        $toDate = $dateRange[1];
 
-
-        if(isset($request->diffRed)){
-            $markerRed = $request->diffRed;
-        }else{
-            $markerRed = 9;
-        }
-
-        if(isset($request->diffYellow)){
-            $markerYellow = $request->diffYellow;
-        }else{
-            $markerYellow = 9;
-        }
-
-        if(isset($request->diffGreen)){
-            $markerGreen = $request->diffGreen;
-        }else{
-            $markerGreen = 9;
-        }
+        $marker = $this->getMarker($request);
+        $markerRed = $marker[0];
+        $markerYellow = $marker[1];
+        $markerGreen = $marker[2];
         
         if($request->hdSelectAll == null){
             $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')

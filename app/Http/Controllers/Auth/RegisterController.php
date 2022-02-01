@@ -82,6 +82,7 @@ class RegisterController extends Controller
         ]);
 
         session(['language_id'=>$language->id]);
+        session(['language_name'=>$language->name]);
  
         return $user;
         

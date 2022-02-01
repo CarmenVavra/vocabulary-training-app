@@ -8,6 +8,68 @@ use Illuminate\Support\Facades\Auth;
 
 trait FilterTrait{
 
+    /**
+     * checks the count of voccabularies without any settings.
+     * 
+     * @return vocabulary count
+     */
+    public function getCountDataRows(){
+        return Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                            ->where('vocabularies.user_id', Auth::user()->id)
+                            ->where('foreign_vocabularies.language_id', session('foreign_id'))->get()->count();
+    }
+
+    public function getStartAndEndDate(Request $request){
+        $rangeDate = explode(' - ', $request->daterange);
+     
+        $fromDate = DateTime::createFromFormat('m/d/Y', $rangeDate[0]);
+        $error = DateTime::getLastErrors();
+        if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
+            $fromDate->format('Y-m-d');
+        }
+        else{
+            echo 'Hier ist ein Fehler passiert';
+        }        
+        
+        $toDate = DateTime::createFromFormat('m/d/Y', $rangeDate[1]);
+        $error = DateTime::getLastErrors();
+        if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
+            $toDate->format('Y-m-d');
+        }
+        else{
+            echo 'Hier ist ein Fehler passiert';
+        }
+
+        $dateRange[0] = $fromDate;
+        $dateRange[1] = $toDate;
+
+        return $dateRange;
+
+    }
+
+    public function getMarker(Request $request){
+        
+        if(isset($request->diffRed)){
+            $markerRed = $request->diffRed;
+        }else{
+            $markerRed = 9;
+        }
+
+        if(isset($request->diffYellow)){
+            $markerYellow = $request->diffYellow;
+        }else{
+            $markerYellow = 9;
+        }
+
+        if(isset($request->diffGreen)){
+            $markerGreen = $request->diffGreen;
+        }else{
+            $markerGreen = 9;
+        }
+
+        return [$markerRed, $markerYellow, $markerGreen];
+    }
+
    /**
     * Filter-settings datetrange; checks if vocabularies exist in daterange
     * @param Request $request

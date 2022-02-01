@@ -17,7 +17,7 @@
       <div class="alert dark-bg" role="alert">
         <h4 class="alert-heading">Quiz</h4>
         @if(isset($countDataRows) && $countDataRows < 4)
-          <div class="alert alert-danger">{{ 'Es sind zu wenige Vokabel vorhanden, um Quiz zu spielen. Leg noch ein paar Vokabeln an!' }}</div>
+          <div class="alert alert-danger">{!! 'Es sind zu wenige Vokabeln vorhanden, um <strong>Quiz</strong> zu spielen. Leg noch ein paar <a href="/vocabulary" >Vokabeln</a> an!' !!}</div>
         @endif
         @if(isset($countDataRows) && $countDataRows >=4)
         <p>
@@ -99,13 +99,15 @@
   @endsection
   @section('javascript')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
-    <script src="{{ asset('js/classes/CardSet.js') }}"></script>
-    <script src="{{ asset('js/logic_quiz.js') }}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="{{ asset('js/classes/CardSet.js') }}"></script>
+    {{-- <script src="{{ asset('js/includes/quiz.js') }}"></script> --}}
+    <script src="{{ asset('js/logic_quiz.js') }}"></script>
 
   <script>
+    "use strict";
     $(function() {
       $('input[name="daterange"]').daterangepicker({
         format: 'DD.MM.YYYY',
@@ -278,10 +280,19 @@
 
   <script>
     "use strict";
+/*     $(function(){
+      let limit = <?php echo ($_POST['countQuestions']) ?? 0 ?>;
+      let vocFromDB = <?= ($jsonStringPHP) ?? ''; ?>;
+      let radioDirection = <?= ($radioDirection) ?? ''; ?>;
+      playQuiz(limit, vocFromDB, radioDirection);
+    });
+ */
     let limit = <?php echo ($_POST['countQuestions']) ?? 0 ?>;
     let vocFromDB = <?= ($jsonStringPHP) ?? ''; ?>;
-    //let fakeVocFromDB = <?= ($jsonStringPHPFakeVoc) ?? ''; ?>;
     let radioDirection = <?= ($radioDirection) ?? ''; ?>;
+    
+    //let fakeVocFromDB = <?= ($jsonStringPHPFakeVoc) ?? ''; ?>;
+    
     console.log('radioDirection ', radioDirection); 
     let question;
     let answer;
@@ -344,5 +355,6 @@
 
               
                 
-  </script>
+  
+ </script>
   @endsection

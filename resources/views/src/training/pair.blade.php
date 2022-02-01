@@ -17,7 +17,7 @@
       <div class="alert dark-bg" role="alert">
         <h4 class="alert-heading">Pairs</h4>
         @if(isset($countDataRows) && $countDataRows < 6)
-          <div class="alert alert-danger">{{ 'Es sind zu wenige Vokabel vorhanden, um Pairs zu spielen. Leg noch ein paar Vokabeln an!' }}</div>
+          <div class="alert alert-danger">{!! 'Es sind zu wenige Vokabeln vorhanden, um <strong>Pairs</strong> zu spielen. Leg noch ein paar <a href="/vocabulary" >Vokabeln</a> an!' !!}</div>
         @endif
         @if(isset($countDataRows) && $countDataRows >=6)
         <p>
@@ -106,12 +106,14 @@
       <div id="overlay-container">
         <div id="close">X</div>
         <div class="alert bg-turkis">
+          <div class="card-header bg-darkgray">
+            AUSWERTUNG
+          </div>
           <div id="card-content">
             <div class="card-body">
-              <h5 class="card-title">Zeiten</h5>
-              <p class="card-text" id="pairsTime">Benötigte Zeit: <span></span></p>
-              <p class="card-text" id="pairsHighscore">Highscore: <span>$highscore</span></p>
-              <p class="card-text" id="outputPairsErrors">Fehler: <span></span></p>
+              <p class="card-text" id="pairsTime"><strong>Benötigte Zeit:</strong> <span></span></p>
+              <p class="card-text" id="pairsHighscore"><strong>Highscore:</strong> <span>$highscore</span></p>
+              <p class="card-text" id="outputPairsErrors"><strong>Fehler:</strong> <span></span></p>
               <hr>
               <button class="btn btn-turkis">OK</button>
             </div>
@@ -138,6 +140,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <script src="{{ asset('js/includes/pairs.js') }}"></script>
   <script src="{{ asset('js/classes/Pair.js') }}"></script>
 
   <script>
@@ -161,6 +164,7 @@
             $.ajax({
               type:'GET',
               url:"{{ route('pair.check.date') }}",
+              datatype:"json",
               data:{start:start, end:end},
               success:function(data){
                 if(data.dateDataRow < 6){
@@ -184,6 +188,7 @@
             $.ajax({
               type:'GET',
               url:"{{ route('pair.check.difflevel') }}",
+              datatype:"json",
               data:{start:start, end:end, marker:$(e.target).val()},
               success:function(data){
                 if(data.diffDataRow == 0){
@@ -236,6 +241,7 @@
               $.ajax({
                 type:'GET',
                 url:"{{ route('pair.check.difflevel') }}",
+                datatype:"json",
                 data:{start:start, end:end, marker:$(e.target).val()},
                 success:function(data){
                   if(data.diffDataRow != 0){
@@ -292,6 +298,7 @@
           $.ajax({
             type:'GET',
             url:"{{ route('pair.select.all') }}",
+            datatype:"json",
             data:{start:start, end:end},
             success:function(data){
               //console.log(data.vocabulariesCount);
@@ -331,15 +338,21 @@
           
           dataCount = 0;
         });
-
-
-
-
       });
     });
 </script>
   <script>
     "use strict";
+
+    $(function(){
+      <?php if(!empty($_POST)) { $countColumns = substr($_POST['fieldSize'], 0, 1); }?>
+      let vocabularies = <?= ($jsonStringPHP) ?? ''; ?>;
+      let countCols = <?= ($countColumns) ?? ''; ?>;
+      let jsVariable = <?= ($jsVariable) ?? ''; ?>;
+      playPairs(vocabularies, countCols, jsVariable);
+    });
+
+/*     "use strict";
 
     <?php if(!empty($_POST)) { $countColumns = substr($_POST['fieldSize'], 0, 1); }?>
 
@@ -477,5 +490,5 @@
 
 
     };
-  </script>
+ */  </script>
   @endsection

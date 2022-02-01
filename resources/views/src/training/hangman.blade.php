@@ -19,7 +19,7 @@
       <div class="alert dark-bg" role="alert">
         <h4 class="alert-heading">Hangman</h4>
         @if(isset($countDataRows) && $countDataRows == 0)
-          <div class="alert alert-danger">{{ 'Es sind zu wenige Vokabel vorhanden, um Quiz zu spielen. Leg noch ein paar Vokabeln an!' }}</div>
+          <div class="alert alert-danger">{!! 'Es sind zu wenige Vokabeln vorhanden, um <strong>Hangman</strong> zu spielen. Leg noch ein paar <a href="/vocabulary" >Vokabeln</a> an!' !!}</div>
         @endif
         @if(isset($countDataRows) && $countDataRows > 0)
         <p>
@@ -61,9 +61,7 @@
                 <button type="submit" id="btnApplyHangmanFilter" class="btn btn-turkis">anwenden</button>
               </div>
 
-
             </form>
-
           </div>
         </div>
         @endif
@@ -123,8 +121,10 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <script src="{{ asset('js/includes/hangman.js') }}"></script>
   <script src="{{ asset('js/classes/Canvas.js') }}"></script>
   <script>
+    "use strict";
     $(function() {
       $('input[name="daterange"]').daterangepicker({
         format: 'DD.MM.YYYY',
@@ -145,6 +145,7 @@
             $.ajax({
               type:'GET',
               url:"{{ route('hangman.check.date') }}",
+              datatype:"json",
               data:{start:start, end:end},
               success:function(data){
                 console.log(data.dateDataRow);
@@ -174,6 +175,7 @@
             $.ajax({
               type:'GET',
               url:"{{ route('hangman.check.difflevel') }}",
+              datatype:"json",
               data:{start:start, end:end, marker:$(e.target).val()},
               success:function(data){
                 if(data.diffDataRow == 0){
@@ -194,6 +196,7 @@
               $.ajax({
                 type:'GET',
                 url:"{{ route('hangman.check.difflevel') }}",
+                datatype:"json",
                 data:{start:start, end:end, marker:$(e.target).val()},
                 success:function(data){
                   if(data.diffDataRow != 0){
@@ -224,6 +227,7 @@
           $.ajax({
             type:'GET',
             url:"{{ route('hangman.select.all') }}",
+            datatype:"json",
             data:{start:start, end:end},
             success:function(data){
               $('#direction').show();
@@ -242,7 +246,11 @@
 
 
   <script>
-    "use strict";
+    $(function(){
+      let origArray = <?= ($vocJsonStringPHP) ?? ''; ?>;
+      playHangman(origArray);
+    });
+/*     "use strict";
 
     let canvas = new Canvas(document.querySelector('#hangman'));
     const output = document.querySelector('#output');
@@ -368,5 +376,5 @@
         hangModal.closeModal();
       }
     };
-  </script>
+ */  </script>
   @endsection

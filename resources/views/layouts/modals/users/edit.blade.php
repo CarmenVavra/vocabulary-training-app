@@ -2,28 +2,30 @@
     <div id="overlay-edit-container">
       <div id="close">X</div>
       <div class="alert bg-turkis">
+        <div class="card-header bg-darkgray">
+          DATEN ÄNDERN
+        </div>
         <div id="card-content">
           <div class="card-body">
-            <h5 class="card-title">Daten ändern</h5>
             <div class="col-md-12 login-form-2">
-              <form action="{{ route('user.update', Auth::user()->id) }}" method="post">
+              <form action="{{ route('user.update', Auth::user()->id) }}" method="post" id="editUserForm">
                 @csrf
-                @method('put');
+                @method('put')
                 <div class="form-group">
-                  <input name="name" type="text" class="form-control is-invalid" placeholder="Name" value="{{ Auth::user()->name }}" />
-                  <div class="invalid-feedback">Name darf nicht leer sein!</div>
+                  <input name="name" type="text" class="form-control" placeholder="Name" value="{{ Auth::user()->name }}" />
+                  <div class="text-danger">Name darf nicht leer sein!</div>
                 </div>
                 <div class="form-group">
-                  <input name="email" type="text" class="form-control is-invalid" placeholder="E-Mail" value="{{ Auth::user()->email }}" />
-                  <div class="invalid-feedback">E-Mail darf nicht leer sein!</div>
+                  <input name="email" type="text" class="form-control" placeholder="E-Mail" value="{{ Auth::user()->email }}" />
+                  <div class="text-danger">E-Mail darf nicht leer sein!</div>
                 </div>
                 <div class="form-group">
-                  <input name="password" type="password" class="form-control is-invalid" placeholder="Passwort" value="" />
-                  <div class="invalid-feedback">Passwort darf nicht leer sein!</div>
+                  <input name="password" type="password" class="form-control" placeholder="Passwort" value="" />
+                  <div class="text-danger">Passwort darf nicht leer sein!</div>
                 </div>
                 <div class="form-group">
-                  <input name="password" type="password" class="form-control is-invalid" placeholder="Passwort wiederholen" value="" />
-                  <div class="invalid-feedback">Passwort Wdh darf nicht leer sein!</div>
+                  <input name="password" type="password" class="form-control" placeholder="Passwort wiederholen" value="" />
+                  <div class="text-danger">Passwort Wdh darf nicht leer sein!</div>
                 </div>
                 <div class="form-group">
                   <button id="btnEditUser" type="submit" class="btn btn-darkgray" value="ändern">ändern</button>

@@ -36,9 +36,9 @@
                       </div>
                       <div class="row btn-group vertical-spacer">
                         <div class="col-md-4">
-                          <<a href="{{-- route('logout') --}}">
+                          <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.querySelector('#logout-form').submit();">
                             <button id="btnSelectLanguagesCancel" class="btn btn-danger">Logout</button>
-                          </a>
+                           </a>
                         </div>
                         <div class="col-md-4">
                           <button id="btnSelectLanguages" class="btn btn-darkgray">OK</button>

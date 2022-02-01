@@ -26,9 +26,9 @@ $(document).ready(function(){
     $('#overlay-edit').show();
   })
 
-  $('#btnEditUser').on('click', function(e){
+/*   $('#btnEditUser').on('click', function(e){
     $('#overlay-edit').hide();
-  });
+  }); */
 
   $('#btnApplyHangmanFilter').on('click', function(){
     $('#contHangman').show();
