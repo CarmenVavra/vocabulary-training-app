@@ -18,6 +18,10 @@
     <div class="container">
       <div class="alert dark-bg" role="alert">
         <h4 class="alert-heading">Hangman</h4>
+        @if(isset($countDataRows) && $countDataRows == 0)
+          <div class="alert alert-danger">{{ 'Es sind zu wenige Vokabel vorhanden, um Quiz zu spielen. Leg noch ein paar Vokabeln an!' }}</div>
+        @endif
+        @if(isset($countDataRows) && $countDataRows > 0)
         <p>
           <button id="btnFilter" class="btn btn-outline-secondary btn-sm vertical-spacer" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             Filter
@@ -33,42 +37,36 @@
                 <input type="text" name="daterange" value="" id="vocRange" />
               </div>
             </div>
-            @if(!empty($marker))
-            <div class="row-marker">
+            
+            <div class="row-marker" id="rowMarker">
               <label for="difficultyLevel" class="form-label">Welcher Schwierigkeitsgrad? </label>
               <div id="difficultyLevel" class="btn-group" role="group">
-                <button type="button" class="btn-difficulty-danger btn-lg"></button>
-                <button type="button" class="btn-difficulty-warning btn-lg"></button>
-                <button type="button" class="btn-difficulty-success btn-lg"></button>
+
+                <label for="diffRed" class="btn-difficulty-danger btn-lg">
+                  <input name="diffRed" id="diffRed" type="checkbox" value="1">
+                </label>
+                <label for="diffYellow" class="btn-difficulty-warning btn-lg">
+                  <input name="diffYellow" id="diffYellow" type="checkbox" value="2">
+                </label>
+                <label for="diffGreen" class="btn-difficulty-success btn-lg">
+                  <input name="diffGreen" id="diffGreen" type="checkbox" value="3">
+                </label>
               </div>
+
               <button name="selectAll" id="selectAll" type="button" class="btn btn-light btn-lg btn-all">ALLE</button>
+              <input type="hidden" name="hdSelectAll" id="hdSelectAll" value="">
             </div>
-            @endif
-            <div class="row vertical-spacer">
-              <div class="col">
-                <h6>Welche Reihenfolge?</h6>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection1" value="dir1">
-                  <label class="form-check-label" for="radioDirection1">
-                  {{ session('language_name') }} --> {{ session('foreign_name') }}
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection2" value="dir2">
-                  <label class="form-check-label" for="radioDirection2">
-                  {{ session('foreign_name') }} --> {{ session('language_name') }}
-                  </label>
-                </div>
-              </div>
+
               <div class="col">
                 <button type="submit" id="btnApplyHangmanFilter" class="btn btn-turkis">anwenden</button>
               </div>
-            </div>
+
 
             </form>
 
           </div>
         </div>
+        @endif
       </div>
     </div>
     <!-- MODAL START -->
@@ -122,27 +120,137 @@
   @section('javascript')
 
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <script src="{{ asset('js/classes/Canvas.js') }}"></script>
   <script>
-        $(function() {
-          $('input[name="daterange"]').daterangepicker({
-            opens: 'left'
-          }, function(start, end, label) {
-            console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-          });
+    $(function() {
+      $('input[name="daterange"]').daterangepicker({
+        format: 'DD.MM.YYYY',
+        opens: 'left'
+      }, function(start, end, label) {
+        //console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        start = start.format('YYYY-MM-DD');
+        end = end.format('YYYY-MM-DD');
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
-  </script>
+      
+        $("#vocRange").on('change', function(e){      
+            e.preventDefault();
+            $.ajax({
+              type:'GET',
+              url:"{{ route('hangman.check.date') }}",
+              data:{start:start, end:end},
+              success:function(data){
+                console.log(data.dateDataRow);
+
+                if(data.dateDataRow == 0){
+                  $('#rowMarker').hide();
+                  $('#direction').hide();
+                  console.log('Für den ausgewählten Zeitraum gibt es zu wenig Datensätze .. min. 4', data.dateDataRow);
+                }else{
+                  if(data.markerDataRow == 0){
+                    console.log(data.markerDataRow);
+                    $('#difficultyLevel').hide();
+                  }
+                  $('#rowMarker').show();
+                }
+              }
+            });
+        });
+        
+        let dataCount = 0;
+
+        $('#difficultyLevel input[type="checkbox"]').on('click', function(e){
+          $('#hdSelectAll').val('');
+          $(e.target).parent().toggleClass('active');
+          $(e.target).toggleClass('active');
+          if($(e.target).hasClass('active')){
+            $.ajax({
+              type:'GET',
+              url:"{{ route('hangman.check.difflevel') }}",
+              data:{start:start, end:end, marker:$(e.target).val()},
+              success:function(data){
+                if(data.diffDataRow == 0){
+                  $(e.target).parent().prop('disabled', true).removeClass('active');
+                  $(e.target).prop('disabled', true).removeClass('active');
+
+                }else{
+                  //console.log('diffDataRow active', data.diffDataRow);
+                  dataCount += data.diffDataRow;
+                  console.log('datacount active ', dataCount);
+                  $('#direction').show();
+                }
+              }
+            });               
+          }else{
+            if($(e.target).parent().siblings().children().hasClass('active')){
+              //console.log('value von den anderen', $(e.target).parent().siblings().children().val());
+              $.ajax({
+                type:'GET',
+                url:"{{ route('hangman.check.difflevel') }}",
+                data:{start:start, end:end, marker:$(e.target).val()},
+                success:function(data){
+                  if(data.diffDataRow != 0){
+                    console.log('diffDataRow not active ', data.diffDataRow);
+                    dataCount -= data.diffDataRow;
+                    $('#direction').show();
+                    console.log('dataCount in not active', dataCount);
+                    if(dataCount == 0){                      
+
+                      $('#direction').hide();
+                    }
+                  }
+                }
+              });             
+            }else{
+              dataCount = 0;
+
+            }            
+            
+          }
+
+        });
+
+        $('#selectAll').on('click', function(e){
+          e.preventDefault();
+          $('#selectAll').siblings().children().removeClass('active').children().removeClass('active');
+          $('#hdSelectAll').val('btnSelectAll');
+          $.ajax({
+            type:'GET',
+            url:"{{ route('hangman.select.all') }}",
+            data:{start:start, end:end},
+            success:function(data){
+              $('#direction').show();
+            }
+          });    
+          
+          dataCount = 0;
+        });
+
+
+
+
+      });
+    });
+</script>
+
+
   <script>
     "use strict";
 
     let canvas = new Canvas(document.querySelector('#hangman'));
     const output = document.querySelector('#output');
-
-    let origString = "Hallihallo";
+    
+    let origArray = <?= ($vocJsonStringPHP) ?? ''; ?>;
+    let origString = origArray[0].fvn;
+    console.log('origArray ', origArray);
+    console.log('origString ', origString);
     let searchString = origString.toLowerCase();
     let lenSearchString = searchString.length;
     let inputLetters = [];
@@ -203,46 +311,24 @@
           console.log('Der Buchstabe ist nicht enthalten');
           errors[i] = 1;
           switch (errors.length) {
-            case 1:
-              canvas.drawBaseTriangle();
-              break;
-            case 2:
-              canvas.drawPoleLine();
-              break;
-            case 3:
-              canvas.drawLatteLine();
-              break;
-            case 4:
-              canvas.drawSlopeLine();
-              break;
-            case 5:
-              canvas.drawRopeLine();
-              break;
-            case 6:
-              canvas.drawHeadCircle();
-              break;
-            case 7:
-              canvas.drawBodyLine();
-              break;
-            case 8:
-              canvas.drawRightArmLine();
-              break;
-            case 9:
-              canvas.drawLeftArmLine();
-              break;
-            case 10:
-              canvas.drawRightLegLine();
-              break;
-            case 11:
-              canvas.drawLeftLegLine();
-              computer++;
-              outputCardTitle.innerHTML = 'Du hast verloren! Das gesuchte Wort lautet: ' + origString;
-              outputUserCount.innerHTML = user;
-              outputCompCount.innerHTML = computer;
-              hangModal.openModal();
-              break;
-            default:
-              return;
+            case 1: canvas.drawBaseTriangle(); break;
+            case 2: canvas.drawPoleLine(); break;
+            case 3: canvas.drawLatteLine(); break;
+            case 4: canvas.drawSlopeLine(); break;
+            case 5: canvas.drawRopeLine(); break;
+            case 6: canvas.drawHeadCircle(); break;
+            case 7: canvas.drawBodyLine(); break;
+            case 8: canvas.drawRightArmLine(); break;
+            case 9: canvas.drawLeftArmLine(); break;
+            case 10: canvas.drawRightLegLine(); break;
+            case 11: canvas.drawLeftLegLine();
+                      computer++;
+                      outputCardTitle.innerHTML = 'Du hast verloren! Das gesuchte Wort lautet: ' + origString;
+                      outputUserCount.innerHTML = user;
+                      outputCompCount.innerHTML = computer;
+                      hangModal.openModal();
+                      break;
+            default: return;
           }
           i++;
         } else {
@@ -273,12 +359,12 @@
 
     btnOK.onclick = function(){
         hangModal.closeModal();
-        window.location.href = './hangman.php';
+        window.location.href = '/hangman';
     };
 
     closeCont.onclick = function(e) {
       if (e.target.id == 'overlay-hangman-container' || e.target.id == 'close') {
-        window.location.href = './hangman.php';
+        window.location.href = '/hangman';
         hangModal.closeModal();
       }
     };

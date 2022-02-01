@@ -211,7 +211,7 @@ class QuizController extends Controller
 
             }else if($request->radioDirection == 'dir2'){
 
-                $foreign_vocabularies = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                $vocabularies = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                             ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
                                             ->where('vocabularies.user_id', Auth::user()->id)
                                             ->where('foreign_vocabularies.language_id', session('foreign_id'))
@@ -225,10 +225,10 @@ class QuizController extends Controller
                                             ->where('foreign_vocabularies.vocabulary_id', '<>', 'vocabularies.id')
                                             ->inRandomOrder()->get(); */
                 
-                $jsonStringPHP = json_encode($foreign_vocabularies);
+                $jsonStringPHP = json_encode($vocabularies);
                 //$jsonStringPHPFakeVoc = json_encode($fakeVocLang);
                 $radioDirection = json_encode($request->radioDirection);
-                return view('src.training.quiz', compact('foreign_vocabularies','jsonStringPHP', 'jsVariable', 'radioDirection'));
+                return view('src.training.quiz', compact('vocabularies','jsonStringPHP', 'jsVariable', 'radioDirection'));
             }
 
 

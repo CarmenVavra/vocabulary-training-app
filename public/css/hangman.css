@@ -37,3 +37,9 @@ button:disabled, button:disabled:hover{
 .btn-hint{
   font-weight: bold;
 }
+
+input[type="checkbox"]{
+  width: 20px;
+  height: 10px;
+  display: none;
+}

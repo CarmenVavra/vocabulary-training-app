@@ -60,29 +60,37 @@ Route::middleware('auth')->group(function(){
     Route::delete('/vocabulary/{vocabulary}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
 
     Route::get('/training', [TrainingController::class, 'index'])->name('training.index');
-});
+
+    Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
+    Route::get('/quizdatecheck', [QuizController::class, 'checkDate'])->name('quiz.check.date');
+    Route::get('/quizdifflevel', [QuizController::class, 'checkDifficultyLevel'])->name('quiz.check.difflevel');
+    Route::get('/quizselectall', [QuizController::class, 'selectAll'])->name('quiz.select.all');
+    Route::get('/quizfetchfake', [QuizController::class, 'fetchFake'])->name('quiz.fetch.fake');
+    Route::post('/quiz', [QuizController::class, 'filterSelect'])->name('quiz.filter.select');
+    
+    Route::get('/pair', [PairController::class, 'index'])->name('pair.index');
+    Route::get('/pairdatecheck', [PairController::class, 'checkDate'])->name('pair.check.date');
+    Route::get('/pairdifflevel', [PairController::class, 'checkDifficultyLevel'])->name('pair.check.difflevel');
+    Route::get('/pairselectall', [PairController::class, 'selectAll'])->name('pair.select.all');
+    Route::post('/pair', [PairController::class, 'filterSelect'])->name('pair.filter.select');
+    
+    Route::get('/learning', [LearningController::class, 'index'])->name('learning.index');
+    Route::get('/learningdatecheck', [LearningController::class, 'checkDate'])->name('learning.check.date');
+    Route::get('/learningdifflevel', [LearningController::class, 'checkDifficultyLevel'])->name('learning.check.difflevel');
+    Route::get('/learningselectall', [LearningController::class, 'selectAll'])->name('learning.select.all');
+    Route::post('/learning', [LearningController::class, 'filterSelect'])->name('learning.filter.select');
+
+    Route::get('/hangman', [HangmanController::class, 'index'])->name('hangman.index');
+    Route::get('/hangmandatecheck', [HangmanController::class, 'checkDate'])->name('hangman.check.date');
+    Route::get('/hangmandifflevel', [HangmanController::class, 'checkDifficultyLevel'])->name('hangman.check.difflevel');
+    Route::get('/hangmanselectall', [HangmanController::class, 'selectAll'])->name('hangman.select.all');
+    Route::post('/hangman', [HangmanController::class, 'filterSelect'])->name('hangman.filter.select');
+    
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+});    
 
 
-Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
-Route::get('/quizdatecheck', [QuizController::class, 'checkDate'])->name('quiz.check.date');
-Route::get('/quizdifflevel', [QuizController::class, 'checkDifficultyLevel'])->name('quiz.check.difflevel');
-Route::get('/quizselectall', [QuizController::class, 'selectAll'])->name('quiz.select.all');
-Route::get('/quizfetchfake', [QuizController::class, 'fetchFake'])->name('quiz.fetch.fake');
-Route::post('/quiz', [QuizController::class, 'filterSelect'])->name('quiz.filter.select');
-
-Route::get('/pair', [PairController::class, 'index'])->name('pair.index');
-Route::get('/pairdatecheck', [PairController::class, 'checkDate'])->name('pair.check.date');
-Route::get('/pairdifflevel', [PairController::class, 'checkDifficultyLevel'])->name('pair.check.difflevel');
-Route::get('/pairselectall', [PairController::class, 'selectAll'])->name('pair.select.all');
-Route::post('/pair', [PairController::class, 'filterSelect'])->name('pair.filter.select');
-
-Route::get('/learning', [LearningController::class, 'index'])->name('learning.index');
-Route::post('/learning', [LearningController::class, 'filterSelect'])->name('learning.filter.select');
-
-Route::get('/hangman', [HangmanController::class, 'index'])->name('hangman.index');
-Route::post('/hangman', [HangmanController::class, 'filterSelect'])->name('hangman.filter.select');
-
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
 
 

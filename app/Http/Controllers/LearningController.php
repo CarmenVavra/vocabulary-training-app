@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\FilterTrait;
 use App\Models\Learning;
 use App\Models\Vocabulary;
 use DateTime;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Date;
 
 class LearningController extends Controller
 {
+    use FilterTrait;
     /**
      * Display a listing of the resource.
      *
@@ -19,17 +21,11 @@ class LearningController extends Controller
     public function index()
     {
 
-        $marker = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                ->where('vocabularies.user_id', Auth::user()->id)
-                                ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                ->where('foreign_vocabularies.marker_id', '>', 0)->first();
-
-/*         $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                    ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
+        $countDataRows = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                     ->where('vocabularies.user_id', Auth::user()->id)
-                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))->get();
- */
-        return view('src.training.learning', compact('marker'));
+                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))->get()->count();
+
+        return view('src.training.learning', compact('countDataRows'));
     }
 
     /**
@@ -126,17 +122,17 @@ class LearningController extends Controller
 
         if($sortOrder != 'random'){
             $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
-            ->where('vocabularies.user_id', Auth::user()->id)
-            ->where('foreign_vocabularies.language_id', session('foreign_id'))
-            ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
-            ->orderBy('vocabularies.name', $sortOrder)->get();
+                                        ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                        ->where('vocabularies.user_id', Auth::user()->id)
+                                        ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                        ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
+                                        ->orderBy('vocabularies.name', $sortOrder)->get();
         }else{
             $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
-            ->where('vocabularies.user_id', Auth::user()->id)
-            ->where('foreign_vocabularies.language_id', session('foreign_id'))
-            ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])->get();
+                                        ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                        ->where('vocabularies.user_id', Auth::user()->id)
+                                        ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                        ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])->get();
         }
 
         return view('src.training.learning', compact('vocabularies', 'direction'));

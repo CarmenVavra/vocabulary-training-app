@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\FilterTrait;
+use App\Models\ForeignVocabulary;
 use App\Models\Hangman;
 use App\Models\Vocabulary;
 use DateTime;
@@ -10,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class HangmanController extends Controller
 {
+    use FilterTrait;
     /**
      * Display a listing of the resource.
      *
@@ -17,11 +20,11 @@ class HangmanController extends Controller
      */
     public function index()
     {
-        $marker = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                ->where('vocabularies.user_id', Auth::user()->id)
-                                ->where('foreign_vocabularies.marker_id', '>', 0)->first();
+        $countDataRows = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                    ->where('vocabularies.user_id', Auth::user()->id)
+                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))->get()->count();
 
-        return view('src.training.hangman', compact('marker'));
+        return view('src.training.hangman', compact('countDataRows'));
     }
 
     /**
@@ -115,13 +118,14 @@ class HangmanController extends Controller
         $direction = $request->radioDirection;
        
         //marker
-        $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                    ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
-                                    ->where('vocabularies.user_id', Auth::user()->id)
-                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                    ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])->get();
-        
-        return view('src.training.hangman', compact('vocabularies', 'direction'));
+        $vocabularies = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                            ->select('foreign_vocabularies.name as fvn')
+                                            ->where('vocabularies.user_id', Auth::user()->id)
+                                            ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                            ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
+                                            ->inRandomOrder()->limit(1)->get();
+        $vocJsonStringPHP = json_encode($vocabularies);
+        return view('src.training.hangman', compact('vocabularies', 'direction', 'vocJsonStringPHP'));
     }
 
 

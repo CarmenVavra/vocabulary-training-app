@@ -65,7 +65,7 @@
 
               <div class="row vertical-spacer" id="direction">
                 <div class="col">
-                  <h6>Welche Reihenfolge?</h6>
+                  <h6>Welche Richtung?</h6>
 
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection1" value="dir1" checked>
@@ -92,7 +92,7 @@
         @endif
       </div>
     </div>
-    @if(isset($vocabularies) || isset($foreign_vocabularies))
+    @if(isset($vocabularies))
       <div id="outputQuiz" class="container"></div>
     @endif
   </main>
