@@ -28,3 +28,9 @@ body{
 .bg-darkgray{
   color: #fff;
 }
+
+input[type="checkbox"]{
+  width: 20px;
+  height: 10px;
+  display: none;
+}

@@ -268,8 +268,7 @@
                                $('#radio74').parent().shiblings().hide();
                                break;
                       default: $('#radio74').parent().siblings().show();
-                               $('#radio74').parent().show();
-                      
+                               $('#radio74').parent().show();                    
                       
                     }
 
@@ -339,10 +338,6 @@
       });
     });
 </script>
-  <script type="text/javascript">
-   
-</script>
-
   <script>
     "use strict";
 
