@@ -78,7 +78,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/learningdatecheck', [LearningController::class, 'checkDate'])->name('learning.check.date');
     Route::get('/learningdifflevel', [LearningController::class, 'checkDifficultyLevel'])->name('learning.check.difflevel');
     Route::get('/learningselectall', [LearningController::class, 'selectAll'])->name('learning.select.all');
-    Route::post('/learning', [LearningController::class, 'filterSelect'])->name('learning.filter.select');
+    Route::post('/learning/{countDataRows}', [LearningController::class, 'filterSelect'])->name('learning.filter.select');
 
     Route::get('/hangman', [HangmanController::class, 'index'])->name('hangman.index');
     Route::get('/hangmandatecheck', [HangmanController::class, 'checkDate'])->name('hangman.check.date');
