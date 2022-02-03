@@ -170,7 +170,7 @@
                   $(e.target).prop('disabled', true).removeClass('active');
                   
                 }else{
-                  //console.log('diffDataRow active', data.diffDataRow);
+
                   dataCount += data.diffDataRow;
                   
                   if(data.diffDataRow >= 4){
@@ -200,7 +200,7 @@
             });               
           }else{
             if($(e.target).parent().siblings().children().hasClass('active')){
-              //console.log('value von den anderen', $(e.target).parent().siblings().children().val());
+
               markerArray.splice(markerArray.indexOf($(e.target).prop('id')), 1);
 
               $.ajax({
