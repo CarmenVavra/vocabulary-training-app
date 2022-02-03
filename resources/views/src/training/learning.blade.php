@@ -40,7 +40,7 @@
                   </div>
               </div>
      
-              <div class="row-marker" id="rowMarker">
+              <div class="row-marker vertical-spacer" id="rowMarker">
                 <label for="difficultyLevel" class="form-label">Welcher Schwierigkeitsgrad? </label>
                 <div id="difficultyLevel" class="btn-group" role="group">
   
@@ -60,7 +60,7 @@
               </div>
 
               <div class="row vertical-spacer" id="direction">
-                <div class="col">
+                <div class="col-md-3">
                   <h6>Welche Richtung?</h6>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection1" value="dir1" checked>
@@ -75,7 +75,7 @@
                     </label>
                   </div>
                 </div>
-                <div class="col">
+                <div class="col-md-3">
                   <h6>Welche Sortierung?</h6>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="radioSortorder" id="radioRandom" value="random"
@@ -97,8 +97,10 @@
                     </label>
                   </div>
                 </div>
-                <div class="col">
-                  <button type="submit" id="btnApplyLearningFilter" class="btn btn-turkis">anwenden</button>
+                <div class="row vertical-spacer">
+                  <div class="col">
+                    <button type="submit" id="btnApplyLearningFilter" class="btn btn-turkis">anwenden</button>
+                  </div>
                 </div>
               </div>
               
@@ -222,7 +224,7 @@
               data:{start:start, end:end, markerArray:markerArray, marker:$(e.target).val()},
               success:function(data){
                 
-                if(data.diffDataRow == 0){
+                if(data.marker == 0){
                   $(e.target).parent().prop('disabled', true).removeClass('active');
                   $(e.target).prop('disabled', true).removeClass('active');
 

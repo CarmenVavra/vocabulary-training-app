@@ -36,7 +36,7 @@
               </div>
             </div>
 
-            <div class="row-marker" id="rowMarker">
+            <div class="row-marker vertical-spacer" id="rowMarker">
               <label for="difficultyLevel" class="form-label">Welcher Schwierigkeitsgrad? </label>
               <div id="difficultyLevel" class="btn-group" role="group">
 
@@ -85,13 +85,14 @@
                   </div>
 
                 </div>
+                  <div class="row vertical-spacer">
+                    <div class="col">
+                      <button type="submit" id="btnApplyPairsFilter" class="btn btn-turkis">anwenden</button>
+                    </div>
+                  </div>
               </div>
 
-            <div class="row vertical-spacer">
-              <div class="col">
-                <button type="submit" id="btnApplyPairsFilter" class="btn btn-turkis">anwenden</button>
-              </div>
-            </div>
+
             
           </form>
         </div>
@@ -202,7 +203,7 @@
               data:{start:start, end:end, markerArray:markerArray, marker:$(e.target).val()},
               success:function(data){
                 console.log('data.diffDataRow selbst aktiv ', data.diffDataRow);
-                if(data.diffDataRow == 0){
+                if(data.marker == 0){
                   $(e.target).parent().prop('disabled', true).removeClass('active');
                   $(e.target).prop('disabled', true).removeClass('active');
                   

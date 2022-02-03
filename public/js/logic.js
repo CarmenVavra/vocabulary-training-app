@@ -5,6 +5,7 @@ $(document).ready(function(){
   $('#direction').hide();
   $('#questionCount').hide();
   $('#fieldSizeContainer').hide();
+  $('#learnApply').hide();
 
   $('#btnSelectLanguagesNew').on('click', function(){
       $('#addNewLanguage').toggle();

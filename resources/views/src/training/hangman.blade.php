@@ -38,7 +38,7 @@
               </div>
             </div>
             
-            <div class="row-marker" id="rowMarker">
+            <div class="row-marker vertical-spacer" id="rowMarker">
               <label for="difficultyLevel" class="form-label">Welcher Schwierigkeitsgrad? </label>
               <div id="difficultyLevel" class="btn-group" role="group">
 
@@ -56,10 +56,11 @@
               <button name="selectAll" id="selectAll" type="button" class="btn btn-light btn-lg btn-all">ALLE</button>
               <input type="hidden" name="hdSelectAll" id="hdSelectAll" value="">
             </div>
-
+            <div id="learnApply" class="row vertical-spacer">
               <div class="col">
                 <button type="submit" id="btnApplyHangmanFilter" class="btn btn-turkis">anwenden</button>
               </div>
+            </div>
 
             </form>
           </div>
@@ -153,12 +154,12 @@
 
                 if(data.dateDataRow == 0){
                   $('#rowMarker').hide();
-                  $('#direction').hide();
+                  $('#learnApply').hide();
                   console.log('Für den ausgewählten Zeitraum gibt es zu wenig Datensätze .. min. 4', data.dateDataRow);
                 }else{
                   if(data.markerDataRow == 0){
-                    //console.log(data.markerDataRow);
                     $('#difficultyLevel').hide();
+                    $('#learnApply').hide();
                   }
                   $('#rowMarker').show();
                 }
@@ -185,20 +186,21 @@
               data:{start:start, end:end, markerArray:markerArray, marker:$(e.target).val()},
 
               success:function(data){
-                if(data.diffDataRow == 0){
+                if(data.diffDataRow > 0){
+                  $('#learnApply').show();
+                }else{
+                  $('#learnApply').hide();
+                }
+
+                if(data.marker == 0){
                   $(e.target).parent().prop('disabled', true).removeClass('active');
                   $(e.target).prop('disabled', true).removeClass('active');
-
-                }else{
-                  //console.log('diffDataRow active', data.diffDataRow);
-                  dataCount += data.diffDataRow;
-
                 }
               }
             });               
           }else{
             if($(e.target).parent().siblings().children().hasClass('active')){
-              //console.log('value von den anderen', $(e.target).parent().siblings().children().val());
+
               markerArray.splice(markerArray.indexOf($(e.target).prop('id')), 1);
 
               $.ajax({
@@ -209,17 +211,16 @@
                 success:function(data){
 
                   if(data.diffDataRow > 0){
-                    dataCount -= data.diffDataRow;
-
-                    if(dataCount <= 0){
-                      $('#direction').hide();
-                    }
+                    $('#learnApply').show();
+                  }else{
+                    $('#learnApply').hide();
                   }
                 }
               });             
             }else{
               markerArray = [];
               dataCount = 0;
+              $('#learnApply').hide();
 
 
             }            
@@ -238,6 +239,11 @@
             datatype:"json",
             data:{start:start, end:end},
             success:function(data){
+              if(data.vocabulariesCount > 0 ){
+                $('#learnApply').show();
+              }else{
+                $('#learnApply').hide();
+              }
               console.log(data);
             }
           });    

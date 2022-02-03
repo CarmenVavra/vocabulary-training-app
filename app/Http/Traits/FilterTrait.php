@@ -144,12 +144,20 @@ trait FilterTrait{
                                         ->orWhere('foreign_vocabularies.marker_id', $markerGreen)
                                         ->groupBy('foreign_vocabularies.id')->get()->count();
 
+            $marker = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                        ->select('foreign_vocabularies.id')
+                                        ->where('vocabularies.user_id', Auth::user()->id)
+                                        ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                        ->whereBetween('foreign_vocabularies.created_at', [$request->start, $request->end])
+                                        ->where('foreign_vocabularies.marker_id', $request->marker)
+                                        ->groupBy('foreign_vocabularies.id')->get()->count();
+
 
             return response()->json([
                 'diffDataRow'=>$diffDataRow,
                 'start'=>$request->start,
                 'end'=>$request->end,
-                'marker'=>$request->marker, 
+                'marker'=>$marker, 
                 'markerArray'=>$request->markerArray
             ]);
           }
