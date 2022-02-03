@@ -94,7 +94,7 @@ class LearningController extends Controller
 
     public function filterSelect(Request $request){
 
-        $countDataRows = $request->countDataRows;
+        $countDataRows = $this->getCountDataRows();
 
         $dateRange = $this->getStartAndEndDate($request);
         $fromDate = $dateRange[0];
@@ -115,27 +115,49 @@ class LearningController extends Controller
             $tablename = 'foreign_vocabularies';
         }
 
-        if($sortOrder == 'random'){
-            $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                        ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
-                                        ->where('vocabularies.user_id', Auth::user()->id)
-                                        ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                        ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
-                                        ->where('foreign_vocabularies.marker_id', $markerRed)
-                                        ->orWhere('foreign_vocabularies.marker_id', $markerYellow)
-                                        ->orWhere('foreign_vocabularies.marker_id', $markerGreen)
-                                        ->inRandomOrder()->get();
+        if('random' == $sortOrder){
+
+            if($request->hdSelectAll == null){
+                $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                            ->where('vocabularies.user_id', Auth::user()->id)
+                                            ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                            ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
+                                            ->where('foreign_vocabularies.marker_id', $markerRed)
+                                            ->orWhere('foreign_vocabularies.marker_id', $markerYellow)
+                                            ->orWhere('foreign_vocabularies.marker_id', $markerGreen)
+                                            ->inRandomOrder()->get();            
+            }else{
+                $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                            ->where('vocabularies.user_id', Auth::user()->id)
+                                            ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                            ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
+                                            ->inRandomOrder()->get();
+            }
+
+
         }else{
-            $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                        ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
-                                        ->where('vocabularies.user_id', Auth::user()->id)
-                                        ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                        ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
-                                        ->where('foreign_vocabularies.marker_id', $markerRed)
-                                        ->orWhere('foreign_vocabularies.marker_id', $markerYellow)
-                                        ->orWhere('foreign_vocabularies.marker_id', $markerGreen)
-                                        ->orderBy("$tablename.name", $sortOrder)->get();
-        }
+            if($request->hdSelectAll == null){
+                $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                            ->where('vocabularies.user_id', Auth::user()->id)
+                                            ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                            ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
+                                            ->where('foreign_vocabularies.marker_id', $markerRed)
+                                            ->orWhere('foreign_vocabularies.marker_id', $markerYellow)
+                                            ->orWhere('foreign_vocabularies.marker_id', $markerGreen)
+                                            ->orderBy("$tablename.name", $sortOrder)->get();
+            }else{
+                $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                            ->where('vocabularies.user_id', Auth::user()->id)
+                                            ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                            ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
+                                            ->orderBy("$tablename.name", $sortOrder)->get();
+
+            }
+       }
 
         return view('src.training.learning', compact('vocabularies', 'direction', 'countDataRows'));
     }

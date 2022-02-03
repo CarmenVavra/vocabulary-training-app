@@ -124,7 +124,7 @@ $(document).ready(function(){
     $('#difficultyLevel').children().removeClass('active');
   });
 
-  $('input[name="dates"]').daterangepicker();
+  /* $('input[name="dates"]').daterangepicker(); */
 
   $('#lblUserLanguage').on('mouseover', function(){
     $('[data-toggle="tooltip"]').tooltip();

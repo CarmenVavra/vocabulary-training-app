@@ -1,11 +1,31 @@
 class CardSet{
-  constructor(vocFromDB, fakVoc){
+  constructor(vocFromDB, fakVoc, direction){
     console.log('fakVoc constructor ', fakVoc);
-    console.log('vocFromDB ', vocFromDB);
+    console.log('vocFromDB ', vocFromDB.fvn);
     this.fakeAnswers = [];
-    this.question = vocFromDB.vn;
-    this.answer = vocFromDB;
-    this.fakeAnswers = fakVoc;
+
+    if('dir1' == direction){
+      this.question = vocFromDB.vn;
+      this.answer = vocFromDB.fvn;
+
+      for(let fake of fakVoc){
+        this.fakeAnswers.push(fake.fvn);
+      }  
+      
+    }else if('dir2' == direction){
+      this.question = vocFromDB.fvn;
+      this.answer = vocFromDB.vn;
+
+      for(let fake of fakVoc){
+        this.fakeAnswers.push(fake.vn);
+      }  
+      
+/* 
+      for(let i=0;i<fakVoc.length;i++){
+        this.fakeAnswers.push(fakVoc[i].vn);
+      } */
+    }
+
 
     //console.log(this.fakeAnswers);
 /*    

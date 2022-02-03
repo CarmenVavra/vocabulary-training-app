@@ -75,7 +75,7 @@
         <div id="card-content">
             <div class="card-body">
               <h5 class="card-title"></h5>
-              <p class="card-text" id="hangmanUser">$user: <span></span></p>
+              <p class="card-text" id="hangmanUser">{{ Auth::user()->name}}: <span></span></p>
               <p class="card-text" id="hangmanComp">Computer: <span></span></p>
               <hr>
               <button class="btn btn-turkis">OK</button>
@@ -142,6 +142,7 @@
       
         $("#vocRange").on('change', function(e){      
             e.preventDefault();
+            
             $.ajax({
               type:'GET',
               url:"{{ route('hangman.check.date') }}",
@@ -156,7 +157,7 @@
                   console.log('Für den ausgewählten Zeitraum gibt es zu wenig Datensätze .. min. 4', data.dateDataRow);
                 }else{
                   if(data.markerDataRow == 0){
-                    console.log(data.markerDataRow);
+                    //console.log(data.markerDataRow);
                     $('#difficultyLevel').hide();
                   }
                   $('#rowMarker').show();
@@ -166,17 +167,23 @@
         });
         
         let dataCount = 0;
+        let markerArray = [];
 
         $('#difficultyLevel input[type="checkbox"]').on('click', function(e){
           $('#hdSelectAll').val('');
           $(e.target).parent().toggleClass('active');
           $(e.target).toggleClass('active');
+
           if($(e.target).hasClass('active')){
+
+            markerArray.push($(e.target).prop('id')); 
+
             $.ajax({
               type:'GET',
               url:"{{ route('hangman.check.difflevel') }}",
               datatype:"json",
-              data:{start:start, end:end, marker:$(e.target).val()},
+              data:{start:start, end:end, markerArray:markerArray, marker:$(e.target).val()},
+
               success:function(data){
                 if(data.diffDataRow == 0){
                   $(e.target).parent().prop('disabled', true).removeClass('active');
@@ -185,34 +192,35 @@
                 }else{
                   //console.log('diffDataRow active', data.diffDataRow);
                   dataCount += data.diffDataRow;
-                  console.log('datacount active ', dataCount);
-                  $('#direction').show();
+
                 }
               }
             });               
           }else{
             if($(e.target).parent().siblings().children().hasClass('active')){
               //console.log('value von den anderen', $(e.target).parent().siblings().children().val());
+              markerArray.splice(markerArray.indexOf($(e.target).prop('id')), 1);
+
               $.ajax({
                 type:'GET',
                 url:"{{ route('hangman.check.difflevel') }}",
                 datatype:"json",
-                data:{start:start, end:end, marker:$(e.target).val()},
+                data:{start:start, end:end, markerArray:markerArray, marker:$(e.target).val()},
                 success:function(data){
-                  if(data.diffDataRow != 0){
-                    console.log('diffDataRow not active ', data.diffDataRow);
-                    dataCount -= data.diffDataRow;
-                    $('#direction').show();
-                    console.log('dataCount in not active', dataCount);
-                    if(dataCount == 0){                      
 
+                  if(data.diffDataRow > 0){
+                    dataCount -= data.diffDataRow;
+
+                    if(dataCount <= 0){
                       $('#direction').hide();
                     }
                   }
                 }
               });             
             }else{
+              markerArray = [];
               dataCount = 0;
+
 
             }            
             
@@ -230,7 +238,7 @@
             datatype:"json",
             data:{start:start, end:end},
             success:function(data){
-              $('#direction').show();
+              console.log(data);
             }
           });    
           

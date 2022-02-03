@@ -105,7 +105,9 @@ class PairController extends Controller
         $fieldRow = $fieldSize[1];
 
         $limit = ($fieldSize[0] * $fieldSize[1])/2;
-        
+
+        $countDataRows = $this->getCountDataRows();
+
         $dateRange = $this->getStartAndEndDate($request);
         $fromDate = $dateRange[0];
         $toDate = $dateRange[1];
@@ -123,7 +125,8 @@ class PairController extends Controller
                                         ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
                                         ->where('foreign_vocabularies.marker_id', $markerRed)
                                         ->orWhere('foreign_vocabularies.marker_id', $markerYellow)
-                                        ->orWhere('foreign_vocabularies.marker_id', $markerGreen)->inRandomOrder()->limit($limit)->get();
+                                        ->orWhere('foreign_vocabularies.marker_id', $markerGreen)
+                                        ->inRandomOrder()->limit($limit)->get();
 
         }else{
             $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
@@ -134,14 +137,13 @@ class PairController extends Controller
                                         ->inRandomOrder()->limit($limit)->get();
 
         }
-        
-        //dd($vocabularies->count());
+
             
 
         
         $jsVariable = 1;
-        $jsonStringPHP = json_encode($vocabularies);             
-        return view('src.training.pair', compact('vocabularies', 'jsonStringPHP', 'jsVariable'));
+        $jsonStringPHP = json_encode($vocabularies);
+        return view('src.training.pair', compact('vocabularies', 'jsonStringPHP', 'jsVariable', 'countDataRows'));
 
   
                                  

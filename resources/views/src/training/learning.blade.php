@@ -30,7 +30,7 @@
         <div class="collapse" id="collapseSelection">
           <div class="card card-body bg-transparent border-transparent">
 
-            <form action="{{ route('learning.filter.select', $countDataRows=1) }}" method="post">
+            <form action="{{ route('learning.filter.select') }}" method="post">
               @csrf
 
               <div class="row">
@@ -161,6 +161,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
   <script>
+    "use strict";
     $(function() {
       $('input[name="daterange"]').daterangepicker({
         format: 'DD.MM.YYYY',
@@ -214,8 +215,6 @@
             //console.log('e.target', $(e.target).prop('id'));
             markerArray.push($(e.target).prop('id'));          
 
-            console.log('marker anfang after push', markerArray);
-
             $.ajax({
               type:'GET',
               url:"{{ route('learning.check.difflevel') }}",
@@ -244,12 +243,7 @@
                 type:'GET',
                 url:"{{ route('learning.check.difflevel') }}",
                 datatype:"json",
-                data:{
-                  start:start,
-                  end:end, 
-                  markerArray:markerArray,
-                  marker:$(e.target).val() 
-                },
+                data:{start:start, end:end, markerArray:markerArray, marker:$(e.target).val()},
                 success:function(data){
 
                   if(data.diffDataRow > 0){
@@ -257,27 +251,17 @@
                       dataCount -= data.diffDataRow;
                       $('#direction').show();
 
-                      if(dataCount <= 0){                      
+                      if(data.diffDataRow <= 0){                      
                         $('#direction').hide();
                       }
-
                     }
-
                   }
                 });
               }else{
                 markerArray = [];
                 dataCount = 0;
+                $('#direction').hide();
 
-                $.ajax({
-                  type:'GET',
-                  url:"{{ route('learning.select.all') }}",
-                  datatype:"json",
-                  data:{start:start, end:end},
-                  success:function(data){
-                    $('#direction').show();
-                  }
-                });
             }               
           }  
         });

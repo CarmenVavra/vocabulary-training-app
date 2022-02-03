@@ -33,10 +33,10 @@ class HomeController extends Controller
         $data['login_date'] = new DateTime('now');
         $user->update($data);
         
-        $language = Language::where('user_id', Auth::user()->id)->where('main_language', true)->get();
+        $language = Language::where('user_id', Auth::user()->id)->where('main_language', 1)->get();
         session(['language_id'=>$language[0]->id, 'language_name'=>$language[0]->name]);
         
-        $languages = Language::where('user_id', Auth::user()->id)->where('main_language', false)->orderBy('name')->get();
+        $languages = Language::where('user_id', Auth::user()->id)->where('main_language', 0)->orderBy('name')->get();
         return view('/home', compact('languages'));
     }
 }

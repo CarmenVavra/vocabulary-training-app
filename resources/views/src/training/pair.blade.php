@@ -36,7 +36,6 @@
               </div>
             </div>
 
-
             <div class="row-marker" id="rowMarker">
               <label for="difficultyLevel" class="form-label">Welcher Schwierigkeitsgrad? </label>
               <div id="difficultyLevel" class="btn-group" role="group">
@@ -161,17 +160,22 @@
       
         $("#vocRange").on('change', function(e){      
             e.preventDefault();
+            
             $.ajax({
               type:'GET',
               url:"{{ route('pair.check.date') }}",
               datatype:"json",
               data:{start:start, end:end},
               success:function(data){
+                
                 if(data.dateDataRow < 6){
                   $('#rowMarker').hide();
                   $('#fieldSizeContainer').hide();                 
                   console.log('Für den ausgewählten Zeitraum gibt es zu wenig Datensätze .. min. 6', data.dateDataRow);
                 }else{
+                  if(data.markerDataRow < 6){
+                    $('#difficultyLevel').hide();
+                  }
                   $('#rowMarker').show();
                 }
               }
@@ -179,18 +183,25 @@
         });
         
         let dataCount = 0;
+        let markerArray = [];
 
         $('#difficultyLevel input[type="checkbox"]').on('click', function(e){
           $('#hdSelectAll').val('');
           $(e.target).parent().toggleClass('active');
           $(e.target).toggleClass('active');
+
+          // wenn der button aktiv ist
           if($(e.target).hasClass('active')){
+
+            markerArray.push($(e.target).prop('id'));
+
             $.ajax({
               type:'GET',
               url:"{{ route('pair.check.difflevel') }}",
               datatype:"json",
-              data:{start:start, end:end, marker:$(e.target).val()},
+              data:{start:start, end:end, markerArray:markerArray, marker:$(e.target).val()},
               success:function(data){
+                console.log('data.diffDataRow selbst aktiv ', data.diffDataRow);
                 if(data.diffDataRow == 0){
                   $(e.target).parent().prop('disabled', true).removeClass('active');
                   $(e.target).prop('disabled', true).removeClass('active');
@@ -198,10 +209,10 @@
                 }else{
                   //console.log('diffDataRow active', data.diffDataRow);
                   dataCount += data.diffDataRow;
-                  console.log('datacount active ', dataCount);
-                  if(dataCount >= 6){
+                  
+                  if(data.diffDataRow >= 6){
                     
-                    switch(dataCount){
+                    switch(data.diffDataRow){
                       case 6:
                       case 7: $('#radio43').parent().show();
                               $('#radio43').parent().siblings().hide();
@@ -220,7 +231,7 @@
                       case 12: 
                       case 13: $('#radio64').parent().siblings().show();
                                $('#radio64').parent().show();
-                               $('#radio74').parent().shiblings().hide();
+                               $('#radio74').parent().siblings().hide();
                                break;
                       default: $('#radio74').parent().siblings().show();
                                $('#radio74').parent().show();                     
@@ -236,23 +247,27 @@
               }
             });               
           }else{
+            // wenn der Button nicht aktiv ist, aber noch andere Buttons aktiv sind
             if($(e.target).parent().siblings().children().hasClass('active')){
-              //console.log('value von den anderen', $(e.target).parent().siblings().children().val());
+              
+              markerArray.splice(markerArray.indexOf($(e.target).prop('id')), 1);
+
               $.ajax({
                 type:'GET',
                 url:"{{ route('pair.check.difflevel') }}",
                 datatype:"json",
-                data:{start:start, end:end, marker:$(e.target).val()},
+                data:{start:start, end:end, markerArray:markerArray, marker:$(e.target).val()},
                 success:function(data){
+                  console.log('data.diffDataRow selbst nicht aktiv - andere noch aktiv ', data.diffDataRow);
                   if(data.diffDataRow != 0){
-                    console.log('diffDataRow not active ', data.diffDataRow);
+
                     dataCount -= data.diffDataRow;
-                    console.log('dataCount in not active', dataCount);
-                    if(dataCount < 6){
+
+                    if(data.diffDataRow < 6){
                       $('#fieldSizeContainer').hide();
                     }
-
-                    switch(dataCount){
+                    
+                    switch(data.diffDataRow){
                       case 6:
                       case 7: $('#radio43').parent().show();
                               $('#radio43').parent().siblings().hide();
@@ -271,7 +286,7 @@
                       case 12: 
                       case 13: $('#radio64').parent().siblings().show();
                                $('#radio64').parent().show();
-                               $('#radio74').parent().shiblings().hide();
+                               $('#radio74').parent().siblings().hide();
                                break;
                       default: $('#radio74').parent().siblings().show();
                                $('#radio74').parent().show();                    
@@ -281,9 +296,11 @@
                   }
                 }
               }); 
-            
+            // wenn kein Button aktiv ist
             }else{
+              markerArray = [];
               dataCount = 0;
+              $('#fieldSizeContainer').hide();
 
             }            
             
@@ -293,6 +310,7 @@
 
         $('#selectAll').on('click', function(e){
           e.preventDefault();
+          markerArray = [];
           $('#selectAll').siblings().children().removeClass('active').children().removeClass('active');
           $('#hdSelectAll').val('btnSelectAll');
           $.ajax({
@@ -301,7 +319,7 @@
             datatype:"json",
             data:{start:start, end:end},
             success:function(data){
-              //console.log(data.vocabulariesCount);
+              //console.log('data.vocabulariesCount', data.vocabulariesCount);
               if(data.vocabulariesCount >= 6){
                 
                 switch(data.vocabulariesCount){
@@ -323,7 +341,7 @@
                       case 12: 
                       case 13: $('#radio64').parent().siblings().show();
                                $('#radio64').parent().show();
-                               $('#radio74').parent().shiblings().hide();
+                               $('#radio74').parent().siblings().hide();
                                break;
                       default: $('#radio74').parent().siblings().show();
                                $('#radio74').parent().show();                     

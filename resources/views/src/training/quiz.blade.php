@@ -128,14 +128,14 @@
             $.ajax({
               type:'GET',
               url:"{{ route('quiz.check.date') }}",
+              datatype:"json",
               data:{start:start, end:end},
               success:function(data){
-                console.log(data);
-
+                
                 if(data.dateDataRow < 4){
                   $('#rowMarker').hide();
-                  $('#direction').hide();
                   $('#questionCount').hide();
+                  $('#direction').hide();
                   console.log('Für den ausgewählten Zeitraum gibt es zu wenig Datensätze .. min. 4', data.dateDataRow);
                 }else{
                   if(data.markerDataRow < 4){
@@ -148,17 +148,23 @@
         });
         
         let dataCount = 0;
+        let markerArray = [];
 
         $('#difficultyLevel input[type="checkbox"]').on('click', function(e){
           $('#hdSelectAll').val('');
           $(e.target).parent().toggleClass('active');
           $(e.target).toggleClass('active');
+
           if($(e.target).hasClass('active')){
+
+            markerArray.push($(e.target).prop('id')); 
+
             $.ajax({
               type:'GET',
               url:"{{ route('quiz.check.difflevel') }}",
-              data:{start:start, end:end, marker:$(e.target).val()},
+              data:{start:start, end:end, markerArray:markerArray, marker:$(e.target).val()},
               success:function(data){
+
                 if(data.diffDataRow == 0){
                   $(e.target).parent().prop('disabled', true).removeClass('active');
                   $(e.target).prop('disabled', true).removeClass('active');
@@ -166,21 +172,22 @@
                 }else{
                   //console.log('diffDataRow active', data.diffDataRow);
                   dataCount += data.diffDataRow;
-                  console.log('datacount active ', dataCount);
-                  if(dataCount >= 4){
+                  
+                  if(data.diffDataRow >= 4){
 
-                  switch(true){
-                    case (dataCount >= 4 && dataCount < 8): $('#questionRange').prop('max', 4); break;
-                    case (dataCount >= 8 && dataCount < 12): $('#questionRange').prop('max', 8); break;                
-                    case (dataCount >= 12 && dataCount < 16): $('#questionRange').prop('max', 12); break;                
-                    case (dataCount >= 16 && dataCount < 20): $('#questionRange').prop('max', 16); break;                
-                    case (dataCount >= 20 && dataCount < 24): $('#questionRange').prop('max', 20); break;                
-                    case (dataCount >= 24 && dataCount < 28): $('#questionRange').prop('max', 24); break;                
-                    case (dataCount >= 28 && dataCount < 32): $('#questionRange').prop('max', 28); break;                
-                    case (dataCount >= 32 && dataCount < 36): $('#questionRange').prop('max', 32); break;                
-                    case (dataCount >= 36 && dataCount < 40): $('#questionRange').prop('max', 36); break;                
-                    case (dataCount > 40): $('#questionRange').prop('max', 40); break;                
-                  }                    
+                    switch(true){
+                      case (data.diffDataRow >= 4 && data.diffDataRow < 8): $('#questionRange').prop('max', 4); break;
+                      case (data.diffDataRow >= 8 && data.diffDataRow < 12): $('#questionRange').prop('max', 8); break;                
+                      case (data.diffDataRow >= 12 && data.diffDataRow < 16): $('#questionRange').prop('max', 12); break;                
+                      case (data.diffDataRow >= 16 && data.diffDataRow < 20): $('#questionRange').prop('max', 16); break;                
+                      case (data.diffDataRow >= 20 && data.diffDataRow < 24): $('#questionRange').prop('max', 20); break;                
+                      case (data.diffDataRow >= 24 && data.diffDataRow < 28): $('#questionRange').prop('max', 24); break;                
+                      case (data.diffDataRow >= 28 && data.diffDataRow < 32): $('#questionRange').prop('max', 28); break;                
+                      case (data.diffDataRow >= 32 && data.diffDataRow < 36): $('#questionRange').prop('max', 32); break;                
+                      case (data.diffDataRow >= 36 && data.diffDataRow < 40): $('#questionRange').prop('max', 36); break;                
+                      case (data.diffDataRow > 40): $('#questionRange').prop('max', 40); break;                
+                    }      
+
                     $('#questionCount').show();
                     $('#direction').show();
                   }else{
@@ -194,39 +201,44 @@
           }else{
             if($(e.target).parent().siblings().children().hasClass('active')){
               //console.log('value von den anderen', $(e.target).parent().siblings().children().val());
+              markerArray.splice(markerArray.indexOf($(e.target).prop('id')), 1);
+
               $.ajax({
                 type:'GET',
                 url:"{{ route('quiz.check.difflevel') }}",
-                data:{start:start, end:end, marker:$(e.target).val()},
+                datatype:"json",
+                data:{start:start, end:end, markerArray:markerArray, marker:$(e.target).val()},
                 success:function(data){
                   if(data.diffDataRow != 0){
-                    console.log('diffDataRow not active ', data.diffDataRow);
-                    dataCount -= data.diffDataRow;
 
-                    switch(true){
-                      case (dataCount >= 4 && dataCount < 8): $('#questionRange').prop('max', 4); break;
-                      case (dataCount >= 8 && dataCount < 12): $('#questionRange').prop('max', 8); break;                
-                      case (dataCount >= 12 && dataCount < 16): $('#questionRange').prop('max', 12); break;                
-                      case (dataCount >= 16 && dataCount < 20): $('#questionRange').prop('max', 16); break;                
-                      case (dataCount >= 20 && dataCount < 24): $('#questionRange').prop('max', 20); break;                
-                      case (dataCount >= 24 && dataCount < 28): $('#questionRange').prop('max', 24); break;                
-                      case (dataCount >= 28 && dataCount < 32): $('#questionRange').prop('max', 28); break;                
-                      case (dataCount >= 32 && dataCount < 36): $('#questionRange').prop('max', 32); break;                
-                      case (dataCount >= 36 && dataCount < 40): $('#questionRange').prop('max', 36); break;                
-                      case (dataCount > 40): $('#questionRange').prop('max', 40); break;                
-                    }
-                    
-                    console.log('dataCount in not active', dataCount);
-                    if(dataCount < 4){                      
+                    dataCount -= data.diffDataRow;
+                    if(data.diffDataRow < 4){
                       $('#questionCount').hide();
                       $('#direction').hide();
                     }
+
+                    switch(true){
+                      case (data.diffDataRow >= 4 && data.diffDataRow < 8): $('#questionRange').prop('max', 4); break;
+                      case (data.diffDataRow >= 8 && data.diffDataRow < 12): $('#questionRange').prop('max', 8); break;                
+                      case (data.diffDataRow >= 12 && data.diffDataRow < 16): $('#questionRange').prop('max', 12); break;                
+                      case (data.diffDataRow >= 16 && data.diffDataRow < 20): $('#questionRange').prop('max', 16); break;                
+                      case (data.diffDataRow >= 20 && data.diffDataRow < 24): $('#questionRange').prop('max', 20); break;                
+                      case (data.diffDataRow >= 24 && data.diffDataRow < 28): $('#questionRange').prop('max', 24); break;                
+                      case (data.diffDataRow >= 28 && data.diffDataRow < 32): $('#questionRange').prop('max', 28); break;                
+                      case (data.diffDataRow >= 32 && data.diffDataRow < 36): $('#questionRange').prop('max', 32); break;                
+                      case (data.diffDataRow >= 36 && data.diffDataRow < 40): $('#questionRange').prop('max', 36); break;                
+                      case (data.diffDataRow > 40): $('#questionRange').prop('max', 40); break;                 
+
+                    }
+                    
                   }
                 }
               });             
             }else{
+              markerArray = [];
               dataCount = 0;
-
+              $('#questionCount').hide();
+              $('#direction').hide();
             }            
             
           }
@@ -235,11 +247,13 @@
 
         $('#selectAll').on('click', function(e){
           e.preventDefault();
+          markerArray = [];
           $('#selectAll').siblings().children().removeClass('active').children().removeClass('active');
           $('#hdSelectAll').val('btnSelectAll');
           $.ajax({
             type:'GET',
             url:"{{ route('quiz.select.all') }}",
+            datatype:"json",
             data:{start:start, end:end},
             success:function(data){
               
@@ -256,7 +270,7 @@
                   case (vocCount >= 28 && vocCount < 32): $('#questionRange').prop('max', 28); break;                
                   case (vocCount >= 32 && vocCount < 36): $('#questionRange').prop('max', 32); break;                
                   case (vocCount >= 36 && vocCount < 40): $('#questionRange').prop('max', 36); break;                
-                  case (vocCount > 40): $('#questionRange').prop('max', 40); break;                
+                  case (vocCount > 40): $('#questionRange').prop('max', 40); break;               
                 }
                 
                 $('#questionCount').show();
@@ -270,38 +284,21 @@
           
           dataCount = 0;
         });
-
-
-
-
       });
     });
 </script>
 
   <script>
     "use strict";
-/*     $(function(){
-      let limit = <?php echo ($_POST['countQuestions']) ?? 0 ?>;
-      let vocFromDB = <?= ($jsonStringPHP) ?? ''; ?>;
-      let radioDirection = <?= ($radioDirection) ?? ''; ?>;
-      playQuiz(limit, vocFromDB, radioDirection);
-    });
- */
+
     let limit = <?php echo ($_POST['countQuestions']) ?? 0 ?>;
     let vocFromDB = <?= ($jsonStringPHP) ?? ''; ?>;
-    let radioDirection = <?= ($radioDirection) ?? ''; ?>;
-    
-    //let fakeVocFromDB = <?= ($jsonStringPHPFakeVoc) ?? ''; ?>;
-    
-    console.log('radioDirection ', radioDirection); 
+    let radioDirection = "<?= ($radioDirection) ?? ''; ?>";
+
     let question;
     let answer;
     let fakeAnswers;
-    let cardSet;
-
-
-    //console.log('start fakeVocFromDB ', fakeVocFromDB.length);
-           
+    let cardSet;    
     const content = document.querySelector('#outputQuiz');
     let flexContainer;
     let outputQuestion;
@@ -309,16 +306,17 @@
     let fakVoc = [];
     
     for (let i = 1; i <= vocFromDB.length; i++) {
+
         $.ajax({
             type:'GET',
             url:"{{ route('quiz.fetch.fake') }}",
+            datatyp: "json",
             data:{radioDirection:radioDirection},
             success:function(data){
-
+              
               fakVoc = data.fakeVoc;
-              console.log('fakVoc ', fakVoc);
 
-              cardSet = new CardSet(vocFromDB[i-1], fakVoc);
+              cardSet = new CardSet(vocFromDB[i-1], fakVoc, radioDirection);
 
               question = cardSet.getQuestion();
               answer = cardSet.getAnswer();
@@ -328,32 +326,20 @@
               if(i % 4 === 1){
                     content.insertAdjacentHTML('beforeend', '<div id="contId_'+i+'" class="card-flex-container">');
                       flexContainer = document.querySelector('#contId_'+i);
-                    }
-                    
-                    flexContainer.insertAdjacentHTML('beforeend', '<div id="card_' + i + '" class="card bg-turkis" style="width: 18rem;"><div class="card-body">');
-                    outputQuestion = document.querySelector('#card_' + i + ' .card-body');
-                    outputQuestion.insertAdjacentHTML('beforeend', '<div class="card-title bg-darkgray">' + question + '</div><ul class="list-group list-group-flush">');
-                    outputAnswers = document.querySelector('#card_' + i + ' .card-body .list-group');
-                        
-                    fakeAnswers.forEach(function(value, index) {
-                      console.log('value ', value, 'index ', index);
-                      outputAnswers.insertAdjacentHTML('beforeend', '<li class="list-group-item">' + value.fvn + '</li>');
-                    });
-
               }
-
-
-
-           
-          });
-
-       }    
-          //fakVoc = fakeVocFromDB.splice(0, 3);
-          //console.log('fakVoc after splice', fakVoc);
-          //console.log('fakVoc vor constructor', fakVoc);
-      //console.log('fakeAnswers: ', fakeAnswers);
-
               
+              flexContainer.insertAdjacentHTML('beforeend', '<div id="card_' + i + '" class="card bg-turkis" style="width: 18rem;"><div class="card-body">');
+              outputQuestion = document.querySelector('#card_' + i + ' .card-body');
+              outputQuestion.insertAdjacentHTML('beforeend', '<div class="card-title bg-darkgray">' + question + '</div><ul class="list-group list-group-flush">');
+              outputAnswers = document.querySelector('#card_' + i + ' .card-body .list-group');
+                  
+              fakeAnswers.forEach(function(value, index) {
+                outputAnswers.insertAdjacentHTML('beforeend', '<li class="list-group-item">' + value + '</li>');
+              });
+            }           
+        });
+    }    
+           
                 
   
  </script>

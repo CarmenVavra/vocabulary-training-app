@@ -77,7 +77,6 @@ trait FilterTrait{
     * @return JSON-Object response
     */
     public function checkDate(Request $request){
-
         
         header('Content-Type, application/json; charset = utf-8');
 
@@ -168,26 +167,21 @@ trait FilterTrait{
 
         if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
 
-        $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+            $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                     ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
                                     ->where('vocabularies.user_id', Auth::user()->id)
                                     ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                     ->whereBetween('foreign_vocabularies.created_at', [$request->start, $request->end])
                                     ->inRandomOrder()->get();
-        return response()->json([
-            'vocabulariesCount'=>$vocabularies->count(),
-            'vocabularies'=>$vocabularies,
-            'start'=>$request->start,
-            'end'=>$request->end
-        ]);
         
-        
+            return response()->json([
+                'vocabulariesCount'=>$vocabularies->count(),
+                'vocabularies'=>$vocabularies,
+                'start'=>$request->start,
+                'end'=>$request->end
+            ]);
         }
-
-
     }
-
-    
 }
 
 
