@@ -7,30 +7,36 @@ use App\Models\Vocabulary;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-//use App\Http\Traits\FileTrait;
 
 class CsvController extends Controller
-{
-    //use FileTrait;
-    
+{    
     public function uploadContent(Request $request){
+
+        //dd($request->direction);
 
         if($request->upload != null){
             $file = $_FILES;
+            $savePath = __DIR__.'/files/lebenslauf/';
             $pathinfo = pathinfo($_FILES['upload']['name']);
+            $localFilename = $_FILES['upload']['name'];
 
             $filename = $pathinfo['basename'];
 
             $extension = $pathinfo['extension'];
-
             $tmpPath = $_FILES['upload']['tmp_name'];
             $fileSize = $_FILES['upload']['size'];
 
             $this->checkUploadedFileProperties($extension, $fileSize);
             $location = 'uploadsCSV';
-            $request->upload->move($location, $filename);
+
             $filepath = public_path($location.'/'.$filename);
+            if(file_exists($filepath)){
+                //exception
+                dd('file bereits vorhanden');
+            }else{
+                $request->upload->move($location, $filename);
+            }  
+            
             $file = fopen($filepath, 'r');
 
             $dataArray = [];
@@ -48,9 +54,14 @@ class CsvController extends Controller
            
            $x = 0;
            foreach($dataArray as $data){
-             //if(richtung ist deutsch -> fremdsprache){
-                $vn = $data[0];
-                $fvn = $data[1];
+
+               if('dir1' == $request->direction){
+                    $vn = $data[0];
+                    $fvn = $data[1];
+               }else if('dir2' == $request->direction){
+                    $vn = $data[1];
+                    $fvn = $data[0];
+               }
 
              $x++;
              try{
@@ -58,8 +69,7 @@ class CsvController extends Controller
                     'name'=>$vn,
                     'user_id'=>Auth::user()->id,
                     'language_id'=>session('language_id')
-                ]);
-                //DB::commit();
+                ]);                
                 
                 ForeignVocabulary::create([
                     'name'=>$fvn,
@@ -67,10 +77,9 @@ class CsvController extends Controller
                     'vocabulary_id'=>$voc->id
 
                 ]);
-
-                //DB::commit();
+                
              }catch(Exception $e){
-
+                // DS konnte nicht hinzugefügt werden
              }
 
            }
@@ -79,7 +88,7 @@ class CsvController extends Controller
             // Fehler: Bitte eine Datei auswählen!
         }
         
-        return view('src.vocabulary')->with('success', 'Die Daten wurden erfolgreich gespeichert!');
+        return back()->with('success', 'Die Daten wurden erfolgreich gespeichert!');
     }
 
     public function checkUploadedFileProperties($extension, $fileSize){
