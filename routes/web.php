@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CsvController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HangmanController;
@@ -59,6 +60,8 @@ Route::middleware('auth')->group(function(){
     Route::put('/vocabulary/{vocabularies}', [VocabularyController::class, 'update'])->name('vocabulary.update');
     Route::delete('/vocabulary/{vocabulary}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
 
+    Route::post('/uploadcsv', [CsvController::class, 'uploadContent'])->name('upload.csv');
+
     Route::get('/training', [TrainingController::class, 'index'])->name('training.index');
 
     Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
@@ -81,7 +84,7 @@ Route::middleware('auth')->group(function(){
     Route::post('/learning', [LearningController::class, 'filterSelect'])->name('learning.filter.select');
 
     Route::get('/hangman', [HangmanController::class, 'index'])->name('hangman.index');
-    Route::get('/hangmandatecheck', [HangmanController::class, 'checkDate'])->name('hangman.check.date');
+    Route::get('/hangmandatecheck', [HangmanController::class, 'checkDate'])->name('hangman.check.date');   // Hier darf nichts mehr geändert werden .. ansonsten auch im Javascript ajax
     Route::get('/hangmandifflevel', [HangmanController::class, 'checkDifficultyLevel'])->name('hangman.check.difflevel');
     Route::get('/hangmanselectall', [HangmanController::class, 'selectAll'])->name('hangman.select.all');
     Route::post('/hangman', [HangmanController::class, 'filterSelect'])->name('hangman.filter.select');

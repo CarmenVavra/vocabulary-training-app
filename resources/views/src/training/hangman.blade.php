@@ -126,6 +126,7 @@
   <script src="{{ asset('js/classes/Canvas.js') }}"></script>
   <script>
     "use strict";
+
     $(function() {
       $('input[name="daterange"]').daterangepicker({
         format: 'DD.MM.YYYY',
@@ -146,7 +147,7 @@
             
             $.ajax({
               type:'GET',
-              url:"{{ route('hangman.check.date') }}",
+              url:"/hangmandatecheck",
               datatype:"json",
               data:{start:start, end:end},
               success:function(data){

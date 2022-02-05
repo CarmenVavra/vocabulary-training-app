@@ -16,17 +16,20 @@
     <div class="container">
       <div class="alert turkis-bg" role="alert">
         <h4 class="alert-heading">Vokabel</h4>
-        <div class="mb-3">
-          <label for="formFile" class="form-label">Vokabel über CSV hochladen</label>
-          <input class="form-control is-invalid" type="file" id="formFile">
-          <div class="invalid-feedback">Bitte nur CSV-Dateien hochladen!</div>
-        </div>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btn-darkgray me-md-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
-              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-              <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
-            </svg> <span class="left-spacer">hochladen</span></button>
-        </div>
+          <form action="{{ route('upload.csv') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-3">
+              <label for="formFile" class="form-label">Vokabel über CSV hochladen</label>
+              <input class="form-control" name="upload" type="file" id="formFileUpload">
+              <div class="text-danger">Bitte nur CSV-Dateien hochladen!</div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button class="btn btn-darkgray me-md-2" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+                </svg> <span class="left-spacer">hochladen</span></button>
+            </div>
+        </form>
       </div>
     </div>
     <!-- modal delete -->
