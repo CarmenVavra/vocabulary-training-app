@@ -52,36 +52,54 @@ class CsvController extends Controller
            fclose($file);
            unlink($filepath);
            
-           $x = 0;
-           foreach($dataArray as $data){
+            $x = 0;
+            foreach($dataArray as $data){
 
-               if('dir1' == $request->direction){
+                if('dir1' == $request->direction){
                     $vn = $data[0];
                     $fvn = $data[1];
-               }else if('dir2' == $request->direction){
+                }else if('dir2' == $request->direction){
                     $vn = $data[1];
                     $fvn = $data[0];
-               }
+                }
+                $x++;
 
-             $x++;
-             try{
-                $voc = Vocabulary::create([
-                    'name'=>$vn,
-                    'user_id'=>Auth::user()->id,
-                    'language_id'=>session('language_id')
-                ]);                
+                $writeToDB = false;
+                $checkVoc = Vocabulary::where('name', $vn)
+                                        ->where('user_id', Auth::user()->id)
+                                        ->where('language_id', session('language_id'))->first();
                 
-                ForeignVocabulary::create([
-                    'name'=>$fvn,
-                    'language_id'=>session('foreign_id'),
-                    'vocabulary_id'=>$voc->id
-                ]);
-                
-             }catch(Exception $e){
-                // DS konnte nicht hinzugefügt werden
-             }
+                if(empty($checkVoc)){
+                    $writeToDB = true;
+                }else{
+                    
+                    $checkForeign = ForeignVocabulary::where('name', $fvn)
+                                                      ->where('vocabulary_id', $checkVoc->id)
+                                                      ->where('language_id', session('foreign_id'))->first();
 
-           }
+                    if(!empty($checkForeign)){
+                        $writeToDB = false;
+                        echo 'datensatz bereits vorhanden';
+                    }else{
+                        $writeToDB = true;
+                    }
+                }
+                
+                if($writeToDB){
+                    $voc = Vocabulary::create([
+                        'name'=>$vn,
+                        'user_id'=>Auth::user()->id,
+                        'language_id'=>session('language_id')
+                    ]);                
+                    
+                    ForeignVocabulary::create([
+                        'name'=>$fvn,
+                        'language_id'=>session('foreign_id'),
+                        'vocabulary_id'=>$voc->id
+                    ]);
+                }
+
+            }
 
         }else{
             // Fehler: Bitte eine Datei auswählen!
