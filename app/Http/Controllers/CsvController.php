@@ -50,6 +50,7 @@ class CsvController extends Controller
                 $i++;
            }
            fclose($file);
+           unlink($filepath);
            
            $x = 0;
            foreach($dataArray as $data){
