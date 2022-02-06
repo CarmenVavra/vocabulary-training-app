@@ -40,8 +40,22 @@ function playHangman(origArray){
   });
   outputKBRow3.insertAdjacentHTML('beforeend', row3Keys);
 
+  let splitArray = origString.split('');
+  let pattern = ['-', ' ', '!', '?', '\'', '`'];
+
   for (let i = 0; i < lenSearchString; i++) {
-    outputArray[i] = ' __ ';
+    //console.log('splitArray[i] ', pattern.includes(splitArray[i]));
+    //console.log('lenStringSearch ', lenSearchString);
+    if(pattern.includes(splitArray[i])){
+      if(splitArray[i] == ' '){
+        outputArray[i] = '&nbsp;';
+      }else{
+        outputArray[i] = splitArray[i];
+      }
+    }else{
+      outputArray[i] = ' _ ';
+    }
+
   }
   output.innerHTML = outputArray.join("");
 
@@ -88,14 +102,24 @@ function playHangman(origArray){
         }
         i++;
       } else {
-        let letter = searchString.charAt(contains);
 
+        let letter = searchString.charAt(contains);
+        let upperString;
         searchStringArray.forEach(function(value, index) {
           if (value == e.target.textContent) {
             outputArray[index] = value;
             searchStringArray[index] = "";
             searchString = searchStringArray.join("");
-            output.innerHTML = outputArray.join("").toUpperCase();
+
+           
+            upperString = outputArray.join("").toUpperCase();
+            upperString = upperString.replace('&NBSP;', '&nbsp;');
+            output.innerHTML = upperString;
+            
+            if(pattern.includes(searchString)){
+              searchString = '';
+            }
+
             if (searchString == '') {
               user++;
               outputCardTitle.innerHTML = 'Gratulation!! Du hast gewonnen!';

@@ -110,7 +110,7 @@ class HangmanController extends Controller
                                                 ->where('vocabularies.user_id', Auth::user()->id)
                                                 ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                                 ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
-                                                ->where('foreign_vocabularies.marker_id', $marker)
+                                                ->whereIn('foreign_vocabularies.marker_id', $marker)
                                                 ->inRandomOrder()->limit(10)->get();
 
         }else{
