@@ -3,6 +3,7 @@
 use App\Http\Controllers\CsvController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ForeignVocabularyController;
 use App\Http\Controllers\HangmanController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
@@ -59,6 +60,8 @@ Route::middleware('auth')->group(function(){
     Route::post('/vocabulary', [VocabularyController::class, 'store'])->name('vocabulary.store');
     Route::put('/vocabulary/{vocabularies}', [VocabularyController::class, 'update'])->name('vocabulary.update');
     Route::delete('/vocabulary/{vocabulary}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
+
+    Route::get('/setmarker', [ForeignVocabularyController::class, 'setMarker'])->name('set.marker');
 
     Route::post('/uploadcsv', [CsvController::class, 'uploadContent'])->name('upload.csv');
 

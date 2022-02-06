@@ -84,4 +84,22 @@ class ForeignVocabularyController extends Controller
     {
         //
     }
+
+    public function setMarker(Request $request){
+
+        header('Content-Type, application/json; charset = utf-8');
+
+        if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
+
+            $foreignVocabulary = ForeignVocabulary::where('id', $request->fvid)
+                                                    ->where('vocabulary_id', $request->vid)->first();
+            
+            $foreignVocabulary->marker_id = $request->marker;
+            $foreignVocabulary->update();
+        
+            return response()->json([
+                'response'=>'updated'
+            ]);
+        }        
+    }
 }

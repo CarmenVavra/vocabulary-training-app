@@ -20,7 +20,7 @@ class VocabularyController extends Controller
                                     ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
                                     ->where('vocabularies.user_id', Auth::user()->id)
                                     ->where('foreign_vocabularies.language_id', session('foreign_id'))->get();
-   
+
         return view('/src/vocabulary/vocabulary', compact('vocabularies'));
     }
 

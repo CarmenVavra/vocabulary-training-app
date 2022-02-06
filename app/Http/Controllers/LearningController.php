@@ -105,9 +105,6 @@ class LearningController extends Controller
         $direction = $request->radioDirection;
 
         $marker = $this->getMarker($request);
-        $markerRed = $marker[0];
-        $markerYellow = $marker[1];
-        $markerGreen = $marker[2];
 
         if('dir1' == $direction){
             $tablename = 'vocabularies';
@@ -119,17 +116,15 @@ class LearningController extends Controller
 
             if($request->hdSelectAll == null){
                 $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                            ->select('vocabularies.name as vn', 'vocabularies.id as vid', 'foreign_vocabularies.name as fvn', 'foreign_vocabularies.id as fvid', 'foreign_vocabularies.marker_id as marker')
                                             ->where('vocabularies.user_id', Auth::user()->id)
                                             ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                             ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
-                                            ->where('foreign_vocabularies.marker_id', $markerRed)
-                                            ->orWhere('foreign_vocabularies.marker_id', $markerYellow)
-                                            ->orWhere('foreign_vocabularies.marker_id', $markerGreen)
+                                            ->whereIn('foreign_vocabularies.marker_id', $marker)
                                             ->inRandomOrder()->get();            
             }else{
                 $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                            ->select('vocabularies.name as vn', 'vocabularies.id as vid', 'foreign_vocabularies.name as fvn', 'foreign_vocabularies.id as fvid', 'foreign_vocabularies.marker_id as marker')
                                             ->where('vocabularies.user_id', Auth::user()->id)
                                             ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                             ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
@@ -140,17 +135,15 @@ class LearningController extends Controller
         }else{
             if($request->hdSelectAll == null){
                 $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                            ->select('vocabularies.name as vn', 'vocabularies.id as vid', 'foreign_vocabularies.name as fvn', 'foreign_vocabularies.id as fvid', 'foreign_vocabularies.marker_id as marker')
                                             ->where('vocabularies.user_id', Auth::user()->id)
                                             ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                             ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
-                                            ->where('foreign_vocabularies.marker_id', $markerRed)
-                                            ->orWhere('foreign_vocabularies.marker_id', $markerYellow)
-                                            ->orWhere('foreign_vocabularies.marker_id', $markerGreen)
+                                            ->whereIn('foreign_vocabularies.marker_id', $marker)
                                             ->orderBy("$tablename.name", $sortOrder)->get();
             }else{
                 $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                            ->select('vocabularies.name as vn', 'vocabularies.id as vid', 'foreign_vocabularies.name as fvn', 'foreign_vocabularies.id as fvid', 'foreign_vocabularies.marker_id as marker')
                                             ->where('vocabularies.user_id', Auth::user()->id)
                                             ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                             ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
@@ -158,7 +151,6 @@ class LearningController extends Controller
 
             }
        }
-
-        return view('src.training.learning', compact('vocabularies', 'direction', 'countDataRows'));
+       return view('src.training.learning', compact('vocabularies', 'direction', 'countDataRows'));
     }
 }

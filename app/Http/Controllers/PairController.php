@@ -113,9 +113,6 @@ class PairController extends Controller
         $toDate = $dateRange[1];
 
         $marker = $this->getMarker($request);
-        $markerRed = $marker[0];
-        $markerYellow = $marker[1];
-        $markerGreen = $marker[2];
         
         if($request->hdSelectAll == null){
             $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
@@ -123,9 +120,7 @@ class PairController extends Controller
                                         ->where('vocabularies.user_id', Auth::user()->id)
                                         ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                         ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
-                                        ->where('foreign_vocabularies.marker_id', $markerRed)
-                                        ->orWhere('foreign_vocabularies.marker_id', $markerYellow)
-                                        ->orWhere('foreign_vocabularies.marker_id', $markerGreen)
+                                        ->whereIn('foreign_vocabularies.marker_id', $marker)
                                         ->inRandomOrder()->limit($limit)->get();
 
         }else{

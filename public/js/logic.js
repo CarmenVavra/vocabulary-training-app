@@ -116,21 +116,48 @@ $(document).ready(function(){
     $(e.target).closest('tr').removeClass('red-row');
   });
 
-/*   $('#difficultyLevel').on('click', function(e){
-    $(e.target).toggleClass('active');
- 
-  }); */
+  $('#vocLearnTable .row-marker button').on('click', function(e){
+
+    let vid = $(this).closest('tr').children().eq(0).attr('id');
+    let fvid = $(this).closest('tr').children().eq(1).attr('id');
+
+    vid = vid.replace('v_', '');
+    fvid = fvid.replace('fv_', '');
+
+    let marker = $(this).closest('tr').attr('class');
+  
+    switch(marker){
+      case 'red-row': marker = 1; break;
+      case 'yellow-row': marker = 2; break;
+      case 'green-row': marker = 3; break;
+      default: marker = 0; break;
+    }
+    
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    $.ajax({
+      type:'GET',
+      url:"/setmarker",
+      datatype:"json",
+      data:{vid:vid, fvid:fvid, marker:marker},
+      success:function(data){
+        console.log(data);
+      }
+    });
+
+  })
 
   $('#selectAll').on('click', function(){
     $('#difficultyLevel').children().removeClass('active');
   });
 
-  /* $('input[name="dates"]').daterangepicker(); */
-
   $('#lblUserLanguage').on('mouseover', function(){
     $('[data-toggle="tooltip"]').tooltip();
   })
-
 
 
 

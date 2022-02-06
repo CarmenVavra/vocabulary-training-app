@@ -116,7 +116,7 @@
 
     <div id="contTblLearning" class="container">
       <div class="alert dark-bg">
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover" id="vocLearnTable">
           <thead>
             <tr>
               @if('dir1' == $direction)
@@ -132,13 +132,27 @@
           <tbody>
             
             @foreach ($vocabularies as $vocabulary)
-              <tr>
+            {{-- {{ dd($vocabulary) }} --}}
+            @switch($vocabulary['marker'])
+              @case (1)    
+                <tr class="red-row">
+                @break
+              @case (2)    
+                <tr class="yellow-row">
+                @break
+              @case (3)    
+                  <tr class="green-row">
+                  @break
+              @default    
+                  <tr class="">
+                  @break
+              @endswitch                
                 @if('dir1' == $direction)
-                <td id="v_{{ $vocabulary['vid'] }}" class="language">{{ $vocabulary['vn'] }}</td>
-                <td id="fv_{{ $vocabulary['fvid'] }}" class="language">{{ $vocabulary['fvn'] }}</td>
+                  <td id="v_{{ $vocabulary['vid'] }}" data-id="vn" name="vn" class="language">{{ $vocabulary['vn'] }}</td>
+                  <td id="fv_{{ $vocabulary['fvid'] }}" data-id="fvn" name="fvn" class="language">{{ $vocabulary['fvn'] }}</td>
                 @else
-                  <td id="v_{{ $vocabulary['fvid'] }}" class="language">{{ $vocabulary['fvn'] }}</td>
-                  <td id="fv_{{ $vocabulary['vid'] }}" class="language">{{ $vocabulary['vn'] }}</td>
+                  <td id="v_{{ $vocabulary['fvid'] }}" data-id="fvn" name="fvn" class="language">{{ $vocabulary['fvn'] }}</td>
+                  <td id="fv_{{ $vocabulary['vid'] }}" data-id="vn" name="vn" class="language">{{ $vocabulary['vn'] }}</td>
                 @endif
                 <td class="row-marker">
                   <div class="btn-group" role="group">

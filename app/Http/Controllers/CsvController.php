@@ -16,14 +16,13 @@ class CsvController extends Controller
 
         if($request->upload != null){
             $file = $_FILES;
-            $savePath = __DIR__.'/files/lebenslauf/';
             $pathinfo = pathinfo($_FILES['upload']['name']);
-            $localFilename = $_FILES['upload']['name'];
+            //$localFilename = $_FILES['upload']['name'];
 
             $filename = $pathinfo['basename'];
 
             $extension = $pathinfo['extension'];
-            $tmpPath = $_FILES['upload']['tmp_name'];
+            //$tmpPath = $_FILES['upload']['tmp_name'];
             $fileSize = $_FILES['upload']['size'];
 
             $this->checkUploadedFileProperties($extension, $fileSize);
@@ -75,7 +74,6 @@ class CsvController extends Controller
                     'name'=>$fvn,
                     'language_id'=>session('foreign_id'),
                     'vocabulary_id'=>$voc->id
-
                 ]);
                 
              }catch(Exception $e){
