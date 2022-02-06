@@ -100,8 +100,7 @@ class LearningController extends Controller
         $fromDate = $dateRange[0];
         $toDate = $dateRange[1];
 
-        $sortOrder = $request->radioSortorder;
-        
+        $sortOrder = $request->radioSortorder;        
         $direction = $request->radioDirection;
 
         $marker = $this->getMarker($request);
