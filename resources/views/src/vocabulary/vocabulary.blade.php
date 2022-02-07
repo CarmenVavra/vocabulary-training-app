@@ -22,7 +22,9 @@
               <div class="col-md-6">
                 <label for="formFile" class="form-label">Vokabel über CSV hochladen</label>
                 <input class="form-control" name="upload" type="file" id="formFileUpload">
-                <div class="text-danger">Bitte nur CSV-Dateien hochladen!</div>
+                @if(!empty(session('error')))
+                  <div class="text-danger">{{ session('error') }}</div>
+                @endif
               </div>
               <div class="col-md-6">
                 <div class="form-check">
@@ -49,7 +51,7 @@
     </div>
     <!-- modal delete -->
 
-    <div id="overlay-delete">
+    <div id="overlay-delete" @if(!empty(session('vocDelete'))) style="display:block;" @endif>
       <div id="overlay-delete-container">
         <div id="close">X</div>
         <div class="alert">
@@ -96,6 +98,7 @@
                 <td id="fv_{{ $vocabulary['fvid'] }}" class="language">{{ $vocabulary['fvn'] }}</td> {{-- Fremdsprache --}}
                 <td>
                   <a href="{{ route('vocabulary.edit', $vocabulary['vid'] ) }}" data-toggle="modal" data-target="#overlay-edit"><button type="button" class="btn btn-info btn-sm btn-edit">
+                    {{-- <a href="{{ route('vocabulary.edit', $vocabulary['vid'] ) }}" data-toggle="modal" data-target="#overlay-edit"><button type="button" class="btn btn-info btn-sm btn-edit"> --}}
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
                       <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
                     </svg>
@@ -139,13 +142,211 @@
         console.log('e.target', e.target);
         if(e.target.parentElement.classList.contains('btn-new') || e.target.classList.contains('btn-new')){
           vokHomeModal.openModal('new');
-        }/*else if(e.target.parentElement.classList.contains('btn-edit')){
+        }else if(e.target.parentElement.classList.contains('btn-edit')){
           vokHomeModal.openModal('edit');
-        } else if(e.target.parentElement.classList.contains('btn-delete')){
+        } /*else if(e.target.parentElement.classList.contains('btn-delete')){
           deleteModal.openModal('delete');
         } */
       }
     }
+
+
+
+    const contentV = document.querySelector('#resultV ul');
+    const contentFV = document.querySelector('#resultFV ul');
+    let inputFieldVocabularyEdit = document.querySelector('input[id$=vEdit]');
+    let inputFieldForeignEdit = document.querySelector('input[id$=fvEdit]');
+    let inputFieldVocabulary = document.querySelector('input[id$=vNew]');
+    let inputFieldForeign = document.querySelector('input[id$=fvNew]');
+    let searchString;
+    let listElement;
+
+    inputFieldVocabulary.onkeyup = function(e){
+      searchString = inputFieldVocabulary.value;
+
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        type:'GET',
+        url:"/vocabularyautocomplete",
+        datatype:"json",
+        data:{searchString:searchString},
+        success:function(data){
+          contentV.innerHTML = '';
+          console.log(data.input.vn);
+
+
+          if(data.input.vn != ''){
+            contentV.classList.remove('hide');
+          }else{
+            contentV.classList.add('hide');
+          }
+
+
+
+          for (let dataRow of data.input) {
+             console.log(dataRow.vn);
+             contentV.insertAdjacentHTML('beforeend', '<li>' + dataRow.vn + '</li>');
+
+             listElement = document.querySelectorAll('#resultV ul li');
+             listElement.forEach(function(value, index){
+              value.onclick = function(liElem){
+                contentV.classList.add('hide');
+                inputFieldVocabulary.value = liElem.target.textContent;
+              }
+             });
+
+          }         
+        }
+         
+      });
+
+    }
+
+    inputFieldForeign.onkeyup = function(e){
+      searchString = inputFieldForeign.value;
+
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        type:'GET',
+        url:"/foreignautocomplete",
+        datatype:"json",
+        data:{searchString:searchString},
+        success:function(data){
+          contentFV.innerHTML = '';
+          console.log(data.input.fvn);
+
+
+          if(data.input.fvn != ''){
+            contentFV.classList.remove('hide');
+          }else{
+            contentFV.classList.add('hide');
+          }
+
+          for (let dataRow of data.input) {
+             console.log(dataRow.fvn);
+             contentFV.insertAdjacentHTML('beforeend', '<li>' + dataRow.fvn + '</li>');
+
+             listElement = document.querySelectorAll('#resultFV ul li');
+             listElement.forEach(function(value, index){
+              value.onclick = function(liElem){
+                contentFV.classList.add('hide');
+                inputFieldForeign.value = liElem.target.textContent;
+              }
+             });
+
+          }         
+        }
+         
+      });
+
+    }
+
+
+    inputFieldVocabulary.onkeyup = function(e){
+      searchString = inputFieldVocabularyEdit.value;
+
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        type:'GET',
+        url:"/vocabularyautocomplete",
+        datatype:"json",
+        data:{searchString:searchString},
+        success:function(data){
+          contentV.innerHTML = '';
+          console.log(data.input.vn);
+
+
+          if(data.input.vn != ''){
+            contentV.classList.remove('hide');
+          }else{
+            contentV.classList.add('hide');
+          }
+
+
+
+          for (let dataRow of data.input) {
+             console.log(dataRow.vn);
+             contentV.insertAdjacentHTML('beforeend', '<li>' + dataRow.vn + '</li>');
+
+             listElement = document.querySelectorAll('#resultV ul li');
+             listElement.forEach(function(value, index){
+              value.onclick = function(liElem){
+                contentV.classList.add('hide');
+                inputFieldVocabularyEdit.value = liElem.target.textContent;
+              }
+             });
+
+          }         
+        }
+         
+      });
+
+    }
+
+    inputFieldForeignEdit.onkeyup = function(e){
+      searchString = inputFieldForeignEdit.value;
+
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        type:'GET',
+        url:"/foreignautocomplete",
+        datatype:"json",
+        data:{searchString:searchString},
+        success:function(data){
+          contentFV.innerHTML = '';
+          console.log(data.input.fvn);
+
+
+          if(data.input.fvn != ''){
+            contentFV.classList.remove('hide');
+          }else{
+            contentFV.classList.add('hide');
+          }
+
+          for (let dataRow of data.input) {
+             console.log(dataRow.fvn);
+             contentFV.insertAdjacentHTML('beforeend', '<li>' + dataRow.fvn + '</li>');
+
+             listElement = document.querySelectorAll('#resultFV ul li');
+             listElement.forEach(function(value, index){
+              value.onclick = function(liElem){
+                contentFV.classList.add('hide');
+                inputFieldForeignEdit.value = liElem.target.textContent;
+              }
+             });
+
+          }         
+        }
+         
+      });
+
+    }
+
+
+
+
+
+
 
     closeVoc.onclick = function(e) {
       if (e.target.id == 'overlay-container' || e.target.id == 'close') {

@@ -71,8 +71,7 @@ class CsvController extends Controller
                 
                 if(empty($checkVoc)){
                     $writeToDB = true;
-                }else{
-                    
+                }else{                    
                     $checkForeign = ForeignVocabulary::where('name', $fvn)
                                                       ->where('vocabulary_id', $checkVoc->id)
                                                       ->where('language_id', session('foreign_id'))->first();
@@ -102,7 +101,7 @@ class CsvController extends Controller
             }
 
         }else{
-            // Fehler: Bitte eine Datei auswählen!
+            return back()->with('error', 'Bitte eine Datei auswählen!');
         }
         
         return back()->with('success', 'Die Daten wurden erfolgreich gespeichert!');

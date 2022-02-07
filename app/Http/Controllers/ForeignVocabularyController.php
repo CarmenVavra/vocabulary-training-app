@@ -102,4 +102,22 @@ class ForeignVocabularyController extends Controller
             ]);
         }        
     }
+
+    public function autocomplete(Request $request){
+        header('Content-Type, application/json; charset = utf-8');
+
+        if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
+
+            $input = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                        ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                        ->where('vocabularies.user_id', Auth::user()->id)
+                                        ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                        ->where('foreign_vocabularies.name', 'LIKE', $request->searchString.'%')
+                                        ->orderBy('foreign_vocabularies.name')->limit(5)->get();
+        
+            return response()->json([
+                'input'=>$input
+            ]);
+        } 
+    }
 }

@@ -1,4 +1,3 @@
-
 @extends('layouts.main')
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/vokabel.css') }}">

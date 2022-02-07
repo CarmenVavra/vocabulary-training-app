@@ -15,6 +15,7 @@ use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VocabularyController;
 use App\Http\Controllers\WelcomeController;
+use App\Models\Vocabulary;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -59,9 +60,15 @@ Route::middleware('auth')->group(function(){
     Route::get('/vocabulary/{vocabulary}/edit', [VocabularyController::class, 'edit'])->name('vocabulary.edit');
     Route::post('/vocabulary', [VocabularyController::class, 'store'])->name('vocabulary.store');
     Route::put('/vocabulary/{vocabularies}', [VocabularyController::class, 'update'])->name('vocabulary.update');
+    Route::delete('/vocabulary/warndelete/{vocabulary}', [VocabularyController::class, 'warnDelete'])->name('vocabulary.warn.delete');
     Route::delete('/vocabulary/{vocabulary}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
+    Route::get('/vocabularyautocomplete', [VocabularyController::class, 'autocomplete'])->name('vocabulary.autocomplete');
+    /* Route::get('/vocedit/{voc}', [VocabularyController::class, 'vocedit'] )->name('voc.edit'); */
+
+
 
     Route::get('/setmarker', [ForeignVocabularyController::class, 'setMarker'])->name('set.marker');
+    Route::get('/foreignautocomplete', [ForeignVocabularyController::class, 'autocomplete'])->name('foreign.autocomplete');
 
     Route::post('/uploadcsv', [CsvController::class, 'uploadContent'])->name('upload.csv');
 

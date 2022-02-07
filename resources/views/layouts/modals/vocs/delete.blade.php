@@ -1,4 +1,4 @@
-<div id="overlay-delete" @if(!empty($errors->all())) style="display:block;" @endif>
+<div id="overlay-delete" @if(!empty(session('vocDelete'))) style="display:block;" @endif>
     <div id="overlay-delete-container">
       <div id="close">X</div>
       <div class="alert green-bg">
@@ -14,7 +14,7 @@
           </div>
         </div>
         
-<!--         <form class="row g-3" action="{{ route('vocabulary.delete') }}" method="post">
+<!--  {{--        <form class="row g-3" action="{{ route('vocabulary.delete') }}" method="post">
             @csrf
           <div class="col-md-6">
             <label for="{{ session('language_name') }}" class="form-label">{{ session('language_name') }}</label>
@@ -29,7 +29,7 @@
           <div class="col-12">
             <button class="btn btn-turkis" type="submit" formnovalidate>senden</button>
           </div>
-        </form>
+        </form> --}}
  -->      
       </div>
     </div>

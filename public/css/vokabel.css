@@ -11,3 +11,45 @@ td.btn-light{
 td.language{
   width: 45%;
 }
+
+.box-suggestions {
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 5px #bbb;
+}
+
+.box-suggestions:empty {
+  display: none;
+}
+
+.box-suggestions ul {
+  padding: 0;
+}
+
+.box-suggestions ul>li {
+  list-style-type: none;
+  margin: .5em;
+}
+
+.box-suggestions ul>li span {
+  display: block;
+  padding: .5em;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.box-suggestions ul>li span:hover,
+.box-suggestions ul>li span:focus {
+  background-color: #ddd;
+}
+
+.box-suggestions ul>li span:active,
+.box-suggestions ul>li span:visited {
+  color: black;
+}
+
+.hide {
+  display: none;
+}

@@ -89,6 +89,7 @@ class VocabularyController extends Controller
                                     ->where('vocabularies.id', $vocabulary->id)->get();
         
         return view('/src/vocabulary/edit', compact('vocabularies'));
+        //return redirect()->route('voc.edit', compact('vocabularies'))->with('success', 'openModal');
     }
 
     /**
@@ -124,10 +125,36 @@ class VocabularyController extends Controller
      */
     public function destroy(Vocabulary $vocabulary)
     {
+
         $fvoc = ForeignVocabulary::where('vocabulary_id', $vocabulary->id)->get();
         $vocabulary->delete();
         $fvoc[0]->delete();
 
         return redirect()->route('vocabulary.index')->with('success', 'Die Vokabeln wurden gelöscht!');
+    }
+
+    public function warnDelete(Vocabulary $vocabulary){
+        //
+    }
+
+    public function vocedit(Vocabulary $vocabulary){
+        return view('src/vocabulary/vocabulary', compact('vocabulary'));
+    }
+
+    public function autocomplete(Request $request){
+        header('Content-Type, application/json; charset = utf-8');
+
+        if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
+
+            $input = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                    ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                    ->where('vocabularies.user_id', Auth::user()->id)
+                                    ->where('vocabularies.name', 'LIKE', $request->searchString.'%')
+                                    ->orderBy('vocabularies.name')->limit(5)->get();
+        
+            return response()->json([
+                'input'=>$input
+            ]);
+        } 
     }
 }
