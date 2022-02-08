@@ -160,7 +160,18 @@ $(document).ready(function(){
   })
 
 
+  $('#overlay-edit-language #close').on('click', function(){
+    $('#overlay-edit-language').hide();
+  });
 
+  $('#btnVocDeleteCancel').on('click', function(){
+    $('#overlay-delete').hide();
+  });
+
+
+/*   $('#overlay-edit-language-container').on('click', function(){
+    $('#overlay-edit-language').hide();
+  }); */
 
 
 });

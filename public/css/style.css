@@ -205,7 +205,7 @@ div#breadcrumb{
 /**
 *   MODAL-START
 */
-#overlay, #overlay-delete, #overlay-hangman{
+#overlay, #overlay-delete, #overlay-hangman, #overlay-edit-language{
     display: none;
     position: fixed;
     z-index: 9999;
@@ -218,7 +218,7 @@ div#breadcrumb{
     background: rgba(0,0,0,0.8);
 }
 
-#overlay-select-language, #overlay-edit-language{
+#overlay-select-language{
     display: block;
     position: fixed;
     z-index: 9999;
@@ -231,7 +231,7 @@ div#breadcrumb{
     background: rgba(0,0,0,0.8);
 }
 
-#overlay.show, #overlay-delete.show, #overlay-hangman.show, #overlay-select-language.show{
+#overlay.show, #overlay-delete.show, #overlay-hangman.show, #overlay-select-language.show, #overlay-edit-language{
     display: flex;
 }
 

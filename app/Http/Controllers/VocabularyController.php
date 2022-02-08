@@ -6,6 +6,8 @@ use App\Models\ForeignVocabulary;
 use App\Models\Vocabulary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+
 
 class VocabularyController extends Controller
 {
@@ -83,12 +85,27 @@ class VocabularyController extends Controller
      */
     public function edit(Vocabulary $vocabulary)
     {
+       
+        $vocabulary = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
+                                ->where('vocabularies.user_id', Auth::user()->id)
+                                ->where('vocabularies.id', $vocabulary->id)->first();
+
         $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
+                                ->where('vocabularies.user_id', Auth::user()->id)
+                                ->where('foreign_vocabularies.language_id', session('foreign_id'))->get();
+
+        return view('src.vocabulary.vocabulary', compact('vocabulary', 'vocabularies'));
+        //return back()->withInput($input)->with('success', 'openModal');
+
+
+      /*   $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                     ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
                                     ->where('vocabularies.user_id', Auth::user()->id)
                                     ->where('vocabularies.id', $vocabulary->id)->get();
         
-        return view('/src/vocabulary/edit', compact('vocabularies'));
+        return view('/src/vocabulary/edit', compact('vocabularies')); */
         //return redirect()->route('voc.edit', compact('vocabularies'))->with('success', 'openModal');
     }
 
@@ -123,23 +140,54 @@ class VocabularyController extends Controller
      * @param  \App\Models\Vocabulary  $vocabulary
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vocabulary $vocabulary)
+    public function destroy(Vocabulary $deleteVocabulary)
     {
-
-        $fvoc = ForeignVocabulary::where('vocabulary_id', $vocabulary->id)->get();
-        $vocabulary->delete();
+        //dd($deleteVocabulary);
+        $fvoc = ForeignVocabulary::where('vocabulary_id', $deleteVocabulary->id)->get();
+        $deleteVocabulary->delete();
         $fvoc[0]->delete();
 
         return redirect()->route('vocabulary.index')->with('success', 'Die Vokabeln wurden gelöscht!');
     }
 
+    
+
     public function warnDelete(Vocabulary $vocabulary){
-        //
+
+        $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
+                                ->where('vocabularies.user_id', Auth::user()->id)
+                                ->where('foreign_vocabularies.language_id', session('foreign_id'))->get();
+        
+        $deleteVocabulary = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
+                                ->where('vocabularies.user_id', Auth::user()->id)
+                                ->where('vocabularies.id', $vocabulary->id)->first();
+
+        return view('src.vocabulary.vocabulary', compact('vocabularies', 'deleteVocabulary'));
     }
+
+
+
+
+    public function deleteCancel(){
+        $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                    ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
+                                    ->where('vocabularies.user_id', Auth::user()->id)
+                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))->get();
+
+        return view('src.vocabulary.vocabulary', compact('vocabularies'));
+    }
+
+
+
 
     public function vocedit(Vocabulary $vocabulary){
         return view('src/vocabulary/vocabulary', compact('vocabulary'));
     }
+
+
+
 
     public function autocomplete(Request $request){
         header('Content-Type, application/json; charset = utf-8');

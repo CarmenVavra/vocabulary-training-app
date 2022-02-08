@@ -60,8 +60,11 @@ Route::middleware('auth')->group(function(){
     Route::get('/vocabulary/{vocabulary}/edit', [VocabularyController::class, 'edit'])->name('vocabulary.edit');
     Route::post('/vocabulary', [VocabularyController::class, 'store'])->name('vocabulary.store');
     Route::put('/vocabulary/{vocabularies}', [VocabularyController::class, 'update'])->name('vocabulary.update');
-    Route::delete('/vocabulary/warndelete/{vocabulary}', [VocabularyController::class, 'warnDelete'])->name('vocabulary.warn.delete');
-    Route::delete('/vocabulary/{vocabulary}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
+    Route::delete('/vocabulary/{vocabulary}/warndelete', [VocabularyController::class, 'warnDelete'])->name('vocabulary.warn.delete');
+    Route::delete('/vocabulary/{deleteVocabulary}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
+    Route::get('/vocabulary/delete/cancel', [VocabularyController::class, 'deleteCancel'])->name('vocabulary.delete.cancel');
+
+    
     Route::get('/vocabularyautocomplete', [VocabularyController::class, 'autocomplete'])->name('vocabulary.autocomplete');
     /* Route::get('/vocedit/{voc}', [VocabularyController::class, 'vocedit'] )->name('voc.edit'); */
 
