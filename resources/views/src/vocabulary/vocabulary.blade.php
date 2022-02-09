@@ -5,7 +5,6 @@
 @endsection
 @section('content')
 
-
   <div id="breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('welcome.index') }}">Home</a></li>
@@ -49,25 +48,11 @@
         </form>
       </div>
     </div>
-    <!-- modal delete -->
 
-    <div id="overlay-delete" @if(!empty(session('vocDelete'))) style="display:block;" @endif>
-      <div id="overlay-delete-container">
-        <div id="close">X</div>
-        <div class="alert">
-          <p>Möchtest du den Datensatz wirklich löschen?</p>
-          <p>Dieser Vorgang kann nicht mehr rückgängig gemacht werden!</p>
-          <hr>
-           <form class="row g-3" action="">
-            <div class="col-12 btn-group">
-              <button class="btn btn-danger" type="button">abbrechen</button>
-              <button class="btn btn-turkis" type="button" formnovalidate>löschen</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <!-- modal delete -->
+    @if(!empty(session('success')))
+      <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+    {{-- MODALS --}}
     @include('layouts.modals.vocs.create')
     
     @if(isset($vocabulary))
@@ -75,9 +60,9 @@
     @endif
 
     @if(isset($deleteVocabulary))
-      {{-- dd($deleteVocabulary) --}}
       @include('layouts.modals.vocs.delete')
     @endif
+    {{-- MODALS --}}
 
     <div class="container">
       <table id="tblVocs" class="table table-striped table-dark table-hover">
@@ -99,8 +84,6 @@
         <tbody>
           @if(isset($vocabularies))
             @foreach($vocabularies as $vocabulary)
-            {{-- dd($vocabulary['vn']) --}}
-
               <tr>
                 <td id="v_{{ $vocabulary['vid'] }}" class="language">{{ $vocabulary['vn'] }}</td> {{-- Muttersprache --}}
                 <td id="fv_{{ $vocabulary['fvid'] }}" class="language">{{ $vocabulary['fvn'] }}</td> {{-- Fremdsprache --}}
@@ -141,10 +124,8 @@
     "use strict";
     const buttons = document.querySelectorAll('#tblVocs .btn');
     const closeVoc = document.querySelector('#overlay-container');
-    const deleteClose = document.querySelector('#overlay-delete-container');
     let vokHomeModal = new Modal(document.querySelector('#overlay'));
     let deleteModal = new Modal(document.querySelector('#overlay-delete'));
-    const btnCancel = document.querySelector('#overlay-delete .btn-danger');
 
     for (let button of buttons) {
       button.onclick = function(e) {
@@ -164,193 +145,111 @@
 
     const contentV = document.querySelector('#resultV ul');
     const contentFV = document.querySelector('#resultFV ul');
-    let inputFieldVocabularyEdit = document.querySelector('input[id$=vEdit]');
-    let inputFieldForeignEdit = document.querySelector('input[id$=fvEdit]');
-    let inputFieldVocabulary = document.querySelector('input[id$=vNew]');
-    let inputFieldForeign = document.querySelector('input[id$=fvNew]');
     let searchString;
     let listElement;
+  
+    let inputFieldVocabulary = document.querySelector('input[id$=vNew]');
+    if(inputFieldVocabulary != null){
 
-    inputFieldVocabulary.onkeyup = function(e){
-      searchString = inputFieldVocabulary.value;
+      let inputFieldForeign = document.querySelector('input[id$=fvNew]');
+    
+    
+      inputFieldVocabulary.onkeyup = function(e){
+        searchString = inputFieldVocabulary.value;
 
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-
-      $.ajax({
-        type:'GET',
-        url:"/vocabularyautocomplete",
-        datatype:"json",
-        data:{searchString:searchString},
-        success:function(data){
-          contentV.innerHTML = '';
-          console.log(data.input.vn);
-
-
-          if(data.input.vn != ''){
-            contentV.classList.remove('hide');
-          }else{
-            contentV.classList.add('hide');
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           }
+        });
+
+        $.ajax({
+          type:'GET',
+          url:"/vocabularyautocomplete",
+          datatype:"json",
+          data:{searchString:searchString},
+          success:function(data){
+            contentV.innerHTML = '';
+            console.log(data.input.vn);
+
+
+            if(data.input.vn != ''){
+              contentV.classList.remove('hide');
+            }else{
+              contentV.classList.add('hide');
+            }
 
 
 
-          for (let dataRow of data.input) {
-             console.log(dataRow.vn);
-             contentV.insertAdjacentHTML('beforeend', '<li>' + dataRow.vn + '</li>');
+            for (let dataRow of data.input) {
+              console.log(dataRow.vn);
+              contentV.insertAdjacentHTML('beforeend', '<li>' + dataRow.vn + '</li>');
 
-             listElement = document.querySelectorAll('#resultV ul li');
-             listElement.forEach(function(value, index){
-              value.onclick = function(liElem){
-                contentV.classList.add('hide');
-                inputFieldVocabulary.value = liElem.target.textContent;
-              }
-             });
+              listElement = document.querySelectorAll('#resultV ul li');
+              listElement.forEach(function(value, index){
+                value.onclick = function(liElem){
+                  contentV.classList.add('hide');
+                  inputFieldVocabulary.value = liElem.target.textContent;
+                }
+              });
 
-          }         
-        }
-         
-      });
-
-    }
-
-    inputFieldForeign.onkeyup = function(e){
-      searchString = inputFieldForeign.value;
-
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-
-      $.ajax({
-        type:'GET',
-        url:"/foreignautocomplete",
-        datatype:"json",
-        data:{searchString:searchString},
-        success:function(data){
-          contentFV.innerHTML = '';
-          console.log(data.input.fvn);
-
-
-          if(data.input.fvn != ''){
-            contentFV.classList.remove('hide');
-          }else{
-            contentFV.classList.add('hide');
+            }         
           }
+          
+        });
 
-          for (let dataRow of data.input) {
-             console.log(dataRow.fvn);
-             contentFV.insertAdjacentHTML('beforeend', '<li>' + dataRow.fvn + '</li>');
+      }
 
-             listElement = document.querySelectorAll('#resultFV ul li');
-             listElement.forEach(function(value, index){
-              value.onclick = function(liElem){
-                contentFV.classList.add('hide');
-                inputFieldForeign.value = liElem.target.textContent;
-              }
-             });
+      inputFieldForeign.onkeyup = function(e){
+        searchString = inputFieldForeign.value;
 
-          }         
-        }
-         
-      });
-
-    }
-
-
-    inputFieldVocabulary.onkeyup = function(e){
-      searchString = inputFieldVocabularyEdit.value;
-
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-
-      $.ajax({
-        type:'GET',
-        url:"/vocabularyautocomplete",
-        datatype:"json",
-        data:{searchString:searchString},
-        success:function(data){
-          contentV.innerHTML = '';
-          console.log(data.input.vn);
-
-
-          if(data.input.vn != ''){
-            contentV.classList.remove('hide');
-          }else{
-            contentV.classList.add('hide');
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           }
+        });
+
+        $.ajax({
+          type:'GET',
+          url:"/foreignautocomplete",
+          datatype:"json",
+          data:{searchString:searchString},
+          success:function(data){
+            contentFV.innerHTML = '';
+            console.log(data.input.fvn);
 
 
+            if(data.input.fvn != ''){
+              contentFV.classList.remove('hide');
+            }else{
+              contentFV.classList.add('hide');
+            }
 
-          for (let dataRow of data.input) {
-             console.log(dataRow.vn);
-             contentV.insertAdjacentHTML('beforeend', '<li>' + dataRow.vn + '</li>');
+            for (let dataRow of data.input) {
+              console.log(dataRow.fvn);
+              contentFV.insertAdjacentHTML('beforeend', '<li>' + dataRow.fvn + '</li>');
 
-             listElement = document.querySelectorAll('#resultV ul li');
-             listElement.forEach(function(value, index){
-              value.onclick = function(liElem){
-                contentV.classList.add('hide');
-                inputFieldVocabularyEdit.value = liElem.target.textContent;
-              }
-             });
+              listElement = document.querySelectorAll('#resultFV ul li');
+              listElement.forEach(function(value, index){
+                value.onclick = function(liElem){
+                  contentFV.classList.add('hide');
+                  inputFieldForeign.value = liElem.target.textContent;
+                }
+              });
 
-          }         
-        }
-         
-      });
-
-    }
-
-    inputFieldForeignEdit.onkeyup = function(e){
-      searchString = inputFieldForeignEdit.value;
-
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-
-      $.ajax({
-        type:'GET',
-        url:"/foreignautocomplete",
-        datatype:"json",
-        data:{searchString:searchString},
-        success:function(data){
-          contentFV.innerHTML = '';
-          console.log(data.input.fvn);
-
-
-          if(data.input.fvn != ''){
-            contentFV.classList.remove('hide');
-          }else{
-            contentFV.classList.add('hide');
+            }         
           }
+          
+        });
 
-          for (let dataRow of data.input) {
-             console.log(dataRow.fvn);
-             contentFV.insertAdjacentHTML('beforeend', '<li>' + dataRow.fvn + '</li>');
-
-             listElement = document.querySelectorAll('#resultFV ul li');
-             listElement.forEach(function(value, index){
-              value.onclick = function(liElem){
-                contentFV.classList.add('hide');
-                inputFieldForeignEdit.value = liElem.target.textContent;
-              }
-             });
-
-          }         
-        }
-         
-      });
-
+      }  
+      
+    
     }
+    
+
+
+
 
 
 
@@ -364,14 +263,5 @@
       }
     };
 
-    deleteClose.onclick = function(e) {
-      if (e.target.id == 'overlay-delete-container' || e.target.id == 'close') {
-        deleteModal.closeModal();
-      }
-    };
-
-    btnCancel.onclick = function(e){
-      deleteModal.closeModal();
-    }
   </script>
 @endsection

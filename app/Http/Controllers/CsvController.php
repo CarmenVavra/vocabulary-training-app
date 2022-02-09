@@ -17,12 +17,9 @@ class CsvController extends Controller
         if($request->upload != null){
             $file = $_FILES;
             $pathinfo = pathinfo($_FILES['upload']['name']);
-            //$localFilename = $_FILES['upload']['name'];
 
             $filename = $pathinfo['basename'];
-
             $extension = $pathinfo['extension'];
-            //$tmpPath = $_FILES['upload']['tmp_name'];
             $fileSize = $_FILES['upload']['size'];
 
             $this->checkUploadedFileProperties($extension, $fileSize);
@@ -78,7 +75,7 @@ class CsvController extends Controller
 
                     if(!empty($checkForeign)){
                         $writeToDB = false;
-                        echo 'datensatz bereits vorhanden';
+                        //error 'datensatz bereits vorhanden';
                     }else{
                         $writeToDB = true;
                     }
@@ -97,9 +94,8 @@ class CsvController extends Controller
                         'vocabulary_id'=>$voc->id
                     ]);
                 }
-
             }
-
+            
         }else{
             return back()->with('error', 'Bitte eine Datei auswählen!');
         }

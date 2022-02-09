@@ -4,7 +4,7 @@
       <div class="alert green-bg">
         <form autocomplete="off" class="row g-3" action="{{ route('vocabulary.store') }}" method="post">
             @csrf
-          <div class="col-md-6">
+            <div class="col-md-6">
             <label for="{{ session('language_name') }}" class="form-label">{{ session('language_name') }}</label>
             <input type="text" class="form-control @error('firstLangNew') is-invalid @enderror" id="{{ session('language_name') }}_vNew" name="firstLangNew" value="{{ old('firstLangNew')}}" required minlength="2">
             
@@ -29,7 +29,8 @@
             <div class="invalid-feedback">Das Feld <italic>{{ session('foreign_name') }}</italic> darf nicht leer sein!</div>
           </div>
           <div class="col-12">
-            <button class="btn btn-turkis" type="submit" formnovalidate>senden</button>
+            <a href="{{ route('vocabulary.cancel') }}"><button id="btnVocDeleteCancel" class="btn btn-danger" type="button">abbrechen</button></a>
+            <button class="btn btn-turkis" type="submit" formnovalidate>anlegen</button>
           </div>
         </form>
       </div>

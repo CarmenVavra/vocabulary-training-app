@@ -6,8 +6,6 @@ use App\Models\ForeignVocabulary;
 use App\Models\Vocabulary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-
 
 class VocabularyController extends Controller
 {
@@ -63,7 +61,7 @@ class VocabularyController extends Controller
         ];
         ForeignVocabulary::create($voc2);
 
-        return redirect()->route('vocabulary.index');
+        return redirect()->route('vocabulary.index')->with('success', 'Die Vokabeln wurden erfolgreich angelegt!');
     }
 
     /**
@@ -84,8 +82,7 @@ class VocabularyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Vocabulary $vocabulary)
-    {
-       
+    {       
         $vocabulary = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                 ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
                                 ->where('vocabularies.user_id', Auth::user()->id)
@@ -97,16 +94,6 @@ class VocabularyController extends Controller
                                 ->where('foreign_vocabularies.language_id', session('foreign_id'))->get();
 
         return view('src.vocabulary.vocabulary', compact('vocabulary', 'vocabularies'));
-        //return back()->withInput($input)->with('success', 'openModal');
-
-
-      /*   $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                    ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
-                                    ->where('vocabularies.user_id', Auth::user()->id)
-                                    ->where('vocabularies.id', $vocabulary->id)->get();
-        
-        return view('/src/vocabulary/edit', compact('vocabularies')); */
-        //return redirect()->route('voc.edit', compact('vocabularies'))->with('success', 'openModal');
     }
 
     /**
@@ -122,6 +109,11 @@ class VocabularyController extends Controller
             'firstLangEdit'=>'required|min:1|max:30',
             'secondLangEdit'=>'required|min:1|max:30'
         ]);
+
+        dd($request->validate([
+            'firstLangEdit'=>'required|min:1|max:30',
+            'secondLangEdit'=>'required|min:1|max:30'
+        ]));
         
         $vData['name'] = $request->firstLangEdit;
         $vocabularies->update($vData);
@@ -131,7 +123,7 @@ class VocabularyController extends Controller
 
         $fvoc[0]->update($fvData);
 
-        return redirect()->route('vocabulary.index')->with('success', 'Vokabeln wurden geändert!');
+        return redirect()->route('vocabulary.index')->with('success', 'Die Vokabeln wurden erfolgreich geändert!');
     }
 
     /**
@@ -142,16 +134,19 @@ class VocabularyController extends Controller
      */
     public function destroy(Vocabulary $deleteVocabulary)
     {
-        //dd($deleteVocabulary);
         $fvoc = ForeignVocabulary::where('vocabulary_id', $deleteVocabulary->id)->get();
         $deleteVocabulary->delete();
         $fvoc[0]->delete();
 
-        return redirect()->route('vocabulary.index')->with('success', 'Die Vokabeln wurden gelöscht!');
+        return redirect()->route('vocabulary.index')->with('success', 'Die Vokabeln wurden erfolgreich gelöscht!');
     }
-
     
-
+    /**
+     * shows modal to confirm delete
+     * @param Vocabulary $vocabulary
+     * 
+     * @return \Illuminate\Http\Response 
+     */
     public function warnDelete(Vocabulary $vocabulary){
 
         $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
@@ -167,16 +162,18 @@ class VocabularyController extends Controller
         return view('src.vocabulary.vocabulary', compact('vocabularies', 'deleteVocabulary'));
     }
 
-
-
-
-    public function deleteCancel(){
+    /**
+     * cancel-button Modal confirm delete
+     * 
+     * @return \Illuminate\Http\Response 
+     */
+    public function vocabularyCancel(){
         $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                     ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
                                     ->where('vocabularies.user_id', Auth::user()->id)
                                     ->where('foreign_vocabularies.language_id', session('foreign_id'))->get();
 
-        return view('src.vocabulary.vocabulary', compact('vocabularies'));
+        return redirect()->route('vocabulary.index');
     }
 
 

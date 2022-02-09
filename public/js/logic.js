@@ -169,11 +169,6 @@ $(document).ready(function(){
   });
 
 
-/*   $('#overlay-edit-language-container').on('click', function(){
-    $('#overlay-edit-language').hide();
-  }); */
-
-
 });
 
 
