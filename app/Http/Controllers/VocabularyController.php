@@ -110,11 +110,6 @@ class VocabularyController extends Controller
             'secondLangEdit'=>'required|min:1|max:30'
         ]);
 
-        dd($request->validate([
-            'firstLangEdit'=>'required|min:1|max:30',
-            'secondLangEdit'=>'required|min:1|max:30'
-        ]));
-        
         $vData['name'] = $request->firstLangEdit;
         $vocabularies->update($vData);
          

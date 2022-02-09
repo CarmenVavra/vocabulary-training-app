@@ -113,11 +113,18 @@ function playHangman(origArray){
 
            
             upperString = outputArray.join("").toUpperCase();
-            upperString = upperString.replace('&NBSP;', '&nbsp;');
-            output.innerHTML = upperString;
+           
+            while(upperString.includes('&NBSP;')){
+              upperString = upperString.replace('&NBSP;', '&nbsp;');
+            }
             
-            if(pattern.includes(searchString)){
-              searchString = '';
+            output.innerHTML = upperString;
+
+            for(let i=0; i<pattern.length; i++){
+              while(searchString.includes(pattern[i])){
+                searchString = searchString.replace(pattern[i], '');
+              }
+
             }
 
             if (searchString == '') {
