@@ -139,7 +139,7 @@ class QuizController extends Controller
             $jsonStringPHP = json_encode($vocabularies);
             $radioDirection = $request->radioDirection;
 
-            return view('src.training.quiz', compact('vocabularies','jsonStringPHP', 'jsVariable', 'radioDirection', 'countDataRows'));
+            return view('src.training.quiz', compact('vocabularies','jsonStringPHP', 'jsVariable', 'radioDirection', 'countDataRows', 'limit'));
 
     }
 

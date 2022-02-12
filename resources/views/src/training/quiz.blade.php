@@ -323,8 +323,11 @@
     let outputQuestion;
     let outputAnswers;
     let fakVoc = [];
+    let millSec = 0;
 
-    
+
+
+
     for (let i = 1; i <= vocFromDB.length; i++) {
       spinner.style.display = 'block';
         $.ajax({
@@ -359,7 +362,12 @@
         });
       }
       
-
+      switch(true){
+        case (limit < 10) : millSec = 3000; break;
+        case (limit < 20) : millSec = 5000; break;
+        case (limit < 30) : millSec = 8000; break;
+        default: millSec = 10000; break;
+      }
 
       // darf erst ausgeführt werden, wenn das Spielfeld fertig aufgebaut ist->setTimeout()
       setTimeout(() => {
@@ -400,20 +408,15 @@
                     value.classList.remove('correct');
                     value.classList.add('failure');
                     errorCount++;
-
-
-                  }
-                
+                  }           
 
                 }
-
-
               }
             });
             
           };
         });
-      }, 10000);
+      }, millSec);
 
  
            
