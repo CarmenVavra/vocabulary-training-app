@@ -34,3 +34,24 @@ input[type="checkbox"]{
   height: 10px;
   display: none;
 }
+
+.list-group-item{
+  cursor: pointer;
+}
+
+/* .list-group-item.active {
+  background-color: #fff;
+  border-color: #fff;
+  color: #000;
+} */
+
+.list-group-item.active.failure {
+  background-color: rgb(182, 32, 32);
+  border-color: rgb(182, 32, 32);
+  color: #fff;
+}
+
+.list-group-item.active.correct {
+  background-color: rgb(38, 208, 100);
+  border-color: rgb(38, 208, 100);
+}

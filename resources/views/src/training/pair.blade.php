@@ -302,11 +302,8 @@
               markerArray = [];
               dataCount = 0;
               $('#fieldSizeContainer').hide();
-
-            }            
-            
+            }                        
           }
-
         });
 
         $('#selectAll').on('click', function(e){

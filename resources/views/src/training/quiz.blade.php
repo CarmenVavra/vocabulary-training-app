@@ -95,7 +95,23 @@
       </div>
     </div>
     @if(isset($vocabularies))
-      <div id="outputQuiz" class="container"></div>
+      <div id="outputQuiz" class="container">
+
+        <div id="overlay-spinner" style="display:none;">
+          <div id="overlay-spinner-container">
+            <div class="alert red-bg">
+              <div class="row">
+                <div class="col-md">
+                  <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     @endif
   </main>
   @endsection
@@ -302,20 +318,22 @@
     let fakeAnswers;
     let cardSet;    
     const content = document.querySelector('#outputQuiz');
+    const spinner = document.querySelector('#overlay-spinner');
     let flexContainer;
     let outputQuestion;
     let outputAnswers;
     let fakVoc = [];
+
     
     for (let i = 1; i <= vocFromDB.length; i++) {
-
+      spinner.style.display = 'block';
         $.ajax({
             type:'GET',
             url:"{{ route('quiz.fetch.fake') }}",
             datatyp: "json",
             data:{radioDirection:radioDirection},
             success:function(data){
-              
+
               fakVoc = data.fakeVoc;
 
               cardSet = new CardSet(vocFromDB[i-1], fakVoc, radioDirection);
@@ -323,8 +341,7 @@
               question = cardSet.getQuestion();
               answer = cardSet.getAnswer();
               fakeAnswers = cardSet.getFakeAnswers();
-              console.log('fakeAnswers', fakeAnswers);
-
+              
               if(i % 4 === 1){
                     content.insertAdjacentHTML('beforeend', '<div id="contId_'+i+'" class="card-flex-container">');
                       flexContainer = document.querySelector('#contId_'+i);
@@ -334,15 +351,72 @@
               outputQuestion = document.querySelector('#card_' + i + ' .card-body');
               outputQuestion.insertAdjacentHTML('beforeend', '<div class="card-title bg-darkgray">' + question + '</div><ul class="list-group list-group-flush">');
               outputAnswers = document.querySelector('#card_' + i + ' .card-body .list-group');
-                  
+
               fakeAnswers.forEach(function(value, index) {
                 outputAnswers.insertAdjacentHTML('beforeend', '<li class="list-group-item">' + value + '</li>');
               });
             }           
         });
-    }    
-           
+      }
+      
+
+
+      // darf erst ausgeführt werden, wenn das Spielfeld fertig aufgebaut ist->setTimeout()
+      setTimeout(() => {
+        spinner.style.display = 'none';
+        const listItems = document.querySelectorAll('.list-group-item');
+        let cardId;
+        let cardTitle;
+        let selectedAnswer;
+        let errorCount = 0;
+        //let itemCount = 0; // DebuggVariable
+        listItems.forEach(function(value, index){
+          
+          //console.log(itemCount++);
+          value.onclick = function(e){
+            
+            console.log('value.innerText', value.innerText);
+            cardId = e.target.parentNode.parentNode.parentNode.id;
+            cardTitle = e.target.parentNode.previousElementSibling.innerText;
+            selectedAnswer = value.innerText;            
+            console.log('cardTitle', cardTitle);
+            $.ajax({
+              type:'GET',
+              url:"{{ route('quiz.check.answers') }}",
+              datatype:'json',
+              data:{
+                question:cardTitle, 
+                selectedAnswer:selectedAnswer
+              },
+              success:function(data){
+
+                if(data.quizPair.vn == cardTitle){
+                  console.log('da bin ich');
+                  if(data.quizPair.fvn == selectedAnswer){
+                    value.classList.add('correct');
+                    value.classList.remove('failure');
+
+                  }else{
+                    value.classList.remove('correct');
+                    value.classList.add('failure');
+                    errorCount++;
+
+
+                  }
                 
-  
+
+                }
+
+
+              }
+            });
+            
+          };
+        });
+      }, 10000);
+
+ 
+           
+   
  </script>
   @endsection

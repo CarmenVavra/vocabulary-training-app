@@ -82,6 +82,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/quizdifflevel', [QuizController::class, 'checkDifficultyLevel'])->name('quiz.check.difflevel');
     Route::get('/quizselectall', [QuizController::class, 'selectAll'])->name('quiz.select.all');
     Route::get('/quizfetchfake', [QuizController::class, 'fetchFake'])->name('quiz.fetch.fake');
+    Route::get('/checkanswers', [QuizController::class, 'checkAnswers'])->name('quiz.check.answers');
+
     Route::post('/quiz', [QuizController::class, 'filterSelect'])->name('quiz.filter.select');
     
     Route::get('/pair', [PairController::class, 'index'])->name('pair.index');

@@ -12,12 +12,9 @@ class CsvController extends Controller
 {    
     public function uploadContent(Request $request){
 
-        //dd($request->direction);
-
         if($request->upload != null){
             $file = $_FILES;
             $pathinfo = pathinfo($_FILES['upload']['name']);
-
             $filename = $pathinfo['basename'];
             $extension = $pathinfo['extension'];
             $fileSize = $_FILES['upload']['size'];
@@ -40,6 +37,7 @@ class CsvController extends Controller
             $i = 0;
             while(($filedata = fgetcsv($file, 1000, ';'))){
                 $count = count($filedata);
+                //dd($filedata);
 
                 for($j=0; $j<$count; $j++){
                     $dataArray[$i][] = $filedata[$j];

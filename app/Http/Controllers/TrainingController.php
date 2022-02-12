@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Training;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TrainingController extends Controller
 {
@@ -81,5 +82,43 @@ class TrainingController extends Controller
     public function destroy(Training $training)
     {
         //
+    }
+
+    public function setHighscore($trainingType, $seconds, $mistakes){
+        $highscore = $mistakes * 3 + $seconds;
+        $training = Training::where('user_id', Auth::user()->id)
+                            ->where('training_type_id', $trainingType)
+                            ->where('language_id', session('language_id'))
+                            ->where('foreign_id', session('foreign_id'))->first();
+        
+        if($training == null){
+            $data['user_id'] = Auth::user()->id;
+            $data['training_type_id'] = $trainingType;
+            $data['language_id'] = session('language_id');
+            $data['foreign_id'] = session('foreign_id');
+            $data['highscore'] = $highscore;
+
+            Training::create($data);
+        }else{
+            $data['user_id'] = Auth::user()->id;
+            $data['training_type_id'] = $trainingType;
+            $data['language_id'] = session('language_id');
+            $data['foreign_id'] = session('foreign_id');
+            $data['highscore'] = $highscore;
+            
+            $training->update($data);
+        }
+        
+        return $this;
+    }
+
+    public function getHighscore($trainingType){
+        $highscore = Training::select('highscore')
+                            ->where('user_id', Auth::user()->id)
+                            ->where('training_type_id', $trainingType)
+                            ->where('language_id', session('language_id'))
+                            ->where('foreign_id', session('foreign_id'))->first();
+    
+        return $highscore;
     }
 }

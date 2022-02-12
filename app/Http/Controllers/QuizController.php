@@ -164,4 +164,52 @@ class QuizController extends Controller
         }
     }
 
+
+/*     public function checkQuizAnswers(Request $request){
+
+        header('Content-Type, application/json; charset = utf-8');
+
+        if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
+      
+            $fakeVoc = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                            ->where('vocabularies.user_id', Auth::user()->id)
+                                            ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                            ->where('foreign_vocabularies.vocabulary_id', '<>', 'vocabularies.id')
+                                            ->inRandomOrder()->limit(3)->get();
+            return response()->json([
+                'fakeVoc'=>$fakeVoc, 
+                'radioDirection'=>$request->radioDirection
+            ]);
+        
+        
+        }
+    } */
+
+    public function checkAnswers(Request $request){
+
+        header('Content-Type, application/json; charset = utf-8');
+
+        if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
+
+            if($request->direction == 'dir1'){
+                $tablename = 'vocabularies';
+            }elseif($request->direction == 'dir2'){
+                $tablename = 'foreign_vocabularies';
+            }
+
+            $quizPair = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                            ->where('vocabularies.user_id', Auth::user()->id)
+                                            ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                            ->where('vocabularies.name', $request->question)
+                                            ->first();
+            return response()->json([
+                'quizPair'=>$quizPair
+            ]);
+        
+        
+        }
+    }
+
 }

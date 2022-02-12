@@ -130,7 +130,7 @@
     for (let button of buttons) {
       button.onclick = function(e) {
         //e.preventDefault();
-        console.log('e.target', e.target);
+        //console.log('e.target', e.target);
         if(e.target.parentElement.classList.contains('btn-new') || e.target.classList.contains('btn-new')){
           vokHomeModal.openModal('new');
         }/* else if(e.target.parentElement.classList.contains('btn-edit')){
@@ -170,7 +170,7 @@
           data:{searchString:searchString},
           success:function(data){
             contentV.innerHTML = '';
-            console.log(data.input.vn);
+            //console.log(data.input.vn);
 
 
             if(data.input.vn != ''){
@@ -182,7 +182,6 @@
 
 
             for (let dataRow of data.input) {
-              console.log(dataRow.vn);
               contentV.insertAdjacentHTML('beforeend', '<li>' + dataRow.vn + '</li>');
 
               listElement = document.querySelectorAll('#resultV ul li');

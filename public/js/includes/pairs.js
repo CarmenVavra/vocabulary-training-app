@@ -5,8 +5,6 @@ function playPairs(vocabularies, countCols, jsVariable){
   let language = [];
   let foreign = [];
 
-  //vocabularies = JSON.parse();
-  console.log(vocabularies.length);
   for(let i=0; i<vocabularies.length; i++){
     language.push(vocabularies[i].vn);
     foreign.push(vocabularies[i].fvn);
@@ -19,7 +17,6 @@ function playPairs(vocabularies, countCols, jsVariable){
   const table = document.querySelector('#tblPairs');
   const btnPairsApply = document.querySelector('#btnApplyPairsFilter');
   const filterSettings = document.querySelector('#collapseSelection');
-  //const radioField = document.querySelectorAll('#field .form-check-input');
   let indexCount = 0;
   let countColumns = 0;
   let checkedRadio;
@@ -83,17 +80,18 @@ function playPairs(vocabularies, countCols, jsVariable){
     tds.forEach(function(value, index) {
       
       value.onclick = function(e) {
-        console.log(e.target);
+        
         if (pairsCounter == 0) {
           interval = setInterval(function() {
             pairsCounter++;
           }, 1000);
         }
         e.target.classList.add('card-turkis');
-        console.log(e.target);
+        
         if (idxCards <= 1) {
           cards[idxCards] = e.target.innerHTML;
           cardElements[idxCards] = e.target;
+
           if (idxCards == 1) {
             let pair = new Pair(cards[0], cards[1]);
             let isPair = pair.compareCards(language, foreign);
@@ -103,8 +101,8 @@ function playPairs(vocabularies, countCols, jsVariable){
                 value.classList.add('hide-card');
                 counterHide++;
                 if (counterHide == mixedLen) {
-                  console.log('alles aufgedeckt');
-                  clearInterval(interval);
+                  
+                  clearInterval(interval);            // Daten für highscore
                   outputTime.innerHTML = '<strong>' + pairsCounter + '</strong> Sekunden';
                   outputErrors.innerHTML = '<strong>' + errorCount + '</strong>';
                   setTimeout(function() {

@@ -1,7 +1,5 @@
 class CardSet{
   constructor(vocFromDB, fakVoc, direction){
-    console.log('fakVoc constructor ', fakVoc);
-    console.log('vocFromDB ', vocFromDB.fvn);
     this.fakeAnswers = [];
 
     if('dir1' == direction){
