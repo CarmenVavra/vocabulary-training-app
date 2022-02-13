@@ -205,7 +205,7 @@ div#breadcrumb{
 /**
 *   MODAL-START
 */
-#overlay, #overlay-delete, #overlay-hangman, #overlay-edit-language, #overlay-spinner{
+#overlay, #overlay-delete, #overlay-hangman, #overlay-edit-language, #overlay-spinner, #overlay-quizresult{
     display: none;
     position: fixed;
     z-index: 9999;
@@ -231,11 +231,11 @@ div#breadcrumb{
     background: rgba(0,0,0,0.8);
 }
 
-#overlay.show, #overlay-delete.show, #overlay-hangman.show, #overlay-select-language.show, #overlay-edit-language.show, #overlay-spinner.show{
+#overlay.show, #overlay-delete.show, #overlay-hangman.show, #overlay-select-language.show, #overlay-edit-language.show, #overlay-spinner.show, #overlay-quizresult.show{
     display: flex;
 }
 
-#overlay-container, #overlay-delete-container, #overlay-hangman-container, #overlay-select-language-container, #overlay-edit-language-container, #overlay-spinner-container {
+#overlay-container, #overlay-delete-container, #overlay-hangman-container, #overlay-select-language-container, #overlay-edit-language-container, #overlay-spinner-container, #overlay-quizresult-container {
     position: relative;
     width:100vw;
     height:100vh;

@@ -39,11 +39,11 @@ input[type="checkbox"]{
   cursor: pointer;
 }
 
-/* .list-group-item.active {
+.list-group-item.active {
   background-color: #fff;
   border-color: #fff;
   color: #000;
-} */
+}
 
 .list-group-item.active.failure {
   background-color: rgb(182, 32, 32);
@@ -55,3 +55,8 @@ input[type="checkbox"]{
   background-color: rgb(38, 208, 100);
   border-color: rgb(38, 208, 100);
 }
+
+.prevent-pointer-events{
+  pointer-events: none;
+}
+

@@ -98,13 +98,30 @@
       <div id="outputQuiz" class="container">
 
         <div id="overlay-spinner" style="display:none;">
-          <div id="overlay-spinner-container">
-            <div class="alert red-bg">
+          <div id="overlay-spinner-container">            
+            <div class="alert turkis-bg">
               <div class="row">
                 <div class="col-md">
                   <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="overlay-quizresult" style="display:none;">
+          <div id="overlay-quizresult-container">
+            <div id="close">X</div>
+            <div class="alert bg-turkis">
+            <div id="card-content">
+                <div class="card-body">
+                  <h5 class="card-title">QUIZ</h5>
+                  <p class="card-text" id="quizResult"> Du hast <span></span>x falsch geantwortet! </p>
+                  
+                  <hr>
+                  <button type="button" class="btn btn-turkis"><a href="{{ route('quiz.index') }}">OK</a></button>
                 </div>
               </div>
             </div>
@@ -324,12 +341,13 @@
     let outputAnswers;
     let fakVoc = [];
     let millSec = 0;
-
-
+    const quizresult = document.querySelector('#overlay-quizresult');
+    
 
 
     for (let i = 1; i <= vocFromDB.length; i++) {
-      spinner.style.display = 'block';
+        spinner.style.display = 'block';
+      
         $.ajax({
             type:'GET',
             url:"{{ route('quiz.fetch.fake') }}",
@@ -346,8 +364,8 @@
               fakeAnswers = cardSet.getFakeAnswers();
               
               if(i % 4 === 1){
-                    content.insertAdjacentHTML('beforeend', '<div id="contId_'+i+'" class="card-flex-container">');
-                      flexContainer = document.querySelector('#contId_'+i);
+                content.insertAdjacentHTML('beforeend', '<div id="contId_'+i+'" class="card-flex-container">');
+                flexContainer = document.querySelector('#contId_'+i);
               }
               
               flexContainer.insertAdjacentHTML('beforeend', '<div id="card_' + i + '" class="card bg-turkis" style="width: 18rem;"><div class="card-body">');
@@ -361,6 +379,8 @@
             }           
         });
       }
+
+
       
       switch(true){
         case (limit < 10) : millSec = 3000; break;
@@ -370,56 +390,69 @@
       }
 
       // darf erst ausgeführt werden, wenn das Spielfeld fertig aufgebaut ist->setTimeout()
-      setTimeout(() => {
-        spinner.style.display = 'none';
-        const listItems = document.querySelectorAll('.list-group-item');
-        let cardId;
-        let cardTitle;
-        let selectedAnswer;
-        let errorCount = 0;
-        //let itemCount = 0; // DebuggVariable
-        listItems.forEach(function(value, index){
+      setTimeout(function() { 
+          spinner.style.display = 'none';      
+          const listItems = document.querySelectorAll('.list-group-item');
+          let cardId;
+          let cardContainer;
+          let cardTitle;
+          let selectedAnswer;
+          let errorCount = 0;
+          let correctCount = 0;
+          const quizErrors = document.querySelector('#quizResult span');
+          //let itemCount = 0; // DebuggVariable
+          listItems.forEach(function(value, index){
+            
+            //console.log(itemCount++);
+            value.onmousedown = function(e){
           
-          //console.log(itemCount++);
-          value.onclick = function(e){
-            
-            console.log('value.innerText', value.innerText);
-            cardId = e.target.parentNode.parentNode.parentNode.id;
-            cardTitle = e.target.parentNode.previousElementSibling.innerText;
-            selectedAnswer = value.innerText;            
-            console.log('cardTitle', cardTitle);
-            $.ajax({
-              type:'GET',
-              url:"{{ route('quiz.check.answers') }}",
-              datatype:'json',
-              data:{
-                question:cardTitle, 
-                selectedAnswer:selectedAnswer
-              },
-              success:function(data){
+              cardId = e.target.parentNode.parentNode.parentNode.id;
+              cardContainer = e.target.parentNode.parentNode.parentNode;
+              cardTitle = e.target.parentNode.previousElementSibling.innerText;
+              selectedAnswer = value.innerText;            
+              
+              $.ajax({
+                type:'GET',
+                url:"{{ route('quiz.check.answers') }}",
+                datatype:'json',
+                data:{
+                  question:cardTitle, 
+                  selectedAnswer:selectedAnswer
+                },
+                success:function(data){
 
-                if(data.quizPair.vn == cardTitle){
-                  console.log('da bin ich');
-                  if(data.quizPair.fvn == selectedAnswer){
-                    value.classList.add('correct');
-                    value.classList.remove('failure');
+                  if(data.quizPair.vn == cardTitle){
+                    
+                    if(data.quizPair.fvn == selectedAnswer){
+                      
+                      value.classList.add('correct');
+                      value.classList.remove('failure');
+                      value.classList.add('prevent-pointer-events');
+                      cardContainer.classList.add('prevent-pointer-events');
+                      correctCount++;
+                      if(correctCount == limit){
+                        quizresult.style.display = 'block';
+                      }
+                      
+                    }else{
+                      value.classList.add('failure');
+                      errorCount++;   
+                      quizErrors.innerText = errorCount;         
+                    }     
 
-                  }else{
-                    value.classList.remove('correct');
-                    value.classList.add('failure');
-                    errorCount++;
-                  }           
-
+                  }
+                  
                 }
-              }
-            });
+              });
+              
+            };
             
-          };
-        });
-      }, millSec);
+          });    
 
- 
-           
+          
+     }, millSec);
+
+          
    
  </script>
   @endsection
