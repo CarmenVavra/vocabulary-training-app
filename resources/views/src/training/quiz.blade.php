@@ -383,10 +383,11 @@
 
       
       switch(true){
-        case (limit < 10) : millSec = 3000; break;
-        case (limit < 20) : millSec = 5000; break;
-        case (limit < 30) : millSec = 8000; break;
-        default: millSec = 10000; break;
+        case (limit < 5) : millSec = 3000; break;
+        case (limit < 10) : millSec = 7000; break;
+        case (limit < 20) : millSec = 13000; break;
+        case (limit < 30) : millSec = 18000; break;
+        default: millSec = 22000; break;
       }
 
       // darf erst ausgeführt werden, wenn das Spielfeld fertig aufgebaut ist->setTimeout()
