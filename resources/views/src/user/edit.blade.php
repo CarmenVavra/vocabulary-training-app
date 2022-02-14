@@ -12,24 +12,40 @@
 </div>
 <main>
     <div class="alert dark-bg">
-      <form class="row g-3" action="{{ route('admin.update', $user->id) }}" method="post">
-          @csrf
-          @method('put')
-        <div class="col-md-6">
-          {{ $user->name }}
+      <div class="row-md" style="display:flex">
+        <div class="col-md-6 left-spacer">
+            <div class="row-md">
+              <div class="col-md-12">Benutzername: {{ $user->name }}</div>
+            </div>
+            <div class="row-md vertical-spacer">
+              <div class="col-md-12">E-Mail: {{ $user->email }}</div>
+            </div>
+            <div class="row-md vertical-spacer">
+              <div class="col-md-12">Rolle: {{ $role_name }}</div>
+            </div>
+            <div class="row-md vertical-spacer">
+              <div class="col-md-12">angemeldet seit: {{ $user->created_at }} </div>
+            </div>
         </div>
         <div class="col-md-6">
-          {{ $user->email }}
+          <form action="{{ route('admin.update', $user->id) }}" method="post">
+            @csrf
+            @method('put') 
+          <div class="row-md">
+            <div class="col-md-12 form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="userRole" name="role_id" @if($user->role_id == '1') ? {{ 'checked' }} : '' @endif>
+              <label class="form-check-label" for="userRole">Admin</label>
+            </div>
+          </div>
+          <div class="row-md vertical-spacer">
+            <div class="col-md-12">
+              <button class="btn btn-turkis" type="submit" formnovalidate>senden</button>
+            </div>
+          </div>
+        </form>
         </div>
-        <div class="col-md-6">
-          <label for="userRole" class="form-label">Rolle</label>
-          <input type="text" class="form-control" id="userRole" name="role_id" value="{{ $user->role_id }}" required minlength="2">
-          <div class="text-danger">Das Feld <italic>Rolle</italic> darf nicht leer sein!</div>
-        </div>
-        <div class="col-12">
-          <button class="btn btn-turkis" type="submit" formnovalidate>senden</button>
-        </div>
-      </form>
+      </div>
+
     </div>
 </main>
 @endsection

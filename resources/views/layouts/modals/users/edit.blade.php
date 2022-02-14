@@ -1,4 +1,4 @@
-<div id="overlay-edit" @if(!empty($errors->all())) style="display:block;" @endif>
+<div id="overlay-edit">
     <div id="overlay-edit-container">
       <div id="close">X</div>
       <div class="alert bg-turkis">

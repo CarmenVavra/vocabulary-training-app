@@ -321,3 +321,20 @@ div#breadcrumb{
 #editUserForm div.text-danger{
     visibility: hidden;
 }
+
+
+.btn-vertical-align{
+    margin-top: 30px;
+}
+
+#formLanguageEdit{
+    margin-left: 20px;
+}
+
+#formLanguageEdit input[type='text']{
+    margin-right: 30px;
+}
+
+  
+
+

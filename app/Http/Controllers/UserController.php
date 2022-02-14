@@ -66,7 +66,12 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('src.user.edit', compact('user'));
+        if($user->role_id == '1'){
+            $role_name = 'Admin';
+        }else{
+            $role_name = 'User';
+        }
+        return view('src.user.edit', compact('user', 'role_name'));
     }
 
     /**
@@ -117,14 +122,16 @@ class UserController extends Controller
     public function adminUpdate(Request $request, User $user){
         //dd($request->role_id, $user);
 
-        $request->validate([
-            'role_id'=> 'required'
-        ]);
+        if(isset($request->role_id)){
+            $role_id = '1';
+        }else{
+            $role_id = '2';
+        }
 
         $data['name'] = $user->name;
         $data['email'] = $user->email;
         $data['password'] = $user->password;
-        $data['role_id'] = $request->role_id;
+        $data['role_id'] = $role_id;
 
         $user->update($data);
         

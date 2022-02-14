@@ -118,8 +118,7 @@ class LanguageController extends Controller
 
         $languages = Language::leftJoin('users', 'users.id', '=', 'languages.user_id')
                                 ->select('users.id as uid', 'users.name as uname', 'languages.user_id as luid', 'languages.name as lname', 'languages.id as lid', 'languages.short_name as lshort')->get();
-/*         dd($adminLanguages);
-        $languages = Language::all();    */                     
+                   
         
         return view('src.language.index', compact('languages'));
     }
