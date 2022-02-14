@@ -174,9 +174,9 @@ class VocabularyController extends Controller
 
 
 
-    public function vocedit(Vocabulary $vocabulary){
+/*     public function vocedit(Vocabulary $vocabulary){
         return view('src/vocabulary/vocabulary', compact('vocabulary'));
-    }
+    } */
 
 
 

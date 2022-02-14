@@ -75,7 +75,7 @@ $(document).ready(function(){
   });
 
   $('.navbar-brand').on('click', function(){
-    window.location.href = '/welcome';
+    window.location.href = '/src/vocabulary/vocabulary';
   });
 
   $('.nav-link').on('click', function(e){
@@ -85,9 +85,7 @@ $(document).ready(function(){
     if(e.target.id == 'nav_2'){
       window.location.href = '/training';
     }
-    if(e.target.id == 'nav_3'){
-      window.location.href = '/dashboard';
-    }
+
   });
 
   $('#nav_2').on('mouseover', function(e){

@@ -15,6 +15,7 @@ class LanguageController extends Controller
      */
     public function index()
     {
+        //Daten für Selectbox
         $languages = Language::where('user_id', Auth::user()->id)->where('main_language', false)->orderBy('name')->get();
         return view('/home', compact('languages'));
     }
@@ -72,7 +73,7 @@ class LanguageController extends Controller
      */
     public function edit(Language $language)
     {
-        //
+        return view('src.language.edit', compact('language'));
     }
 
     /**
@@ -84,7 +85,14 @@ class LanguageController extends Controller
      */
     public function update(Request $request, Language $language)
     {
-        //
+        $request->validate([
+            'name'=>'required|min:2',
+            'short_name'=>'required|min:3|max:4'
+        ]);
+
+        $language->update($request->all());
+
+        return redirect()->route('language.admin.index')->with('success', 'Die Sprache wurde geändert!');
     }
 
     /**
@@ -95,12 +103,48 @@ class LanguageController extends Controller
      */
     public function destroy(Language $language)
     {
-        //
+        $language->delete();
+
+        return redirect()->route('language.admin.index')->with('success', 'Die Sprache wurde gelöscht!');
     }
 
     public function setCookie(Request $request){
         $foreign_id = Language::select('id', 'name')->where('short_name', $request->foreignLanguage)->get();
         session(['foreign_id'=>$foreign_id[0]->id, 'foreign_name'=>$foreign_id[0]->name]);
-        return redirect()->route('welcome.index');
+        return redirect()->route('vocabulary.index');
+    }
+
+    public function adminIndex(){
+
+        $languages = Language::leftJoin('users', 'users.id', '=', 'languages.user_id')
+                                ->select('users.id as uid', 'users.name as uname', 'languages.user_id as luid', 'languages.name as lname', 'languages.id as lid', 'languages.short_name as lshort')->get();
+/*         dd($adminLanguages);
+        $languages = Language::all();    */                     
+        
+        return view('src.language.index', compact('languages'));
+    }
+
+        /**
+     * shows modal to confirm delete
+     * @param Vocabulary $vocabulary
+     * 
+     * @return \Illuminate\Http\Response 
+     */
+    public function warnDelete(Language $language){
+        $languages = Language::leftJoin('users', 'users.id', '=', 'languages.user_id')
+                                ->select('users.id as uid', 'users.name as uname', 'languages.user_id as luid', 'languages.name as lname', 'languages.id as lid', 'languages.short_name as lshort')->get();
+
+        $deleteLanguage = $language;
+
+        return view('src.language.index', compact('languages', 'deleteLanguage'));
+    }
+
+            /**
+     * cancel-button Modal confirm delete
+     * 
+     * @return \Illuminate\Http\Response 
+     */
+    public function languageCancel(){
+        return redirect()->route('language.admin.index');
     }
 }

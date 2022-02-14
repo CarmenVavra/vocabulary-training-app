@@ -39,6 +39,10 @@ class User extends Authenticatable
         return $this->hasMany(Vocabulary::class, 'user_id', 'id');
     }
 
+    public function language(){
+        return $this->hasMany(Language::class, 'user_id', 'id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

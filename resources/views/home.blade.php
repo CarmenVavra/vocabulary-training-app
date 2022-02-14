@@ -41,13 +41,21 @@
                            </a>
                         </div>
                         <div class="col-md-4">
-                          <button id="btnSelectLanguages" class="btn btn-darkgray">OK</button>
+                          <button id="btnSelectLanguages" class="btn btn-turkis">OK</button>
                         </div>
                         <div class="col-md-4">
                             <a href="{{-- route('language.create') --}}"><button id="btnSelectLanguagesNew" class="btn btn-success">Neu</button></a>
                         </div>
-                      </div>
+                      </div>                      
                     </form>
+                    <div class="row btn-group">
+                      <div class="col-md-12" style="margin-left: 20px;">
+                        @if(Auth::user()->role_id == '1')
+                          <a href="{{ route('language.admin.index') }}" class="btn btn-darkgray">Sprachen ändern</a>
+                          <a href="{{ route('user.index') }}" class="btn btn-darkgray">Benutzer ändern</a>
+                        @endif
+                      </div>
+                    </div>
                   </div>
                 </div>
 

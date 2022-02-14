@@ -27,7 +27,7 @@
         <!-- Collapsible wrapper -->
         <div class="collapse navbar-collapse" id="navbarContent">
           <!-- Navbar brand -->
-          <a class="navbar-brand mt-2 mt-lg-0" href="{{ route('welcome.index') }}">
+          <a class="navbar-brand mt-2 mt-lg-0" href="{{ route('vocabulary.index') }}">
             CARYSSA - DEIN VOKABELTRAINER
           </a>
           <!-- Left links -->
@@ -44,9 +44,7 @@
                 <a id="nav_2_4" class="dropdown-item" href="{{ route('pair.index') }}">Pairs</a>
               </div>
             </li>
-            <li class="nav-item">
-              <a id="nav_3" class="nav-link" href="{{ route('dashboard.index') }}">Dashboard</a>
-            </li>
+
             <li class="nav-item">
               <a id="nav_4" class="nav-link" href=""> | </a>
             </li>
@@ -57,6 +55,19 @@
         </div>
         <!-- Right elements -->
         <div class="d-flex align-items-center btn-group" role="group">
+
+
+          @if(Auth::user()->role_id == '1')
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-link">
+              <a id="nav_6" class="nav-link" href="{{ route('language.admin.index') }}">Sprachen ändern</a>
+            </li>
+            <li class="nav-link">
+              <a id="nav_7" class="nav-link" href="{{ route('user.index') }}">Benutzer ändern</a>
+            </li>
+          </ul>
+          @endif
+
           <!-- Avatar -->
           <div class="dropdown">
             <button class="btn btn-turkis dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

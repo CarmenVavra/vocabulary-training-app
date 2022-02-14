@@ -16,7 +16,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+
+        return view('src.user.index', compact('users'));
+
     }
 
     /**
@@ -63,7 +66,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return $user;
+        return view('src.user.edit', compact('user'));
     }
 
     /**
@@ -98,12 +101,58 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->training()->delete();
+        $user->language()->delete();
+        $user->vocabulary()->delete();
+        $user->delete();
+
+        return redirect()->route('user.index')->with('success', 'Der Benutzer wurde gelöscht!');
     }
 
 
     public function profile(){
         return true;
+    }
+
+    public function adminUpdate(Request $request, User $user){
+        //dd($request->role_id, $user);
+
+        $request->validate([
+            'role_id'=> 'required'
+        ]);
+
+        $data['name'] = $user->name;
+        $data['email'] = $user->email;
+        $data['password'] = $user->password;
+        $data['role_id'] = $request->role_id;
+
+        $user->update($data);
+        
+        return redirect()->route('user.index')->with('success', 'Die Rolle wurde erfolgreich geändert');
+    }
+
+    
+        /**
+     * shows modal to confirm delete
+     * @param Vocabulary $vocabulary
+     * 
+     * @return \Illuminate\Http\Response 
+     */
+    public function warnDelete(User $user){
+
+        $deleteUser = User::where('id', $user->id)->first();
+        $users = User::all();
+        
+        return view('src.user.index', compact('users', 'deleteUser'));
+    }
+
+        /**
+     * cancel-button Modal confirm delete
+     * 
+     * @return \Illuminate\Http\Response 
+     */
+    public function userCancel(){
+        return redirect()->route('user.index');
     }
 
 

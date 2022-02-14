@@ -38,42 +38,48 @@ Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/home', [LanguageController::class, 'index'])->name('get.language.index');
-Route::post('/home', [LanguageController::class, 'index'])->name('post.language.index');
-Route::post('/language/cookie', [LanguageController::class, 'setCookie'])->name('language.setCookie');
-Route::get('/language', [LanguageController::class, 'create'])->name('language.create');
-Route::post('/language', [LanguageController::class, 'store'])->name('language.store');
-
-Route::get('/user', [UserController::class, 'index'])->name('user.index');
-Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
-Route::get('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit'); 
-
-Route::get('/profile', [UserController::class, 'profile'] )->name('user.profile');
-Route::put('/user/{user}', [UserController::class, 'update'] )->name('user.update');
-
 Route::middleware('auth')->group(function(){
 
     Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
     Route::post('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
 
+    Route::get('/home', [LanguageController::class, 'index'])->name('get.language.index');
+    Route::post('/home', [LanguageController::class, 'index'])->name('post.language.index');
+    Route::post('/language/cookie', [LanguageController::class, 'setCookie'])->name('language.setCookie');
+    Route::get('/language', [LanguageController::class, 'create'])->name('language.create');
+    Route::post('/language', [LanguageController::class, 'store'])->name('language.store');
+    Route::get('/language/{language}/edit', [LanguageController::class, 'edit'])->name('language.edit');
+    Route::put('/language/{language}', [LanguageController::class, 'update'])->name('language.update');
+    Route::delete('/language/{language}', [LanguageController::class, 'destroy'])->name('language.delete');
+    Route::get('/language', [LanguageController::class, 'index'])->name('language.index');
+    Route::get('/language/adminindex', [LanguageController::class, 'adminIndex'])->name('language.admin.index');
+    Route::delete('/language/{language}/warndelete', [LanguageController::class, 'warnDelete'])->name('language.warn.delete');
+    Route::get('/language/cancel', [LanguageController::class, 'languageCancel'])->name('language.cancel');
+
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
+    Route::get('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit'); 
+    Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.delete');
+    Route::delete('/user/{user}/warndelete', [UserController::class, 'warnDelete'])->name('user.warn.delete');
+    Route::get('/usercancel', [UserController::class, 'userCancel'])->name('user.cancel');
+    Route::get('/profile', [UserController::class, 'profile'] )->name('user.profile');
+    Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
+    Route::put('/admin/{user}', [UserController::class, 'adminUpdate'])->name('admin.update');
+    
+    Route::post('/uploadcsv', [CsvController::class, 'uploadContent'])->name('upload.csv');
+    
     Route::get('/vocabulary', [VocabularyController::class, 'index'])->name('vocabulary.index');
     Route::get('/vocabulary/{vocabulary}/edit', [VocabularyController::class, 'edit'])->name('vocabulary.edit');
     Route::post('/vocabulary', [VocabularyController::class, 'store'])->name('vocabulary.store');
     Route::put('/vocabulary/{vocabularies}', [VocabularyController::class, 'update'])->name('vocabulary.update');
     Route::delete('/vocabulary/{vocabulary}/warndelete', [VocabularyController::class, 'warnDelete'])->name('vocabulary.warn.delete');
     Route::delete('/vocabulary/{deleteVocabulary}', [VocabularyController::class, 'destroy'])->name('vocabulary.delete');
-    Route::get('/vocabulary/cancel', [VocabularyController::class, 'vocabularyCancel'])->name('vocabulary.cancel');
-
-    
+    Route::get('/vocabulary/cancel', [VocabularyController::class, 'vocabularyCancel'])->name('vocabulary.cancel');    
     Route::get('/vocabularyautocomplete', [VocabularyController::class, 'autocomplete'])->name('vocabulary.autocomplete');
-    /* Route::get('/vocedit/{voc}', [VocabularyController::class, 'vocedit'] )->name('voc.edit'); */
-
-
 
     Route::get('/setmarker', [ForeignVocabularyController::class, 'setMarker'])->name('set.marker');
     Route::get('/foreignautocomplete', [ForeignVocabularyController::class, 'autocomplete'])->name('foreign.autocomplete');
-
-    Route::post('/uploadcsv', [CsvController::class, 'uploadContent'])->name('upload.csv');
 
     Route::get('/training', [TrainingController::class, 'index'])->name('training.index');
 
@@ -83,7 +89,6 @@ Route::middleware('auth')->group(function(){
     Route::get('/quizselectall', [QuizController::class, 'selectAll'])->name('quiz.select.all');
     Route::get('/quizfetchfake', [QuizController::class, 'fetchFake'])->name('quiz.fetch.fake');
     Route::get('/checkanswers', [QuizController::class, 'checkAnswers'])->name('quiz.check.answers');
-
     Route::post('/quiz', [QuizController::class, 'filterSelect'])->name('quiz.filter.select');
     
     Route::get('/pair', [PairController::class, 'index'])->name('pair.index');
