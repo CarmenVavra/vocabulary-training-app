@@ -32,7 +32,7 @@
             <div class="row">
               <div class="col-md-6">
                 <label for="vocRange" class="form-label">Welche Vokabel?</label>
-                <input type="text" name="daterange" value="" id="vocRange" />
+                <input type="text" name="daterange" value="{{ old('daterange') }}" id="vocRange" />
               </div>
             </div>
 

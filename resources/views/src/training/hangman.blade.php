@@ -34,7 +34,7 @@
           <div class="row">
               <div class="col-md-6">
                 <label for="vocRange" class="form-label">Welche Vokabel?</label>
-                <input type="text" name="daterange" value="" id="vocRange" />
+                <input type="text" name="daterange" value="{{ old('daterange')}}" id="vocRange" />
               </div>
             </div>
             
@@ -88,7 +88,7 @@
 
     <!-- MODAL END -->
     @if(isset($vocabularies))
-    {{-- dd($vocabularies) --}}
+    {{-- {{ dd($vocabularies) }} --}}
     <div id="contHangman" class="container">
       <div class="hangman-container">
         <canvas id="hangman" width="300" height="400"></canvas>
@@ -106,7 +106,11 @@
             <p class="lead">
             <div class="btn-group">
               <button id="newGame" class="btn btn-turkis">Neues Wort</button>
-              <button class="btn btn-warning btn-hint">?</button>
+              <button id="btnHint" class="btn btn-warning btn-hint">?</button>
+              <div id="divHint" class="hint hide" style="border:1px solid #fff">
+                {{ $vocabularies[0]->vn }}
+              </div>
+           
             </div>
             </p>
           </div>

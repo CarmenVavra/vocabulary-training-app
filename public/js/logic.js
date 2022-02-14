@@ -166,6 +166,10 @@ $(document).ready(function(){
     $('#overlay-delete').hide();
   });
 
+  $('#btnHint').on('click', function(){
+    $('#divHint').show();
+  });
+
 
 });
 

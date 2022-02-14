@@ -106,7 +106,7 @@ class HangmanController extends Controller
 
         if($request->hdSelectAll == null){
             $vocabularies = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                                ->select('foreign_vocabularies.name as fvn')
+                                                ->select('foreign_vocabularies.name as fvn', 'vocabularies.name as vn')
                                                 ->where('vocabularies.user_id', Auth::user()->id)
                                                 ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                                 ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])
@@ -115,7 +115,7 @@ class HangmanController extends Controller
 
         }else{
             $vocabularies = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                                ->select('foreign_vocabularies.name as fvn')
+                                                ->select('foreign_vocabularies.name as fvn', 'vocabularies.name as vn')
                                                 ->where('vocabularies.user_id', Auth::user()->id)
                                                 ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                                 ->whereBetween('foreign_vocabularies.created_at', [$fromDate, $toDate])

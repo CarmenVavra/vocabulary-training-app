@@ -43,3 +43,13 @@ input[type="checkbox"]{
   height: 10px;
   display: none;
 }
+
+.hint{
+  padding-top: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.hint.hide{
+  display: none;
+}
