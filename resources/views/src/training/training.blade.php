@@ -6,8 +6,8 @@
 
   <div id="breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('welcome.index') }}">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Vokabeltrainer</li>
+      <li class="breadcrumb-item"><a href="{{ route('vocabulary.index') }}">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><strong>Training</strong></li>
     </ol>
   </div>
   <main>

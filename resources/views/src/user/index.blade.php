@@ -11,9 +11,8 @@
 
   <div id="breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('welcome.index') }}">Home</a></li>
-      <li class="breadcrumb-item" aria-current="page"><a href="{{ route('dashboard.index') }}">Dashboard</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+      <li class="breadcrumb-item"><a href="{{ route('vocabulary.index') }}">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><strong>Benutzer</strong></li>
     </ol>
   </div>
   <main id="userList">

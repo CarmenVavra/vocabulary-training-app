@@ -3,6 +3,12 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 @endsection
 @section('content')
+<div id="breadcrumb" aria-label="breadcrumb">
+  <ol id="breadcrumb" class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('vocabulary.index') }}">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><strong>Sprachen</strong></li>
+  </ol>
+</div>
 @if(isset($deleteLanguage))
   @include('layouts.modals.languages.delete')
 @endif

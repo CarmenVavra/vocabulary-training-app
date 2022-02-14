@@ -9,9 +9,9 @@
 
   <div id="breadcrumb" aria-label="breadcrumb">
     <ol id="breadcrumb" class="breadcrumb">
-      <li class="breadcrumb-item"><a href="./../welcome.php">Home</a></li>
-      <li class="breadcrumb-item"><a href="./trainingHome.php">Training</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Hangman</li>
+      <li class="breadcrumb-item"><a href="{{ route('vocabulary.index') }}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('training.index') }}">Training</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><strong>Hangman</strong></li>
     </ol>
   </div>
   <main>
