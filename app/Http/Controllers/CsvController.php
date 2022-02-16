@@ -111,5 +111,37 @@ class CsvController extends Controller
         }
     }
 
+    public function downloadContent(Request $request){
+        /* $fileName = 'vocs.csv';
+        $vocs = Vocabulary::all();
+        $fvocs = ForeignVocabulary::all();
+     
+             $headers = array(
+                 "Content-type"        => "text/csv",
+                 "Content-Disposition" => "attachment; filename=$fileName",
+                 "Pragma"              => "no-cache",
+                 "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+                 "Expires"             => "0"
+             );
+     
+             $columns = array('Deutsch', 'Englisch');
+     
+             $callback = function() use($bocs, $columns) {
+                 $file = fopen('php://output', 'w');
+                 fputcsv($file, $columns);
+     
+                 foreach ($vocs as $voc) {
+                     $row['Deutsch']  = $voc->deutsch;
+                     $row['Englisch']    = $boc->englisch;
+     
+                     fputcsv($file, array($row['Deutsch'], $row['Englisch']));
+                 }
+     
+                 fclose($file);
+             };
+     
+             return response()->stream($callback, 200, $headers); */
+    }
+
 
 }

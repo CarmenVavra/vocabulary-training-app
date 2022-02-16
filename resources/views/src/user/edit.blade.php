@@ -15,16 +15,16 @@
       <div class="row-md" style="display:flex">
         <div class="col-md-6 left-spacer">
             <div class="row-md">
-              <div class="col-md-12">Benutzername: {{ $user->name }}</div>
+              <div class="col-md-12">Benutzername:<span class="user-info"> {{ $user->name }} </span></div>
             </div>
             <div class="row-md vertical-spacer">
-              <div class="col-md-12">E-Mail: {{ $user->email }}</div>
+              <div class="col-md-12">E-Mail:<span class="user-info"> {{ $user->email }} </span></div>
             </div>
             <div class="row-md vertical-spacer">
-              <div class="col-md-12">Rolle: {{ $role_name }}</div>
+              <div class="col-md-12">Rolle:<span class="user-info"> {{ $role_name }} </span></div>
             </div>
             <div class="row-md vertical-spacer">
-              <div class="col-md-12">angemeldet seit: {{ $user->created_at }} </div>
+              <div class="col-md-12">angemeldet seit:<span class="user-info"> {{ $user->created_at->format('d.m.Y') }} </span></div>
             </div>
         </div>
         <div class="col-md-6">
@@ -38,8 +38,9 @@
             </div>
           </div>
           <div class="row-md vertical-spacer">
-            <div class="col-md-12">
-              <button class="btn btn-turkis" type="submit" formnovalidate>senden</button>
+            <div class="col-md-4 btn-group">
+              <button class="btn btn-turkis" type="submit" formnovalidate>ändern</button>
+              <a href="{{ route('user.index') }}" class="btn btn-danger" type="button" formnovalidate>zurück</a>
             </div>
           </div>
         </form>

@@ -180,7 +180,11 @@
     "use strict";
     $(function() {
       $('input[name="daterange"]').daterangepicker({
-        format: 'DD.MM.YYYY',
+        locale: {
+          format: 'DD.MM.YYYY'
+        },
+  /*         startDate: '2013-01-01',
+        endDate: '2013-12-31', */
         opens: 'left'
       }, function(start, end, label) {
         

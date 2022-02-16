@@ -27,8 +27,9 @@
               <input type="text" id="languageShortName" class="form-control @error('short_name') is-invalid @enderror"" name="short_name" value="{{ $language->short_name }}" required minlength="2">
               <div class="invalid-feedback">Das Feld <italic>Kurzform</italic> darf nicht leer sein!</div>
             </div>
-          <div class="col-md-4 left-spacer">
-            <button class="btn btn-turkis btn-vertical-align" type="submit" formnovalidate>senden</button>
+          <div class="col-md-3 left-spacer btn-group">
+            <button class="btn btn-turkis btn-vertical-align" type="submit" formnovalidate>ändern</button>
+            <a href="{{ route('language.admin.index') }}" class="btn btn-danger btn-vertical-align" type="button" formnovalidate>zurück</a>
           </div>
         </div>
       </form>

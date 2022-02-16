@@ -110,7 +110,6 @@ function playHangman(origArray){
             outputArray[index] = value;
             searchStringArray[index] = "";
             searchString = searchStringArray.join("");
-
            
             upperString = outputArray.join("").toUpperCase();
            

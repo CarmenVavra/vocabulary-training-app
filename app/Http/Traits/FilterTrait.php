@@ -22,7 +22,7 @@ trait FilterTrait{
     public function getStartAndEndDate(Request $request){
         $rangeDate = explode(' - ', $request->daterange);
      
-        $fromDate = DateTime::createFromFormat('m/d/Y', $rangeDate[0]);
+        $fromDate = DateTime::createFromFormat('d.m.Y', $rangeDate[0]);
         $error = DateTime::getLastErrors();
         if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
             $fromDate->format('Y-m-d');
@@ -31,7 +31,7 @@ trait FilterTrait{
             echo 'Hier ist ein Fehler passiert';
         }        
         
-        $toDate = DateTime::createFromFormat('m/d/Y', $rangeDate[1]);
+        $toDate = DateTime::createFromFormat('d.m.Y', $rangeDate[1]);
         $error = DateTime::getLastErrors();
         if( $error['warning_count'] == 0 && $error['error_count'] == 0 ){
             $toDate->format('Y-m-d');
