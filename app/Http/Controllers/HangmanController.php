@@ -94,6 +94,12 @@ class HangmanController extends Controller
         //
     }
 
+    /**
+     * selects vocabularies based on filter-settings
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response 
+     */
     public function filterSelect(Request $request){
 
         $dateRange = $this->getStartAndEndDate($request);

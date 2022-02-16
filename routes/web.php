@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function(){
 
     Route::get('/home', [LanguageController::class, 'index'])->name('get.language.index');
     Route::post('/home', [LanguageController::class, 'index'])->name('post.language.index');
+
     Route::post('/language/cookie', [LanguageController::class, 'setCookie'])->name('language.setCookie');
     Route::get('/language', [LanguageController::class, 'create'])->name('language.create');
     Route::post('/language', [LanguageController::class, 'store'])->name('language.store');
@@ -68,6 +69,8 @@ Route::middleware('auth')->group(function(){
     Route::put('/admin/{user}', [UserController::class, 'adminUpdate'])->name('admin.update');
     
     Route::post('/uploadcsv', [CsvController::class, 'uploadContent'])->name('upload.csv');
+    Route::get('/exportcsv', [CsvController::class, 'exportContent'])->name('export.csv');
+
     
     Route::get('/vocabulary', [VocabularyController::class, 'index'])->name('vocabulary.index');
     Route::get('/vocabulary/{vocabulary}/edit', [VocabularyController::class, 'edit'])->name('vocabulary.edit');

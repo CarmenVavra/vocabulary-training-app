@@ -113,11 +113,15 @@
     </div>
     
     @if(isset($vocabularies))
-
+    {{-- {{ dd($vocabularies)}} --}}
     <div id="contTblLearning" class="container">
       <div class="alert dark-bg">
         <table class="table table-striped table-hover" id="vocLearnTable">
           <thead>
+            <tr>
+              <td></td>
+              <td colspan="2" style="text-align: right"><a href="{{ route('export.csv') }}" class="btn btn-turkis">CSV exportieren</a></td>
+            </tr>
             <tr>
               @if('dir1' == $direction)
                 <th>{{ session('language_name') }}</th>

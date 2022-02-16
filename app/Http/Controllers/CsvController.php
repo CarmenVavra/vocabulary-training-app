@@ -7,6 +7,7 @@ use App\Models\Vocabulary;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class CsvController extends Controller
 {    
@@ -40,7 +41,7 @@ class CsvController extends Controller
                 //dd($filedata);
 
                 for($j=0; $j<$count; $j++){
-                    $dataArray[$i][] = $filedata[$j];
+                    $dataArray[$i][] = trim($filedata[$j]);
                 }
                 $i++;
            }
@@ -111,36 +112,42 @@ class CsvController extends Controller
         }
     }
 
-    public function downloadContent(Request $request){
-        /* $fileName = 'vocs.csv';
-        $vocs = Vocabulary::all();
-        $fvocs = ForeignVocabulary::all();
+    public function exportContent(){
+
+        $vocabularies = session('vocabularies');
+        $fileName = 'exportCSV.csv';
+        foreach($vocabularies as $vocabulary){
+            $vocs[] = $vocabulary;
+        } 
+
+        Config::set('excel.csv.delimeter',';');
+
+        $headers = array(
+            "Content-type"        => "text/csv; charset=utf-8",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        );
+
+
+        $columns = array(session('language_name'), session('foreign_name'));
      
-             $headers = array(
-                 "Content-type"        => "text/csv",
-                 "Content-Disposition" => "attachment; filename=$fileName",
-                 "Pragma"              => "no-cache",
-                 "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-                 "Expires"             => "0"
-             );
-     
-             $columns = array('Deutsch', 'Englisch');
-     
-             $callback = function() use($bocs, $columns) {
+             $callback = function() use($vocs, $columns) {
                  $file = fopen('php://output', 'w');
-                 fputcsv($file, $columns);
      
                  foreach ($vocs as $voc) {
-                     $row['Deutsch']  = $voc->deutsch;
-                     $row['Englisch']    = $boc->englisch;
+                     
+                     $row[session('language_name')] = $voc->vn;
+                     $row[session('foreign_name')] = $voc->fvn;
      
-                     fputcsv($file, array($row['Deutsch'], $row['Englisch']));
+                     fputcsv($file, array(trim($row[session('language_name')]), trim($row[session('foreign_name')])), ";", " ");
                  }
      
                  fclose($file);
              };
      
-             return response()->stream($callback, 200, $headers); */
+             return response()->stream($callback, 200, $headers); 
     }
 
 

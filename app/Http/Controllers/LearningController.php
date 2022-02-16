@@ -92,6 +92,12 @@ class LearningController extends Controller
         //
     }
 
+    /**
+     * selects vocabularies based on filter-settings
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response 
+     */
     public function filterSelect(Request $request){
 
         $countDataRows = $this->getCountDataRows();
@@ -150,6 +156,7 @@ class LearningController extends Controller
 
             }
        }
+       session(['vocabularies'=>$vocabularies]);
        return view('src.training.learning', compact('vocabularies', 'direction', 'countDataRows'));
     }
 }

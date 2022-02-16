@@ -97,7 +97,6 @@ class QuizController extends Controller
     * 
     * @return $vocabularies
     */
-
     public function filterSelect(Request $request){
         //dd($request);
         $jsVariable = 1;
