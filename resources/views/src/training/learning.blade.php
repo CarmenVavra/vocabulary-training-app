@@ -1,8 +1,9 @@
 @extends('layouts.main')
 @section('css')
-  <link rel="stylesheet" href="{{ asset('css/lernen.css') }}">
+  
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/lernen.css') }}">
 @endsection
 @section('content')
   <div id="breadcrumb" aria-label="breadcrumb">
@@ -116,12 +117,12 @@
     {{-- {{ dd($vocabularies)}} --}}
     <div id="contTblLearning" class="container">
       <div class="alert dark-bg">
-        <table class="table table-striped table-hover" id="vocLearnTable">
-          <thead>
-            <tr>
-              <td></td>
-              <td colspan="2" style="text-align: right"><a href="{{ route('export.csv') }}" class="btn btn-turkis">CSV exportieren</a></td>
-            </tr>
+        <div class="col-md-12 btn-group" style="justify-content: right">
+            <a href="{{ route('export.csv') }}" class="btn btn-turkis btn-export">CSV exportieren</a>
+            <a href="{{ route('create.pdf') }}" class="btn btn-turkis btn-export">PDF erstellen</a>
+        </div>
+        <table class="table table-striped table-dark table-hover" id="vocLearnTable">
+          <thead class="table-header-dark">
             <tr>
               @if('dir1' == $direction)
                 <th>{{ session('language_name') }}</th>

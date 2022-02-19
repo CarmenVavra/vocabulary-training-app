@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 
+
 class LearningController extends Controller
 {
     use FilterTrait;
@@ -159,4 +160,8 @@ class LearningController extends Controller
        session(['vocabularies'=>$vocabularies]);
        return view('src.training.learning', compact('vocabularies', 'direction', 'countDataRows'));
     }
+
+
+
+
 }

@@ -384,8 +384,7 @@
         });
       }
 
-
-      
+     
       switch(true){
         case (limit < 5) : millSec = 3000; break;
         case (limit < 10) : millSec = 7000; break;
@@ -396,6 +395,7 @@
 
       // darf erst ausgeführt werden, wenn das Spielfeld fertig aufgebaut ist->setTimeout()
       setTimeout(function() { 
+      
           spinner.style.display = 'none';      
           const listItems = document.querySelectorAll('.list-group-item');
           let cardId;
@@ -454,7 +454,7 @@
             
           });    
 
-          
+ 
      }, millSec);
 
           

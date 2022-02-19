@@ -1,0 +1,3 @@
+session überschreiben
+session.put --> überschreiben -> assoziatives Array mitgeben
+session().get -> bekomme die id

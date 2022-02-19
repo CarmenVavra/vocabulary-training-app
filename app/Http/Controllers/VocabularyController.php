@@ -6,6 +6,8 @@ use App\Models\ForeignVocabulary;
 use App\Models\Vocabulary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\App;
 
 class VocabularyController extends Controller
 {
@@ -171,16 +173,12 @@ class VocabularyController extends Controller
         return redirect()->route('vocabulary.index');
     }
 
-
-
-
-/*     public function vocedit(Vocabulary $vocabulary){
-        return view('src/vocabulary/vocabulary', compact('vocabulary'));
-    } */
-
-
-
-
+    /**
+     * new vocabulary input auutocomplete
+    * @param  \Illuminate\Http\Request  $request
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function autocomplete(Request $request){
         header('Content-Type, application/json; charset = utf-8');
 
@@ -189,12 +187,25 @@ class VocabularyController extends Controller
             $input = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                     ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
                                     ->where('vocabularies.user_id', Auth::user()->id)
-                                    ->where('vocabularies.name', 'LIKE', $request->searchString.'%')
+                                    ->where('vocabularies.name', 'LIKE', $request->searchString.'%')->distinct()
                                     ->orderBy('vocabularies.name')->limit(5)->get();
         
             return response()->json([
                 'input'=>$input
             ]);
         } 
+    }
+
+    public function createPDF(){
+        foreach(session('vocabularies') as $vocabulary){
+            $vocabularies[] = $vocabulary;
+        }
+
+        view()->share ('vocabularies', $vocabularies);
+        /* $pdf = App::make('dompdf.wrapper'); */
+        $pdf = PDF::loadView('/pdf/vocabulariesList', $vocabularies);
+        
+
+        return $pdf->download('/vocs.pdf');
     }
 }

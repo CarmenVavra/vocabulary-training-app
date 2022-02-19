@@ -37,3 +37,12 @@ input[type="checkbox"]{
   height: 10px;
   display: none;
 }
+
+.table-header-dark{
+  background-color: rgb(43, 48, 53);
+}
+
+.btn-export{
+  font-weight: bold;
+
+}

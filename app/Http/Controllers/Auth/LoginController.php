@@ -36,5 +36,9 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+
+/*         $language = Languages::where('')
+        session(['language_id'=>$language->id]);
+        session(['language_name'=>$language->name]); */
     }
 }

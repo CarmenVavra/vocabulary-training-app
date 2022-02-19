@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function(){
     
     Route::post('/uploadcsv', [CsvController::class, 'uploadContent'])->name('upload.csv');
     Route::get('/exportcsv', [CsvController::class, 'exportContent'])->name('export.csv');
+    Route::get('/createpdf', [VocabularyController::class, 'createPDF'])->name('create.pdf');
 
     
     Route::get('/vocabulary', [VocabularyController::class, 'index'])->name('vocabulary.index');
