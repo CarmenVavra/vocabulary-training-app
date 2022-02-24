@@ -19,10 +19,12 @@ class PairController extends Controller
      */
     public function index()
     {
-        
+        $jsonMinDate = $this->getMinDate();
+        $jsonMaxDate = $this->getMaxDate();
+
         $countDataRows = $this->getCountDataRows();
 
-        return view('src.training.pair', compact('countDataRows'));
+        return view('src.training.pair', compact('countDataRows', 'jsonMinDate', 'jsonMaxDate'));
     }
 
     /**
@@ -103,6 +105,8 @@ class PairController extends Controller
 
         $fieldColumn = $fieldSize[0];
         $fieldRow = $fieldSize[1];
+        $jsonMinDate = $this->getMinDate();
+        $jsonMaxDate = $this->getMaxDate();
 
         $limit = ($fieldSize[0] * $fieldSize[1])/2;
 
@@ -138,7 +142,7 @@ class PairController extends Controller
         
         $jsVariable = 1;
         $jsonStringPHP = json_encode($vocabularies);
-        return view('src.training.pair', compact('vocabularies', 'jsonStringPHP', 'jsVariable', 'countDataRows'));
+        return view('src.training.pair', compact('vocabularies', 'jsonStringPHP', 'jsVariable', 'countDataRows', 'jsonMinDate', 'jsonMaxDate'));
 
   
                                  

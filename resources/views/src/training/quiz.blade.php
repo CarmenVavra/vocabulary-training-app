@@ -148,6 +148,8 @@
         locale: {
           format: 'DD.MM.YYYY'
         },
+        minDate: <?= ($jsonMinDate) ?? ''; ?>,
+        maxDate: <?= ($jsonMaxDate) ?? ''; ?>,
 /*         startDate: '2013-01-01',
         endDate: '2013-12-31', */
         opens: 'left'

@@ -21,10 +21,12 @@ class LearningController extends Controller
      */
     public function index()
     {
+        $jsonMinDate = $this->getMinDate();
+        $jsonMaxDate = $this->getMaxDate();
 
         $countDataRows = $this->getCountDataRows();
 
-        return view('src.training.learning', compact('countDataRows'));
+        return view('src.training.learning', compact('countDataRows', 'jsonMinDate', 'jsonMaxDate'));
     }
 
     /**
@@ -106,6 +108,8 @@ class LearningController extends Controller
         $dateRange = $this->getStartAndEndDate($request);
         $fromDate = $dateRange[0];
         $toDate = $dateRange[1];
+        $jsonMinDate = $this->getMinDate();
+        $jsonMaxDate = $this->getMaxDate();
 
         $sortOrder = $request->radioSortorder;        
         $direction = $request->radioDirection;
@@ -158,7 +162,7 @@ class LearningController extends Controller
             }
        }
        session(['vocabularies'=>$vocabularies]);
-       return view('src.training.learning', compact('vocabularies', 'direction', 'countDataRows'));
+       return view('src.training.learning', compact('vocabularies', 'direction', 'countDataRows', 'jsonMinDate', 'jsonMaxDate'));
     }
 
 

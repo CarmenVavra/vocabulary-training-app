@@ -20,9 +20,12 @@ class QuizController extends Controller
      */
     public function index()
     {
+        $jsonMinDate = $this->getMinDate();
+        $jsonMaxDate = $this->getMaxDate();
+
         $countDataRows = $this->getCountDataRows();
 
-        return view('src.training.quiz', compact('countDataRows'));
+        return view('src.training.quiz', compact('countDataRows', 'jsonMinDate', 'jsonMaxDate'));
     }
 
     /**
@@ -105,6 +108,8 @@ class QuizController extends Controller
         $dateRange = $this->getStartAndEndDate($request);
         $fromDate = $dateRange[0];
         $toDate = $dateRange[1];
+        $jsonMinDate = $this->getMinDate();
+        $jsonMaxDate = $this->getMaxDate();
 
         $countDataRows = $this->getCountDataRows();
         $marker = $this->getMarker($request);
@@ -138,7 +143,7 @@ class QuizController extends Controller
             $jsonStringPHP = json_encode($vocabularies);
             $radioDirection = $request->radioDirection;
 
-            return view('src.training.quiz', compact('vocabularies','jsonStringPHP', 'jsVariable', 'radioDirection', 'countDataRows', 'limit'));
+            return view('src.training.quiz', compact('vocabularies','jsonStringPHP', 'jsVariable', 'radioDirection', 'countDataRows', 'limit', 'jsonMinDate', 'jsonMaxDate'));
 
     }
 

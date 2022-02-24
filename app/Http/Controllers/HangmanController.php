@@ -9,6 +9,7 @@ use App\Models\Vocabulary;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Route;
 
 class HangmanController extends Controller
@@ -21,11 +22,12 @@ class HangmanController extends Controller
      */
     public function index()
     {
+        $jsonMinDate = $this->getMinDate();
+        $jsonMaxDate = $this->getMaxDate();
 
-        //dd(Route::currentRouteName());
         $countDataRows = $this->getCountDataRows();
 
-        return view('src.training.hangman', compact('countDataRows'));
+        return view('src.training.hangman', compact('countDataRows', 'jsonMinDate', 'jsonMaxDate'));
     }
 
     /**
@@ -105,6 +107,9 @@ class HangmanController extends Controller
         $dateRange = $this->getStartAndEndDate($request);
         $fromDate = $dateRange[0];
         $toDate = $dateRange[1];
+        $jsonMinDate = $this->getMinDate();
+        $jsonMaxDate = $this->getMaxDate();
+
 
         $countDataRows = $this->getCountDataRows();
        
@@ -130,7 +135,7 @@ class HangmanController extends Controller
         }
 
         $vocJsonStringPHP = json_encode($vocabularies);
-        return view('src.training.hangman', compact('vocabularies', 'vocJsonStringPHP', 'countDataRows'));
+        return view('src.training.hangman', compact('vocabularies', 'vocJsonStringPHP', 'countDataRows', 'jsonMinDate', 'jsonMaxDate'));
     }
 
 

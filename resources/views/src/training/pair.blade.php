@@ -149,8 +149,8 @@
         locale: {
           format: 'DD.MM.YYYY'
         },
-/*         startDate: '2013-01-01',
-        endDate: '2013-12-31', */
+        minDate: <?= ($jsonMinDate) ?? ''; ?>,
+        maxDate: <?= ($jsonMaxDate) ?? ''; ?>,
         opens: 'left'
       }, function(start, end, label) {
         //console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));

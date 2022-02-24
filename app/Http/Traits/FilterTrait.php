@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Traits;
 
+use App\Models\ForeignVocabulary;
 use App\Models\Vocabulary;
 use DateTime;
 use Illuminate\Http\Request;
@@ -188,6 +189,28 @@ trait FilterTrait{
                 'end'=>$request->end
             ]);
         }
+    }
+
+    public function getMinDate(){
+        $minimumDate = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                        ->where('vocabularies.user_id', Auth::user()->id)
+                                        ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                        ->min('foreign_vocabularies.created_at');
+        
+        $minDate = new DateTime($minimumDate);
+        $minDate = $minDate->format('d.m.Y');
+        return json_encode($minDate);
+    }
+
+    public function getMaxDate(){
+        $maximumDate = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                        ->where('vocabularies.user_id', Auth::user()->id)
+                                        ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                        ->max('foreign_vocabularies.created_at');
+
+        $maxDate = new DateTime($maximumDate);
+        $maxDate = $maxDate->format('d.m.Y');
+        return json_encode($maxDate); 
     }
 }
 
