@@ -331,7 +331,7 @@
     "use strict";
 
     let limit = <?php echo ($_POST['countQuestions']) ?? 0 ?>;
-    let vocFromDB = <?= ($jsonStringPHP) ?? ''; ?>;
+    let vocFromDB = <?= ($jsonStringPHP) ?? '""'; ?>;
     let radioDirection = "<?= ($radioDirection) ?? ''; ?>";
 
     let question;
@@ -347,9 +347,151 @@
     let millSec = 0;
     const quizresult = document.querySelector('#overlay-quizresult');
     
+    //::PETER:: Funktion für die Cards. Parameter beim ersten Aufruf -> Anzahl der Fragen
+    function quizFetchFake(length){
+        spinner.style.display = 'block';
+        let i = length;
+        //::PETER:: Anzahl der Fragen 1 subtrahieren
+        length--;
+        $.ajax({
+            type:'GET',
+            url:"{{ route('quiz.fetch.fake') }}",
+            datatyp: "json",
+            data:{radioDirection:radioDirection},
+            success:function(data){
+              fakVoc = data.fakeVoc;
+              cardSet = new CardSet(vocFromDB[length], fakVoc, radioDirection);
+              question = cardSet.getQuestion();
+              answer = cardSet.getAnswer();
+              fakeAnswers = cardSet.getFakeAnswers();
+    
+              if( i % 4 === 0 || flexContainer === undefined){
+                content.insertAdjacentHTML('beforeend', '<div id="contId_'+i+'" class="card-flex-container">');
+                flexContainer = document.querySelector('#contId_'+i);
+              }
+              
+              flexContainer.insertAdjacentHTML('beforeend', '<div id="card_' + i + '" class="card bg-turkis" style="width: 18rem;"><div class="card-body">');
+              outputQuestion = document.querySelector('#card_' + i + ' .card-body');
+              outputQuestion.insertAdjacentHTML('beforeend', '<div class="card-title bg-darkgray">' + question + '</div><ul class="list-group list-group-flush">');
+              outputAnswers = document.querySelector('#card_' + i + ' .card-body .list-group');
 
+              fakeAnswers.forEach(function(value, index) {
+                //::Peter:: ich würde die Frage im Data Attribut mitgeben data-
+                outputAnswers.insertAdjacentHTML('beforeend', '<li class="list-group-item" data-q="'+ question +'">' + value + '</li>');
+              });
+              
+              if( length > 0){
+                //::PETER:: Falls Anzahl der Fragen größer als 0 ist, wird die Funktion nochmal aufgerufen
+                quizFetchFake(length);
+              }
+              else{
+                //::PETER:: Falls Anzahl der Fragen  0 ist, wird die Funktion quizFetchFakeEnd aufgerufen
+                quizFetchFakeEnd();
+              }
+            }           
+        });
+        
+    }
 
-    for (let i = 1; i <= vocFromDB.length; i++) {
+  function quizFetchFakeEnd(){
+      spinner.style.display = 'none';
+      //::Peter:: Hier würde ich den Eventhandler auf die UL setzten und über target arbeitern
+      const listItems = document.querySelectorAll('#outputQuiz .list-group');
+
+      let errorCount = 0;
+      let correctCount = 0;
+
+      const quizErrors = document.querySelector('#quizResult span');
+      quizErrors.innerText = errorCount;
+      
+      listItems.forEach(function(value, index){
+          value.onmouseup = function(e){
+            if( e.target.nodeName == 'LI'){
+              let listItem = e.target;
+              let question = listItem.getAttribute('data-q'); //::Peter:: Data Attribut auslesen
+              let selectedAnswer = listItem.innerText;
+   
+              $.ajax({
+                type:'GET',
+                url:"{{ route('quiz.check.answers') }}",
+                datatype:'json',
+                data:{
+                  question:question, 
+                  selectedAnswer:selectedAnswer
+                },
+                success:function(data){
+                    if(typeof data.check !== undefined  && data.check ){
+                        listItem.classList.add('correct');
+                        value.classList.add('prevent-pointer-events'); //::Peter:: die CSS Class nur noch auf die UL setzten
+                        correctCount++;
+                        if(correctCount == limit){
+                          quizresult.style.display = 'block';
+                        }
+                    }
+                    else{
+                      listItem.classList.add('failure');
+                      errorCount++;   
+                      quizErrors.innerText = errorCount;   
+                    } 
+                }
+              });
+            }
+          }
+      });
+
+/*       listItems.forEach(function(value, index){
+            
+            //console.log(itemCount++);
+            value.onmousedown = function(e){
+          
+              cardId = e.target.parentNode.parentNode.parentNode.id;
+              cardContainer = e.target.parentNode.parentNode.parentNode;
+              cardTitle = e.target.parentNode.previousElementSibling.innerText;
+              selectedAnswer = value.innerText;            
+              
+              $.ajax({
+                type:'GET',
+                url:"{{ route('quiz.check.answers') }}",
+                datatype:'json',
+                data:{
+                  question:cardTitle, 
+                  selectedAnswer:selectedAnswer
+                },
+                success:function(data){
+
+                  if(data.quizPair.vn == cardTitle){
+                    
+                    if(data.quizPair.fvn == selectedAnswer){
+                      value.classList.add('correct');
+                      value.classList.remove('failure');
+                      value.classList.add('prevent-pointer-events');
+                      cardContainer.classList.add('prevent-pointer-events');
+                      correctCount++;
+                      if(correctCount == limit){
+                        quizresult.style.display = 'block';
+                      }
+                    }else{
+                      value.classList.add('failure');
+                      errorCount++;   
+                      quizErrors.innerText = errorCount;         
+                    }     
+
+                  }
+                  
+                }
+              });
+              
+            };
+            
+          }); */  
+    }
+    
+    if( vocFromDB.length > 0 ){
+      quizFetchFake( vocFromDB.length );
+    }
+    //console.log(vocFromDB.length);
+
+/*     for (let i = 1; i <= vocFromDB.length; i++) {
         spinner.style.display = 'block';
       
         $.ajax({
@@ -455,7 +597,7 @@
           });    
 
  
-     }, millSec);
+     }, millSec); */
 
           
    

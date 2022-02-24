@@ -182,13 +182,14 @@
 
 
             for (let dataRow of data.input) {
-              contentV.insertAdjacentHTML('beforeend', '<li>' + dataRow.vn + '</li>');
+              contentV.insertAdjacentHTML('beforeend', '<li data-fvn="' + dataRow.fvn + '">' + dataRow.vn + '</li>');
 
               listElement = document.querySelectorAll('#resultV ul li');
               listElement.forEach(function(value, index){
                 value.onclick = function(liElem){
                   contentV.classList.add('hide');
                   inputFieldVocabulary.value = liElem.target.textContent;
+                  inputFieldForeign.value = liElem.target.getAttribute('data-fvn')
                 }
               });
 
@@ -226,13 +227,15 @@
 
             for (let dataRow of data.input) {
               console.log(dataRow.fvn);
-              contentFV.insertAdjacentHTML('beforeend', '<li>' + dataRow.fvn + '</li>');
+              contentFV.insertAdjacentHTML('beforeend', '<li data-vn="' + dataRow.vn + '">' + dataRow.fvn + '</li>');
 
               listElement = document.querySelectorAll('#resultFV ul li');
               listElement.forEach(function(value, index){
                 value.onclick = function(liElem){
                   contentFV.classList.add('hide');
                   inputFieldForeign.value = liElem.target.textContent;
+                  //::Peter:: ich würde auch das zweite input befüllen
+                  inputFieldVocabulary.value = liElem.target.getAttribute('data-vn')
                 }
               });
 

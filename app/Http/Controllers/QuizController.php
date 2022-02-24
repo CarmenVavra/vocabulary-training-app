@@ -201,10 +201,14 @@ class QuizController extends Controller
                                             ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
                                             ->where('vocabularies.user_id', Auth::user()->id)
                                             ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                            ->where('vocabularies.name', $request->question)
+                                            ->where('vocabularies.name','like',$request->question)
                                             ->first();
+            //::Peter:: ich würde ein weiteren Wert check (boolean) mitgeben
+            $check = ( $quizPair && $quizPair->fvn == $request->selectedAnswer  ) ? true : false;
+            
             return response()->json([
-                'quizPair'=>$quizPair
+                'quizPair'=>$quizPair,
+                'check'=>$check
             ]);
         
         

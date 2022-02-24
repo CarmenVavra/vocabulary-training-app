@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class VocabularyController extends Controller
 {
@@ -180,14 +181,18 @@ class VocabularyController extends Controller
     * @return \Illuminate\Http\Response
     */
     public function autocomplete(Request $request){
+
         header('Content-Type, application/json; charset = utf-8');
-
+        
         if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
-
-            $input = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+            //::Peter:: hier sollte noch die Sprache eingeschränkt werden
+            $input = Vocabulary::join('foreign_vocabularies', function ($join) {
+                                            $join->on('vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id');
+                                            $join->on('foreign_vocabularies.language_id', '=', DB::raw(session()->get('foreign_id')));
+                                        })
                                     ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
                                     ->where('vocabularies.user_id', Auth::user()->id)
-                                    ->where('vocabularies.name', 'LIKE', $request->searchString.'%')->distinct()
+                                    ->where('vocabularies.name', 'LIKE', "$request->searchString%")
                                     ->orderBy('vocabularies.name')->limit(5)->get();
         
             return response()->json([
