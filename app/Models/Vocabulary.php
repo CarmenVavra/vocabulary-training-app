@@ -15,21 +15,32 @@ class Vocabulary extends Model
         'language_id'
     ];
 
+     /**
+     * foreignkey constraints
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    /**
+     * foreignkey constraints
+     * 
+     * @return \Illuminate\Http\Response
+     */    
     public function language()
     {
         return $this->belongsTo(Language::class, 'language_id', 'id');
     }
 
-
+    /**
+     * foreignkey constraints
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function foreignVocabularies(){
         return $this->belongsToMany(ForeignVocabulary::class, 'id', 'vocabulary_id');
     }
-
-
-
 }

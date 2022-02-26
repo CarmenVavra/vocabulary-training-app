@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Config;
 
 class CsvController extends Controller
 {    
+    /**
+     * uploads CSV-Content from CSV-File, records assigning to an array for saving into DB
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function uploadContent(Request $request){
 
         if($request->upload != null){
@@ -20,7 +25,10 @@ class CsvController extends Controller
             $extension = $pathinfo['extension'];
             $fileSize = $_FILES['upload']['size'];
 
-            $this->checkUploadedFileProperties($extension, $fileSize);
+            $csv = $this->checkUploadedFileProperties($extension, $fileSize);
+            if(!$csv){
+                return back()->with('error', 'Bitte nur csv Dateien hochladen!'); 
+            }
             $location = 'uploadsCSV';
 
             $filepath = public_path($location.'/'.$filename);
@@ -96,12 +104,18 @@ class CsvController extends Controller
             }
             
         }else{
-            return back()->with('error', 'Bitte eine Datei auswählen!');
+            return back()->with('error', 'Bitte eine CSV Datei auswählen!');
         }
         
         return back()->with('success', 'Die Daten wurden erfolgreich gespeichert!');
     }
 
+    /**
+     * checks uploaded File-Properties
+     * @param $extension, $fileSize
+     * 
+     * @return true|false
+     */
     public function checkUploadedFileProperties($extension, $fileSize){
         $maxFileSize = 2097152;
 
@@ -109,9 +123,17 @@ class CsvController extends Controller
             if($fileSize > $maxFileSize){
                 throw new Exception('das File ist zu groß!', 413);
             }
+            return true;
+        }else{
+            return false;
         }
     }
 
+    /**
+     * ecports selected content to csv-file
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function exportContent(){
 
         $vocabularies = session('vocabularies');

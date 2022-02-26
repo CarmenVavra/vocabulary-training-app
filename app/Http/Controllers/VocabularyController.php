@@ -201,6 +201,11 @@ class VocabularyController extends Controller
         } 
     }
 
+    /**
+     * creates PDF and shows download-dialog
+     * 
+     * @return $pdf download-dialog
+     */
     public function createPDF(){
         foreach(session('vocabularies') as $vocabulary){
             $vocabularies[] = $vocabulary;

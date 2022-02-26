@@ -30,18 +30,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/* Route::get('/', function () {
-    return view('welcome');
-});
- */
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function(){
-
-    // Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
-    // Route::post('/welcome', [WelcomeController::class, 'index'])->name('welcome.index');
 
     Route::get('/home', [LanguageController::class, 'index'])->name('get.language.index');
     Route::post('/home', [LanguageController::class, 'index'])->name('post.language.index');
@@ -113,7 +106,6 @@ Route::middleware('auth')->group(function(){
     Route::get('/hangmanselectall', [HangmanController::class, 'selectAll'])->name('hangman.select.all');
     Route::post('/hangman', [HangmanController::class, 'filterSelect'])->name('hangman.filter.select');
     
-    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
 });    
 

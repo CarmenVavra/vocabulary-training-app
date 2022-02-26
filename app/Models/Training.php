@@ -16,22 +16,41 @@ class Training extends Model
         'language_lernen_id',
         'highscore'
     ];
-
+        /**
+     * foreignkey constraints
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    /**
+     * foreignkey constraints
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function trainingType()
     {
         return $this->belongsTo(TrainingType::class, 'training_type_id', 'id');
     }
 
+    /**
+     * foreignkey constraints
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function language()
     {
         return $this->belongsTo(Language::class, 'language_id', 'id');
     }
 
+    /**
+     * foreignkey constraints
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function languageLernen()
     {
         return $this->belongsTo(Language::class, 'language_lernen_id', 'id');

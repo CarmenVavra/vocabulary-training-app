@@ -26,19 +26,38 @@ class User extends Authenticatable
         'last_login'
     ];
 
-
+    /**
+     * foreignkey constraints
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function role(){
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
+    /**
+     * foreignkey constraints
+     * 
+     * @return \Illuminate\Http\Response
+     */    
     public function training(){
         return $this->hasMany(Training::class, 'user_id', 'id');
     }
 
+    /**
+     * foreignkey constraints
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function vocabulary(){
         return $this->hasMany(Vocabulary::class, 'user_id', 'id');
     }
 
+    /**
+     * foreignkey constraints
+     * 
+     * @return \Illuminate\Http\Response
+     */    
     public function language(){
         return $this->hasMany(Language::class, 'user_id', 'id');
     }

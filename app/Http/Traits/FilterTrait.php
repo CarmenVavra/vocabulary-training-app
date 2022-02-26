@@ -20,6 +20,11 @@ trait FilterTrait{
                             ->where('foreign_vocabularies.language_id', session('foreign_id'))->get()->count();
     }
 
+    /**
+     * selects start and end Date from input:daterange
+     * 
+     * @return array $daterange -> fromDate, toDate
+     */
     public function getStartAndEndDate(Request $request){
         $rangeDate = explode(' - ', $request->daterange);
      
@@ -48,6 +53,11 @@ trait FilterTrait{
 
     }
 
+    /**
+     * assigns values to selected marker -> not selected value = 9
+     * 
+     * @return array merkerValues
+     */
     public function getMarker(Request $request){
 
         if(isset($request->diffRed)){
@@ -75,7 +85,7 @@ trait FilterTrait{
     * Filter-settings datetrange; checks if vocabularies exist in daterange
     * @param Request $request
     * 
-    * @return JSON-Object response
+    * @return \Illuminate\Http\Response
     */
     public function checkDate(Request $request){
         
@@ -95,6 +105,7 @@ trait FilterTrait{
                                         ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                         ->whereBetween('foreign_vocabularies.created_at', [$request->start, $request->end])
                                         ->where('foreign_vocabularies.marker_id', '>', '0')->groupBy('foreign_vocabularies.id')->get()->count();
+
             return response()->json([
                 'dateDataRow'=>$dateDataRow,
                 'markerDataRow'=>$markerDataRow,
@@ -109,7 +120,7 @@ trait FilterTrait{
     * Filter-settings difficultyLevel; checks if vocabularies exist in difficultyLevel
     * @param Request $request
     * 
-    * @return JSON-Object response
+    * @return \Illuminate\Http\Response
     */
     public function checkDifficultyLevel(Request $request){
 
@@ -152,7 +163,6 @@ trait FilterTrait{
                                         ->where('foreign_vocabularies.marker_id', $request->marker)
                                         ->groupBy('foreign_vocabularies.id')->get()->count();
 
-
             return response()->json([
                 'diffDataRow'=>$diffDataRow,
                 'start'=>$request->start,
@@ -191,6 +201,11 @@ trait FilterTrait{
         }
     }
 
+    /**
+     * selects the minimum foreign_vocabularies created_date and assigns the day before the selected date -> filter daterange selection
+     *
+     * @return $minDate -1 day
+     */
     public function getMinDate(){
         $minimumDate = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                         ->where('vocabularies.user_id', Auth::user()->id)
@@ -201,6 +216,11 @@ trait FilterTrait{
         return json_encode($minDate);
     }
 
+    /**
+     * selects the maximum foreign_vocabularies created_date and assigns the day after the selected date -> filter daterange selection
+     *
+     * @return $maxDate +1 day
+     */
     public function getMaxDate(){
         $maximumDate = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                         ->where('vocabularies.user_id', Auth::user()->id)
@@ -211,9 +231,3 @@ trait FilterTrait{
         return json_encode($maxDate); 
     }
 }
-
-
-
-
-
-

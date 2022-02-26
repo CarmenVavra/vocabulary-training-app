@@ -108,12 +108,23 @@ class LanguageController extends Controller
         return redirect()->route('language.admin.index')->with('success', 'Die Sprache wurde gelöscht!');
     }
 
+    /**
+     * set cookie for ForeignLanguage id, name
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function setCookie(Request $request){
         $foreign_id = Language::select('id', 'name')->where('short_name', $request->foreignLanguage)->get();
         session(['foreign_id'=>$foreign_id[0]->id, 'foreign_name'=>$foreign_id[0]->name]);
         return redirect()->route('vocabulary.index');
     }
 
+    /**
+     * admin-area selects all languages
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function adminIndex(){
 
         $languages = Language::leftJoin('users', 'users.id', '=', 'languages.user_id')

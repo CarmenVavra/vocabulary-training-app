@@ -16,6 +16,11 @@ class ForeignVocabulary extends Model
         'marker_id'
     ];
 
+    /**
+     * foreignkey constraints
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function vocabularies(){
         return $this->belongsTo(Vocabulary::class, 'vocabulary_id', 'id');
     }

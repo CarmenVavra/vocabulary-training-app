@@ -85,6 +85,12 @@ class ForeignVocabularyController extends Controller
         //
     }
 
+    /**
+     * setMarker on training/learning Site
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function setMarker(Request $request){
 
         header('Content-Type, application/json; charset = utf-8');
@@ -103,6 +109,12 @@ class ForeignVocabularyController extends Controller
         }        
     }
 
+    /**
+     * autocomplete -> new foreignVocabularies
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function autocomplete(Request $request){
         header('Content-Type, application/json; charset = utf-8');
 
