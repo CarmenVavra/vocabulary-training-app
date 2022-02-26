@@ -197,7 +197,6 @@ trait FilterTrait{
                                         ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                         ->min('foreign_vocabularies.created_at');
         
-
         $minDate = date("d.m.Y", strtotime($minimumDate.'- 1 days'));
         return json_encode($minDate);
     }
@@ -207,6 +206,7 @@ trait FilterTrait{
                                         ->where('vocabularies.user_id', Auth::user()->id)
                                         ->where('foreign_vocabularies.language_id', session('foreign_id'))
                                         ->max('foreign_vocabularies.created_at');
+        
         $maxDate = date("d.m.Y", strtotime($maximumDate.'+ 1 days'));
         return json_encode($maxDate); 
     }
