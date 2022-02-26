@@ -113,7 +113,7 @@
           <div id="card-content">
             <div class="card-body">
               <p class="card-text" id="pairsTime"><strong>Benötigte Zeit:</strong> <span></span></p>
-              <p class="card-text" id="pairsHighscore"><strong>Highscore:</strong> <span>$highscore</span></p>
+              <p class="card-text" id="pairsHighscore"><strong>{{-- Highscore: --}}</strong> <span>{{-- $highscore --}}</span></p>
               <p class="card-text" id="outputPairsErrors"><strong>Fehler:</strong> <span></span></p>
               <hr>
               <button class="btn btn-turkis">OK</button>

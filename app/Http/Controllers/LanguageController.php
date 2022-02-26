@@ -134,7 +134,7 @@ class LanguageController extends Controller
         return view('src.language.index', compact('languages'));
     }
 
-        /**
+     /**
      * shows modal to confirm delete
      * @param Vocabulary $vocabulary
      * 
@@ -149,7 +149,7 @@ class LanguageController extends Controller
         return view('src.language.index', compact('languages', 'deleteLanguage'));
     }
 
-            /**
+     /**
      * cancel-button Modal confirm delete
      * 
      * @return \Illuminate\Http\Response 
