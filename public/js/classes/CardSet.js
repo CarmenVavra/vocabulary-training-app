@@ -18,10 +18,7 @@ class CardSet{
         this.fakeAnswers.push(fake.vn);
       }  
       
-/* 
-      for(let i=0;i<fakVoc.length;i++){
-        this.fakeAnswers.push(fakVoc[i].vn);
-      } */
+
     }
 
 
@@ -39,14 +36,29 @@ class CardSet{
 
   }
 
+  /**
+   * returns the question
+   * 
+   * @returns question
+   */
   getQuestion(){
     return this.question;
   }
 
+  /**
+   * returns the right answer
+   * 
+   * @returns answer 
+   */
   getAnswer(){
     return this.answer;
   }
 
+  /**
+   * returns fake answers and right answer
+   * 
+   * @returns fakeAnswers 
+   */
   getFakeAnswers(){
     
     this.fakeAnswers.push(this.answer);

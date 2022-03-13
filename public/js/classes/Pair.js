@@ -5,14 +5,30 @@ class Pair {
 
   }
 
+  /**
+   * returns the first selected card
+   * 
+   * @returns card1
+   */
   getCard1() {
     return this.card1;
   }
 
+  /**
+   * returns the second selected card
+   * 
+   * @returns card2
+   */
   getCard2() {
     return this.card2;
   }
-
+  
+  /**
+   * compares card1 with card2
+   * @params firstLanguageCard, secondLanguageCard
+   * 
+   * @returns true|false
+   */
   compareCards(germanArray, spainArray) {
     let indexCard1;
     let indexCard2;

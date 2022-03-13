@@ -328,11 +328,9 @@
         });
       });
     });
-</script>
+    
 
-  <script>
-    "use strict";
-
+    /** QUIZ */
     let limit = <?php echo ($_POST['countQuestions']) ?? 0 ?>;
     let vocFromDB = <?= ($jsonStringPHP) ?? '""'; ?>;
     let radioDirection = "<?= ($radioDirection) ?? ''; ?>";
@@ -349,12 +347,15 @@
     let fakVoc = [];
     let millSec = 0;
     const quizresult = document.querySelector('#overlay-quizresult');
-    
-    //::PETER:: Funktion für die Cards. Parameter beim ersten Aufruf -> Anzahl der Fragen
+
+    /**
+     * load quizcards rekursiv
+     * @param length Anzahl der Fragen -> beim ersten Aufruf -> dann rekursiv immer eine Anzahl weniger
+    */
     function quizFetchFake(length){
         spinner.style.display = 'block';
         let i = length;
-        //::PETER:: Anzahl der Fragen 1 subtrahieren
+        // Anzahl der Fragen 1 subtrahieren
         length--;
         $.ajax({
             type:'GET',
@@ -362,6 +363,7 @@
             datatyp: "json",
             data:{radioDirection:radioDirection},
             success:function(data){
+              console.log(data);
               fakVoc = data.fakeVoc;
               cardSet = new CardSet(vocFromDB[length], fakVoc, radioDirection);
               question = cardSet.getQuestion();
@@ -379,26 +381,30 @@
               outputAnswers = document.querySelector('#card_' + i + ' .card-body .list-group');
 
               fakeAnswers.forEach(function(value, index) {
-                //::Peter:: ich würde die Frage im Data Attribut mitgeben data-
+                // ich würde die Frage im Data Attribut mitgeben data-
                 outputAnswers.insertAdjacentHTML('beforeend', '<li class="list-group-item" data-q="'+ question +'">' + value + '</li>');
               });
               
               if( length > 0){
-                //::PETER:: Falls Anzahl der Fragen größer als 0 ist, wird die Funktion nochmal aufgerufen
+                // Falls Anzahl der Fragen größer als 0 ist, wird die Funktion nochmal aufgerufen
                 quizFetchFake(length);
               }
               else{
-                //::PETER:: Falls Anzahl der Fragen  0 ist, wird die Funktion quizFetchFakeEnd aufgerufen
+                // Falls Anzahl der Fragen  0 ist, wird die Funktion quizFetchFakeEnd aufgerufen
                 quizFetchFakeEnd();
               }
             }           
         });
         
     }
-
+  
+  /**
+   * after loading all quizcards, check answers on click
+   * 
+  */
   function quizFetchFakeEnd(){
       spinner.style.display = 'none';
-      //::Peter:: Hier würde ich den Eventhandler auf die UL setzten und über target arbeitern
+      //Hier würde ich den Eventhandler auf die UL setzten und über target arbeitern
       const listItems = document.querySelectorAll('#outputQuiz .list-group');
 
       let errorCount = 0;
@@ -411,7 +417,7 @@
           value.onmouseup = function(e){
             if( e.target.nodeName == 'LI'){
               let listItem = e.target;
-              let question = listItem.getAttribute('data-q'); //::Peter:: Data Attribut auslesen
+              let question = listItem.getAttribute('data-q'); //Data Attribut auslesen
               let selectedAnswer = listItem.innerText;
    
               $.ajax({

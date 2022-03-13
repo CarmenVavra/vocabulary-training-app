@@ -67,13 +67,6 @@ class QuizController extends Controller
                                         ->inRandomOrder()->limit($limit)->get();
         }
 
-/*         $fakeVocabularies = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                        ->select('foreign_vocabularies.name as fvn')
-                                        ->where('vocabularies.user_id', Auth::user()->id)
-                                        ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                        ->where('foreign_vocabularies.vocabulary_id', '<>', 'vocabularies.id')
-                                        ->inRandomOrder()->limit(3)->get(); */
-
             $jsonStringPHP = json_encode($vocabularies);
             $radioDirection = $request->radioDirection;
 
@@ -81,6 +74,12 @@ class QuizController extends Controller
 
     }
 
+    /**
+     * selects fakeAnswers 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function fetchFake(Request $request){
 
         header('Content-Type, application/json; charset = utf-8');
@@ -103,27 +102,12 @@ class QuizController extends Controller
     }
 
 
-/*     public function checkQuizAnswers(Request $request){
-
-        header('Content-Type, application/json; charset = utf-8');
-
-        if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
-      
-            $fakeVoc = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
-                                            ->where('vocabularies.user_id', Auth::user()->id)
-                                            ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                            ->where('foreign_vocabularies.vocabulary_id', '<>', 'vocabularies.id')
-                                            ->inRandomOrder()->limit(3)->get();
-            return response()->json([
-                'fakeVoc'=>$fakeVoc, 
-                'radioDirection'=>$request->radioDirection
-            ]);
-        
-        
-        }
-    } */
-
+    /**
+     * checks if answer is correct or not
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function checkAnswers(Request $request){
 
         header('Content-Type, application/json; charset = utf-8');
@@ -144,6 +128,8 @@ class QuizController extends Controller
                                             ->first();
             //::Peter:: ich würde ein weiteren Wert check (boolean) mitgeben
             $check = ( $quizPair && $quizPair->fvn == $request->selectedAnswer  ) ? true : false;
+
+            //$checkVN = ( $quizPair && $quizPair->vn == $request->selectedAnswer  ) ? true : false;
             
             return response()->json([
                 'quizPair'=>$quizPair,
