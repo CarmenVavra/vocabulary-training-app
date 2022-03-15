@@ -22,7 +22,7 @@ class VocabularyController extends Controller
         $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                     ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
                                     ->where('vocabularies.user_id', Auth::user()->id)
-                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))->paginate(50);
+                                    ->where('foreign_vocabularies.language_id', session('foreign_id'))->paginate(30);
 
         return view('/src/vocabulary/vocabulary', compact('vocabularies'));
     }
@@ -94,7 +94,7 @@ class VocabularyController extends Controller
         $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                 ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
                                 ->where('vocabularies.user_id', Auth::user()->id)
-                                ->where('foreign_vocabularies.language_id', session('foreign_id'))->get();
+                                ->where('foreign_vocabularies.language_id', session('foreign_id'))->paginate(30);
 
         return view('src.vocabulary.vocabulary', compact('vocabulary', 'vocabularies'));
     }
@@ -150,7 +150,7 @@ class VocabularyController extends Controller
         $vocabularies = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                 ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
                                 ->where('vocabularies.user_id', Auth::user()->id)
-                                ->where('foreign_vocabularies.language_id', session('foreign_id'))->get();
+                                ->where('foreign_vocabularies.language_id', session('foreign_id'))->paginate(30);
         
         $deleteVocabulary = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                 ->select('foreign_vocabularies.id as fvid', 'foreign_vocabularies.name as fvn', 'vocabularies.id as vid', 'vocabularies.name as vn')
