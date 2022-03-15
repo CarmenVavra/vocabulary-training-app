@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pagination.css') }}">
 @endsection
 @section('content')
 <div id="breadcrumb" aria-label="breadcrumb">
@@ -61,6 +62,10 @@
       @endif
     </tbody>
   </table>
+  {{-- Pagination --}}
+  <div id="paginator" class="d-flex justify-content-center">
+    {!! $languages->links() !!}
+  </div>
 </div>
 </main>
 @endsection

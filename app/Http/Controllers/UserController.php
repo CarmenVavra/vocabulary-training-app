@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(10);
 
         return view('src.user.index', compact('users'));
 
@@ -148,7 +148,7 @@ class UserController extends Controller
     public function warnDelete(User $user){
 
         $deleteUser = User::where('id', $user->id)->first();
-        $users = User::all();
+        $users = User::paginate(10);
         
         return view('src.user.index', compact('users', 'deleteUser'));
     }

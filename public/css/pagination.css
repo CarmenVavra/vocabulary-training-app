@@ -1,0 +1,18 @@
+#paginator nav ul li a.page-link{
+  background-color: rgba(52, 58, 64, 0.9);
+  color: #fff;
+  border: 1px solid rgba(52, 58, 64, 0.9);
+}
+
+.page-item.disabled .page-link{
+  background-color: rgba(52, 58, 64, 0.7);
+  color: #fff;
+  border: 1px solid rgba(52, 58, 64, 0.9);
+}
+
+.page-item.active .page-link{
+  color: rgb(52, 58, 64);
+  font-weight: bold;
+  background-color: rgba(37, 207, 242, 0.7);
+  border: 1px solid rgba(37, 207, 242, 0.7);
+}

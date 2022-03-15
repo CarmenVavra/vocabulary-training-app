@@ -16,7 +16,7 @@ class LanguageController extends Controller
     public function index()
     {
         //Daten für Selectbox
-        $languages = Language::where('user_id', Auth::user()->id)->where('main_language', false)->orderBy('name')->get();
+        $languages = Language::where('user_id', Auth::user()->id)->where('main_language', false)->orderBy('name')->paginate(10);
         return view('/home', compact('languages'));
     }
 
@@ -28,7 +28,7 @@ class LanguageController extends Controller
     public function create()
     {   
 
-        $languages = Language::where('user_id', Auth::user()->id)->where('main_language', false)->orderBy('name')->get();
+        $languages = Language::where('user_id', Auth::user()->id)->where('main_language', false)->orderBy('name')->paginate(10);
         return view('/home', compact('languages'));
     }
 
@@ -128,7 +128,7 @@ class LanguageController extends Controller
     public function adminIndex(){
 
         $languages = Language::leftJoin('users', 'users.id', '=', 'languages.user_id')
-                                ->select('users.id as uid', 'users.name as uname', 'languages.user_id as luid', 'languages.name as lname', 'languages.id as lid', 'languages.short_name as lshort')->get();
+                                ->select('users.id as uid', 'users.name as uname', 'languages.user_id as luid', 'languages.name as lname', 'languages.id as lid', 'languages.short_name as lshort')->paginate(10);
                    
         
         return view('src.language.index', compact('languages'));
@@ -142,7 +142,7 @@ class LanguageController extends Controller
      */
     public function warnDelete(Language $language){
         $languages = Language::leftJoin('users', 'users.id', '=', 'languages.user_id')
-                                ->select('users.id as uid', 'users.name as uname', 'languages.user_id as luid', 'languages.name as lname', 'languages.id as lid', 'languages.short_name as lshort')->get();
+                                ->select('users.id as uid', 'users.name as uname', 'languages.user_id as luid', 'languages.name as lname', 'languages.id as lid', 'languages.short_name as lshort')->paginate(10);
 
         $deleteLanguage = $language;
 

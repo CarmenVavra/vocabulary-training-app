@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pagination.css') }}">
 @endsection
 @section('content')
 
@@ -63,6 +64,10 @@
           @endif
         </tbody>
       </table>
+      {{-- Pagination --}}
+      <div id="paginator" class="d-flex justify-content-center">
+        {!! $users->links() !!}
+      </div>
     </div>
 
   </main>

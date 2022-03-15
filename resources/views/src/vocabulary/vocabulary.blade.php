@@ -2,6 +2,7 @@
 @extends('layouts.main')
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/vokabel.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pagination.css') }}">
 @endsection
 @section('content')
 
@@ -114,6 +115,10 @@
           @endif
         </tbody>
       </table>
+      {{-- Pagination --}}
+      <div id="paginator" class="d-flex justify-content-center">
+        {!! $vocabularies->links() !!}
+      </div>
     </div>
   </main>
   @endsection
@@ -248,17 +253,6 @@
       
     
     }
-    
-
-
-
-
-
-
-
-
-
-
     closeVoc.onclick = function(e) {
       if (e.target.id == 'overlay-container' || e.target.id == 'close') {
         vokHomeModal.closeModal();
