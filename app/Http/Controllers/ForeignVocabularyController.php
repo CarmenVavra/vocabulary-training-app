@@ -93,7 +93,7 @@ class ForeignVocabularyController extends Controller
      */
     public function setMarker(Request $request){
 
-        header('Content-Type, application/json; charset = utf-8');
+        header('Content-Type: application/json; charset = utf-8');
 
         if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
 
@@ -116,7 +116,7 @@ class ForeignVocabularyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function autocomplete(Request $request){
-        header('Content-Type, application/json; charset = utf-8');
+        header('Content-Type: application/json; charset = utf-8');
 
         if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
 

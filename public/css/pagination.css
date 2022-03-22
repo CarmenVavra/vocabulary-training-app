@@ -5,7 +5,7 @@
 }
 
 .page-item.disabled .page-link{
-  background-color: rgba(52, 58, 64, 0.7);
+  background-color: rgba(52, 58, 64, 0.9);
   color: #fff;
   border: 1px solid rgba(52, 58, 64, 0.9);
 }
@@ -15,4 +15,10 @@
   font-weight: bold;
   background-color: rgba(37, 207, 242, 0.7);
   border: 1px solid rgba(37, 207, 242, 0.7);
+}
+
+#paginator nav ul li a:hover.page-link{
+  background-color: rgba(37, 207, 242, 0.7);
+  color: rgb(52, 58, 64);
+  font-weight: bold;
 }

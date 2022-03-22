@@ -89,7 +89,7 @@ trait FilterTrait{
     */
     public function checkDate(Request $request){
         
-        header('Content-Type, application/json; charset = utf-8');
+        header('Content-Type: application/json; charset = utf-8');
 
         if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
         
@@ -124,7 +124,7 @@ trait FilterTrait{
     */
     public function checkDifficultyLevel(Request $request){
 
-        header('Content-Type, application/json; charset = utf-8');
+        header('Content-Type: application/json; charset = utf-8');
         
         if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
             $marker = [];
@@ -181,7 +181,7 @@ trait FilterTrait{
     */
     public function selectAll(Request $request){
 
-        header('Content-Type, application/json; charset = utf-8');
+        header('Content-Type: application/json; charset = utf-8');
 
         if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
 

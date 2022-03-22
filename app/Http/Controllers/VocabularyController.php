@@ -182,7 +182,7 @@ class VocabularyController extends Controller
     */
     public function autocomplete(Request $request){
 
-        header('Content-Type, application/json; charset = utf-8');
+        header('Content-Type: application/json; charset = utf-8');
         
         if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
             //::Peter:: hier sollte noch die Sprache eingeschränkt werden

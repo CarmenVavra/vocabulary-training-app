@@ -400,7 +400,7 @@
   
   /**
    * after loading all quizcards, check answers on click
-   * 
+   *  
   */
   function quizFetchFakeEnd(){
       spinner.style.display = 'none';

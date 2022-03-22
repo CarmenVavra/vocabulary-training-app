@@ -82,7 +82,7 @@ class QuizController extends Controller
      */
     public function fetchFake(Request $request){
 
-        header('Content-Type, application/json; charset = utf-8');
+        header('Content-Type: application/json; charset = utf-8');
 
         if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
       
@@ -110,7 +110,7 @@ class QuizController extends Controller
      */
     public function checkAnswers(Request $request){
 
-        header('Content-Type, application/json; charset = utf-8');
+        header('Content-Type: application/json; charset = utf-8');
 
         if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
 
