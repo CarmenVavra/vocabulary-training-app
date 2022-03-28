@@ -41,7 +41,7 @@ function playHangman(origArray){
   outputKBRow3.insertAdjacentHTML('beforeend', row3Keys);
 
   let splitArray = origString.split('');
-  let pattern = ['-', ' ', '!', '?', '\'', '`'];
+  let pattern = ['-', ' ', '!', '?', '\'', '`', ','];
 
   for (let i = 0; i < lenSearchString; i++) {
     //console.log('splitArray[i] ', pattern.includes(splitArray[i]));
