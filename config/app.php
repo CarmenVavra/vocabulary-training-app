@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Caryssa - dein Vokabeltrainer'),
+    'name' => env('APP_NAME', 'CARYSSA - DEIN VOKABELTRAINER'),
 
     /*
     |--------------------------------------------------------------------------
