@@ -103,15 +103,18 @@
 
   <!-- modal user edit -->
   @include('layouts.modals.users.edit')
-  @if(isset($accountDelete))
-    @include('layouts.modals.users.accountDelete')
-  @endif
+
     @yield('content')
 
-    <footer class="bg-dark text-center text-white">
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-            © 2022 Copyright: Ing. Carmen Vavra
+    <footer class="bg-dark text-white">
+      <div class="row">
+        <div class="col-md-8 p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+          © 2022 Copyright: Ing. Carmen Vavra
         </div>
+        <div class="col-md-4 p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+          <a href="{{ route('impressum.show') }}">Impressum</a> | <a href="{{ route('datenschutz.show') }}">Datenschutzbestimmungen</a>
+        </div>
+      </div>
 
     </footer>
     <script src="{{ asset('js/classes/Modal.js') }}"></script>

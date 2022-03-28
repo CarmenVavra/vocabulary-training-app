@@ -109,7 +109,13 @@ Route::middleware('auth')->group(function(){
     Route::get('/hangmanselectall', [HangmanController::class, 'selectAll'])->name('hangman.select.all');
     Route::post('/hangman', [HangmanController::class, 'filterSelect'])->name('hangman.filter.select');
     
+    Route::get('/impressum', function(){
+        return view('impressum');
+    })->name('impressum.show');
 
+    Route::get('/datenschutz', function(){
+        return view('datenschutz');
+    })->name('datenschutz.show');
 });    
 
 
