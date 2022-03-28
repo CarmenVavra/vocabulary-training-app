@@ -115,21 +115,24 @@ class QuizController extends Controller
         if(strtolower($_SERVER['REQUEST_METHOD']) == 'get'){
 
             if($request->direction == 'dir1'){
-                $tablename = 'vocabularies';
-            }elseif($request->direction == 'dir2'){
-                $tablename = 'foreign_vocabularies';
+                $quizPair = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                                ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                                ->where('vocabularies.user_id', Auth::user()->id)
+                                                ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                                ->where('vocabularies.name','like',$request->question)
+                                                ->first();
+                //::Peter:: ich würde ein weiteren Wert check (boolean) mitgeben
+                $check = ( $quizPair && $quizPair->fvn == $request->selectedAnswer  ) ? true : false;
+            }else{
+                $quizPair = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
+                                                ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
+                                                ->where('vocabularies.user_id', Auth::user()->id)
+                                                ->where('foreign_vocabularies.language_id', session('foreign_id'))
+                                                ->where('foreign_vocabularies.name','like',$request->question)
+                                                ->first();
+                //::Peter:: ich würde ein weiteren Wert check (boolean) mitgeben
+                $check = ( $quizPair && $quizPair->vn == $request->selectedAnswer  ) ? true : false;
             }
-
-            $quizPair = Vocabulary::join('foreign_vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
-                                            ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
-                                            ->where('vocabularies.user_id', Auth::user()->id)
-                                            ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                            ->where('vocabularies.name','like',$request->question)
-                                            ->first();
-            //::Peter:: ich würde ein weiteren Wert check (boolean) mitgeben
-            $check = ( $quizPair && $quizPair->fvn == $request->selectedAnswer  ) ? true : false;
-
-            //$checkVN = ( $quizPair && $quizPair->vn == $request->selectedAnswer  ) ? true : false;
             
             return response()->json([
                 'quizPair'=>$quizPair,

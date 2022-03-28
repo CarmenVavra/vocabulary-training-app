@@ -69,13 +69,13 @@
                   <h6>Welche Richtung?</h6>
 
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection1" value="dir1" checked>
+                    <input class="form-check-input radioDir" type="radio" name="radioDirection" id="radioDirection1" value="dir1" checked>
                     <label class="form-check-label" for="radioDirection1">
                     {{ session('language_name') }} --> {{ session('foreign_name') }}
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radioDirection" id="radioDirection2" value="dir2">
+                    <input class="form-check-input radioDir" type="radio" name="radioDirection" id="radioDirection2" value="dir2">
                     <label class="form-check-label" for="radioDirection2">
                     {{ session('foreign_name') }} --> {{ session('language_name') }}
                     </label>
@@ -363,7 +363,7 @@
             datatyp: "json",
             data:{radioDirection:radioDirection},
             success:function(data){
-              console.log(data);
+              /* console.log(data); */
               fakVoc = data.fakeVoc;
               cardSet = new CardSet(vocFromDB[length], fakVoc, radioDirection);
               question = cardSet.getQuestion();
@@ -419,14 +419,15 @@
               let listItem = e.target;
               let question = listItem.getAttribute('data-q'); //Data Attribut auslesen
               let selectedAnswer = listItem.innerText;
-   
+                              
               $.ajax({
                 type:'GET',
                 url:"{{ route('quiz.check.answers') }}",
                 datatype:'json',
                 data:{
                   question:question, 
-                  selectedAnswer:selectedAnswer
+                  selectedAnswer:selectedAnswer, 
+                  direction:radioDirection
                 },
                 success:function(data){
                     if(typeof data.check !== undefined  && data.check ){
@@ -448,167 +449,13 @@
           }
       });
 
-/*       listItems.forEach(function(value, index){
-            
-            //console.log(itemCount++);
-            value.onmousedown = function(e){
-          
-              cardId = e.target.parentNode.parentNode.parentNode.id;
-              cardContainer = e.target.parentNode.parentNode.parentNode;
-              cardTitle = e.target.parentNode.previousElementSibling.innerText;
-              selectedAnswer = value.innerText;            
-              
-              $.ajax({
-                type:'GET',
-                url:"{{ route('quiz.check.answers') }}",
-                datatype:'json',
-                data:{
-                  question:cardTitle, 
-                  selectedAnswer:selectedAnswer
-                },
-                success:function(data){
 
-                  if(data.quizPair.vn == cardTitle){
-                    
-                    if(data.quizPair.fvn == selectedAnswer){
-                      value.classList.add('correct');
-                      value.classList.remove('failure');
-                      value.classList.add('prevent-pointer-events');
-                      cardContainer.classList.add('prevent-pointer-events');
-                      correctCount++;
-                      if(correctCount == limit){
-                        quizresult.style.display = 'block';
-                      }
-                    }else{
-                      value.classList.add('failure');
-                      errorCount++;   
-                      quizErrors.innerText = errorCount;         
-                    }     
-
-                  }
-                  
-                }
-              });
-              
-            };
-            
-          }); */  
     }
     
     if( vocFromDB.length > 0 ){
       quizFetchFake( vocFromDB.length );
     }
-    //console.log(vocFromDB.length);
-
-/*     for (let i = 1; i <= vocFromDB.length; i++) {
-        spinner.style.display = 'block';
-      
-        $.ajax({
-            type:'GET',
-            url:"{{ route('quiz.fetch.fake') }}",
-            datatyp: "json",
-            data:{radioDirection:radioDirection},
-            success:function(data){
-
-              fakVoc = data.fakeVoc;
-
-              cardSet = new CardSet(vocFromDB[i-1], fakVoc, radioDirection);
-
-              question = cardSet.getQuestion();
-              answer = cardSet.getAnswer();
-              fakeAnswers = cardSet.getFakeAnswers();
-              
-              if(i % 4 === 1){
-                content.insertAdjacentHTML('beforeend', '<div id="contId_'+i+'" class="card-flex-container">');
-                flexContainer = document.querySelector('#contId_'+i);
-              }
-              
-              flexContainer.insertAdjacentHTML('beforeend', '<div id="card_' + i + '" class="card bg-turkis" style="width: 18rem;"><div class="card-body">');
-              outputQuestion = document.querySelector('#card_' + i + ' .card-body');
-              outputQuestion.insertAdjacentHTML('beforeend', '<div class="card-title bg-darkgray">' + question + '</div><ul class="list-group list-group-flush">');
-              outputAnswers = document.querySelector('#card_' + i + ' .card-body .list-group');
-
-              fakeAnswers.forEach(function(value, index) {
-                outputAnswers.insertAdjacentHTML('beforeend', '<li class="list-group-item">' + value + '</li>');
-              });
-            }           
-        });
-      }
-
-     
-      switch(true){
-        case (limit < 5) : millSec = 3000; break;
-        case (limit < 10) : millSec = 7000; break;
-        case (limit < 20) : millSec = 13000; break;
-        case (limit < 30) : millSec = 18000; break;
-        default: millSec = 22000; break;
-      }
-
-      // darf erst ausgeführt werden, wenn das Spielfeld fertig aufgebaut ist->setTimeout()
-      setTimeout(function() { 
-      
-          spinner.style.display = 'none';      
-          const listItems = document.querySelectorAll('.list-group-item');
-          let cardId;
-          let cardContainer;
-          let cardTitle;
-          let selectedAnswer;
-          let errorCount = 0;
-          let correctCount = 0;
-          const quizErrors = document.querySelector('#quizResult span');
-          //let itemCount = 0; // DebuggVariable
-          listItems.forEach(function(value, index){
-            
-            //console.log(itemCount++);
-            value.onmousedown = function(e){
-          
-              cardId = e.target.parentNode.parentNode.parentNode.id;
-              cardContainer = e.target.parentNode.parentNode.parentNode;
-              cardTitle = e.target.parentNode.previousElementSibling.innerText;
-              selectedAnswer = value.innerText;            
-              
-              $.ajax({
-                type:'GET',
-                url:"{{ route('quiz.check.answers') }}",
-                datatype:'json',
-                data:{
-                  question:cardTitle, 
-                  selectedAnswer:selectedAnswer
-                },
-                success:function(data){
-
-                  if(data.quizPair.vn == cardTitle){
-                    
-                    if(data.quizPair.fvn == selectedAnswer){
-                      
-                      value.classList.add('correct');
-                      value.classList.remove('failure');
-                      value.classList.add('prevent-pointer-events');
-                      cardContainer.classList.add('prevent-pointer-events');
-                      correctCount++;
-                      if(correctCount == limit){
-                        quizresult.style.display = 'block';
-                      }
-                      
-                    }else{
-                      value.classList.add('failure');
-                      errorCount++;   
-                      quizErrors.innerText = errorCount;         
-                    }     
-
-                  }
-                  
-                }
-              });
-              
-            };
-            
-          });    
-
- 
-     }, millSec); */
-
-          
+         
    
  </script>
   @endsection
