@@ -5,9 +5,24 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header">{{ __('Registrierung') }}</div>
 
                 <div class="card-body">
+                    <div class="alert alert-info">
+                        <div>
+                            <strong><a href="" id="registerInfoHeader">Informationen zu deinen Daten >> </a></strong>
+                        </div>                        
+                        <div id="registerInfoBody">
+                            <hr>
+                            <ul>
+                                <li>Die E-Mail Adresse muss nicht zwingend echt sein. Man kann nur dann kein neues Passwort anfordern.</li>
+                                <li>Das Passwort wird einwegverschlüsselt, dh. es kann nicht entschlüsselt werden und wird zu keiner Zeit im Klartext gespeichert.</li>
+                                <li>Die eingegebenen Daten werden nicht an Dritte weitergegeben und nicht zu Werbezwecke verwendet.</li>
+                                <li>Die Ausgangssprache ist einmal zu wählen und kann dann nicht mehr geändert werden.<br>Neue Ausgangssprache = neuer User</li>
+                                <li>Jeder User kann seinen eigenen Account mit allen zugehörigen Daten löschen.</li>
+                            </ul>
+                        </div>
+                    </div>
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
@@ -76,7 +91,7 @@
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
+                                    {{ __('Registrieren') }}
                                 </button>
                             </div>
                         </div>

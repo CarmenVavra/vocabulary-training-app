@@ -6,6 +6,7 @@ $(document).ready(function(){
   $('#questionCount').hide();
   $('#fieldSizeContainer').hide();
   $('#learnApply').hide();
+  $('#registerInfoBody').hide();
 
   $('#btnSelectLanguagesNew').on('click', function(){
       $('#addNewLanguage').toggle();
@@ -170,6 +171,10 @@ $(document).ready(function(){
     $('#divHint').show();
   });
 
+  $('#registerInfoHeader').on('click', function(e){
+    e.preventDefault();
+    $('#registerInfoBody').toggle();
+  });
 
 
 });
