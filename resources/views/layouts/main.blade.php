@@ -78,8 +78,9 @@
               <a id="profile" class="dropdown-item" href="{{ route('user.show', Auth::user()->id) }}">Profil</a>
               <a id="userEdit" class="dropdown-item" href="{{ route('user.edit', Auth::user()->id) }}">Daten ändern</a>
               <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.querySelector('#logout-form').submit();">
-               {{ __('Logout') }}
+                {{ __('Logout') }}
               </a>
+              <a id="accountDelete" class="dropdown-item bg-danger" href="{{ route('account.confirm.delete', Auth::user()->id) }}">Account löschen</a>
             </div>
           </div>
           <div class="logout">
@@ -102,8 +103,9 @@
 
   <!-- modal user edit -->
   @include('layouts.modals.users.edit')
-
-
+  @if(isset($accountDelete))
+    @include('layouts.modals.users.accountDelete')
+  @endif
     @yield('content')
 
     <footer class="bg-dark text-center text-white">

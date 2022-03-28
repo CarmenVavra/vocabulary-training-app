@@ -296,7 +296,7 @@ div#breadcrumb{
     transform: rotate(45deg);
 }
 
-#overlay-container form, #overlay-delete-container form, #overlay-select-language-container form{
+#overlay-container form, #overlay-delete-container form,#overlay-select-language-container form{
     padding: 30px 20px;
     height:auto;
     width: auto;
@@ -342,5 +342,7 @@ div#breadcrumb{
     font-size: large;
 }
   
-
+#formAccountDelete p{
+    color: rgba(52, 58, 64, 0.9);
+}
 

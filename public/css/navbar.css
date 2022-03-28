@@ -17,7 +17,7 @@
 /**
 *   MODAL-START
 */
-#overlay-profile, #overlay-edit{
+#overlay-profile, #overlay-edit, #overlay-account-delete{
   display: none;
   position: fixed;
   z-index: 9999;
@@ -31,11 +31,11 @@
   color: #212529;
 }
 
-#overlay-profile.show, #overlay-edit.show{
+#overlay-profile.show, #overlay-edit.show, #overlay-account-delete.show{
   display: flex;
 }
 
-#overlay-profile-container, #overlay-edit-container{
+#overlay-profile-container, #overlay-edit-container, #overlay-account-delete-container{
   position: relative;
   width:100vw;
   height:100vh;
@@ -61,7 +61,7 @@
   cursor: pointer;
 }
 
-#overlay-profile-container form, #overlay-edit-container form{
+#overlay-profile-container form, #overlay-edit-container form, #overlay-account-delete-container form{
   padding: 30px 20px;
   height:auto;
   width: auto;
@@ -79,3 +79,4 @@ button.btn-logout{
     border-color: #e14b46;
     border-radius: 5px;
 }
+

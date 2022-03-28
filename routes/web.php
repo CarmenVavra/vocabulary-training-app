@@ -57,6 +57,9 @@ Route::middleware('auth')->group(function(){
     Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.delete');
     Route::delete('/user/{user}/warndelete', [UserController::class, 'warnDelete'])->name('user.warn.delete');
     Route::get('/usercancel', [UserController::class, 'userCancel'])->name('user.cancel');
+    Route::get('/accountdeletecancel', [UserController::class, 'accountDeleteCancel'])->name('account.delete.cancel');
+    Route::get('/accountconfirmdelete/{user}', [UserController::class, 'accountConfirmDelete'])->name('account.confirm.delete');
+    Route::delete('/accountdelete/{user}', [UserController::class, 'accountDelete'])->name('account.delete');
     Route::get('/profile', [UserController::class, 'profile'] )->name('user.profile');
     Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
     Route::put('/admin/{user}', [UserController::class, 'adminUpdate'])->name('admin.update');

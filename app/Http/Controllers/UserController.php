@@ -162,5 +162,23 @@ class UserController extends Controller
         return redirect()->route('user.index');
     }
 
+    public function accountConfirmDelete(User $user){
+        $deleteAccount = $user;
+        return view('src.user.accountDelete', compact('user', 'deleteAccount'));
+    }
+
+    public function accountDelete(Request $request, User $user){
+        $user->training()->delete();
+        $user->language()->delete();
+        $user->vocabulary()->delete();
+        $user->delete();
+
+        return redirect()->route('login')->with('success', 'User wurde erfolgreich gelöscht!');
+    }
+
+    public function accountDeleteCancel(){
+        return redirect()->back();
+    }
+
 
 }
