@@ -122,7 +122,7 @@ class QuizController extends Controller
                                                 ->where('vocabularies.name','like',$request->question)
                                                 ->first();
                 //::Peter:: ich würde ein weiteren Wert check (boolean) mitgeben
-                $check = ( $quizPair && $quizPair->fvn == $request->selectedAnswer  ) ? true : false;
+                $check = ( $quizPair && $quizPair->fvn == "$request->selectedAnswer" ) ? true : false;
             }else{
                 $quizPair = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                                 ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
@@ -131,7 +131,7 @@ class QuizController extends Controller
                                                 ->where('foreign_vocabularies.name','like',$request->question)
                                                 ->first();
                 //::Peter:: ich würde ein weiteren Wert check (boolean) mitgeben
-                $check = ( $quizPair && $quizPair->vn == $request->selectedAnswer  ) ? true : false;
+                $check = ( $quizPair && $quizPair->vn == "$request->selectedAnswer" ) ? true : false;
             }
             
             return response()->json([
