@@ -8,6 +8,9 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
+                    <div class="alert alert-info">
+                        Hier stehen ein <a href="{{ asset('pdf/Caryssa_Projekthandbuch.pdf') }}" target="_blank" class="btn btn-warning">Benutzerhandbuch</a> und 2 <a href="{{ route('register') }}">CSV-Files</a> zum Download zur Verfügung.
+                    </div>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
