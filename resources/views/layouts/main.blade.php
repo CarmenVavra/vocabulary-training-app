@@ -31,6 +31,7 @@
             CARYSSA - DEIN VOKABELTRAINER
           </a>
           <!-- Left links -->
+          @if(!empty(Auth::user()))
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a id="nav_1" class="nav-link" href="{{ route('vocabulary.index') }}">Vokabel</a>
@@ -52,21 +53,22 @@
               <a id="nav_5" class="nav-link" href="{{ route('get.language.index') }}">zu den Sprachen</a>
             </li>
           </ul>
+          @endif
         </div>
         <!-- Right elements -->
         <div class="d-flex align-items-center btn-group" role="group">
 
-
-          @if(Auth::user()->role_id == '1')
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-link">
-              <a id="nav_6" class="nav-link" href="{{ route('language.admin.index') }}">Sprachen ändern</a>
-            </li>
-            <li class="nav-link">
-              <a id="nav_7" class="nav-link" href="{{ route('user.index') }}">Benutzer ändern</a>
-            </li>
-          </ul>
-          @endif
+          @if(!empty(Auth::user()))
+            @if(Auth::user()->role_id == '1')
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-link">
+                <a id="nav_6" class="nav-link" href="{{ route('language.admin.index') }}">Sprachen ändern</a>
+              </li>
+              <li class="nav-link">
+                <a id="nav_7" class="nav-link" href="{{ route('user.index') }}">Benutzer ändern</a>
+              </li>
+            </ul>
+            @endif
 
           <!-- Avatar -->
           <div class="dropdown">
@@ -93,6 +95,7 @@
             </form>
 
           </div>
+          @endif
         </div>
 
       </div>

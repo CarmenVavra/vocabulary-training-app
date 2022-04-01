@@ -116,6 +116,11 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md">
+                    <a href="{{ route('impressum.show') }}" target="_blank">Impressum</a> | <a href="{{ route('datenschutz.show') }}" target="_blank">Datenschutzbestimmungen</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

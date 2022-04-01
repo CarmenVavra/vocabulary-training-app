@@ -5,6 +5,8 @@
         <div class="card-header bg-darkgray">
           DATEN ÄNDERN
         </div>
+        @if(!empty(Auth::user()))
+            
         <div id="card-content">
           <div class="card-body">
             <div class="col-md-12 login-form-2">
@@ -35,6 +37,7 @@
             </div>
           </div>
         </div>
+        @endif
       </div>
     </div>
   </div>

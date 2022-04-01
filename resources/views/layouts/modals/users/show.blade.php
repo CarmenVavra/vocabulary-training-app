@@ -6,6 +6,7 @@
           <div class="card-header bg-darkgray">
             DEIN PROFIL
           </div>
+          @if(!empty(Auth::user()))
           <div class="card-body">
             <p class="card-text"><strong>Name:</strong>  {{ Auth::user()->name }} </p>
             <p class="card-text"><strong>E-Mail:</strong> {{ Auth::user()->email }} </p>
@@ -18,6 +19,7 @@
             <hr>
             <a href="#" id="btnProfileClose" class="btn btn-turkis">OK</a>
           </div>
+          @endif
         </div>
       </div>
     </div>
