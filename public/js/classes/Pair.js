@@ -1,7 +1,10 @@
 class Pair {
-  constructor(card1, card2) {
+  constructor(card1, card2, id1, id2) {
+    console.log('card1', card1, 'card2', card2);
     this.card1 = card1;
     this.card2 = card2;
+    this.id1 = id1;
+    this.id2 = id2;
 
   }
 
@@ -29,22 +32,38 @@ class Pair {
    * 
    * @returns true|false
    */
-  compareCards(germanArray, spainArray) {
+  compareCards(vocabualaryArray, foreignArray) {
     let indexCard1;
     let indexCard2;
 
-    if (this.card1 !== this.card2) {
+    console.log('vocabualaryArray', vocabualaryArray, 'foreignArray', foreignArray);
+    if(vocabualaryArray.includes(this.card1)){
+      indexCard1 = vocabualaryArray.indexOf(this.card1);
+    }
 
-      if (germanArray.includes(this.card1)) {
-        indexCard1 = germanArray.indexOf(this.card1);
-      } else if (spainArray.includes(this.card1)) {
-        indexCard1 = spainArray.indexOf(this.card1);
+    if(foreignArray.includes(this.card2)){
+      indexCard2 = foreignArray.indexOf(this.card2);
+    }
+
+    console.log('indexCard1', indexCard1, 'indexCard2', indexCard2);
+
+
+
+    // OLD VERSION
+
+    if (this.id1 !== this.id2) {
+      /* console.log('this.card1', this.card1, 'this.card2', this.card2); */
+
+      if (vocabualaryArray.includes(this.card1)) {
+        indexCard1 = vocabualaryArray.indexOf(this.card1);
+      } else if (foreignArray.includes(this.card1)) {
+        indexCard1 = foreignArray.indexOf(this.card1);
       }
 
-      if (germanArray.includes(this.card2)) {
-        indexCard2 = germanArray.indexOf(this.card2);
-      } else if (spainArray.includes(this.card2)) {
-        indexCard2 = spainArray.indexOf(this.card2);
+      if (vocabualaryArray.includes(this.card2)) {
+        indexCard2 = vocabualaryArray.indexOf(this.card2);
+      } else if (foreignArray.includes(this.card2)) {
+        indexCard2 = foreignArray.indexOf(this.card2);
       }
 
       if (indexCard1 == indexCard2) {

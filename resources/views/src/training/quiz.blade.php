@@ -363,11 +363,12 @@
             datatyp: "json",
             data:{radioDirection:radioDirection},
             success:function(data){
-              /* console.log(data); */
               fakVoc = data.fakeVoc;
               cardSet = new CardSet(vocFromDB[length], fakVoc, radioDirection);
               question = cardSet.getQuestion();
               answer = cardSet.getAnswer();
+              // console.log(question, answer);
+              
               fakeAnswers = cardSet.getFakeAnswers();
     
               if( i % 4 === 0 || flexContainer === undefined){

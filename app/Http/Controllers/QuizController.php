@@ -123,6 +123,7 @@ class QuizController extends Controller
                                                 ->first();
                 //::Peter:: ich würde ein weiteren Wert check (boolean) mitgeben
                 $check = ( $quizPair && $quizPair->fvn == "$request->selectedAnswer" ) ? true : false;
+               
             }else{
                 $quizPair = ForeignVocabulary::join('vocabularies', 'vocabularies.id', '=', 'foreign_vocabularies.vocabulary_id')
                                                 ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')

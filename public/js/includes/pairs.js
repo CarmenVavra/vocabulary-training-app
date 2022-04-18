@@ -2,12 +2,16 @@ function playPairs(vocabularies, countCols, jsVariable){
 
   "use strict";
 
+  
   let language = [];
   let foreign = [];
-
+  
   for(let i=0; i<vocabularies.length; i++){
     language.push(vocabularies[i].vn);
+    console.log('vocabularies[i].vn', vocabularies[i].vn, 'i', i);
+    
     foreign.push(vocabularies[i].fvn);
+    console.log('vocabularies[i].fvn', vocabularies[i].fvn, 'i', i);
   }
 
   let mixedWords = [];
@@ -24,7 +28,6 @@ function playPairs(vocabularies, countCols, jsVariable){
 
   if(jsVariable == 1){
     countColumns = countCols;
-    console.log(countColumns);
     // für die Anzeige --> Vokabel aus beiden Tabellen werden in ein gemeinsames Array gespeichert
     language.forEach(function(value, index) {
       mixedWords[index] = value;
@@ -89,11 +92,13 @@ function playPairs(vocabularies, countCols, jsVariable){
         e.target.classList.add('card-turkis');
         
         if (idxCards <= 1) {
+
           cards[idxCards] = e.target.innerHTML;
           cardElements[idxCards] = e.target;
 
+
           if (idxCards == 1) {
-            let pair = new Pair(cards[0], cards[1]);
+            let pair = new Pair(cards[0], cards[1], cardElements[0].getAttribute('id'), cardElements[1].getAttribute('id'));
             let isPair = pair.compareCards(language, foreign);
 
             if (isPair == true) {
