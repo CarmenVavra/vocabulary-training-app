@@ -90,9 +90,12 @@
     @if(isset($vocabularies))
     {{-- {{ dd($vocabularies) }} --}}
     <div id="contHangman" class="container">
-      <div class="hangman-container">
-        <canvas id="hangman" width="300" height="400"></canvas>
-        <div id="keyboard">
+      {{-- <div class="hangman-container"> --}}
+        <div class="row">
+        <div class="col-md-3">
+          <canvas id="hangman" width="300" height="400"></canvas>
+        </div>
+        <div id="keyboard" class="col-md-9">
           <div class="jumbotron dark-bg">
             <h1 class="display-4">
               <div id="output"></div>
@@ -116,6 +119,7 @@
           </div>
         </div>
       </div>
+      {{-- </div> --}}
     </div>
     @endif
   </main>

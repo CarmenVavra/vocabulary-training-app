@@ -403,7 +403,7 @@
     let jsVariable = <?= ($jsVariable) ?? ''; ?>;
     if(jsVariable == 1){
       countColumns = <?= ($countColumns) ?? ''; ?>;
-      console.log(countColumns);
+      // console.log(countColumns);
       // für die Anzeige --> Vokabel aus beiden Tabellen werden in ein gemeinsames Array gespeichert
       language.forEach(function(value, index) {
         mixedWords[index] = value;
@@ -459,14 +459,14 @@
       tds.forEach(function(value, index) {
         
         value.onclick = function(e) {
-          console.log(e.target);
+          // console.log(e.target);
           if (pairsCounter == 0) {
             interval = setInterval(function() {
               pairsCounter++;
             }, 1000);
           }
           e.target.classList.add('card-turkis');
-          console.log(e.target);
+          // console.log(e.target);
           if (idxCards <= 1) {
             cards[idxCards] = e.target.innerHTML;
             cardElements[idxCards] = e.target;

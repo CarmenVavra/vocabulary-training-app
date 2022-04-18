@@ -35,19 +35,24 @@ class Pair {
   compareCards(vocabularyArray, foreignArray) {
     let indexCard1;
     let indexCard2;
+    let newVoc;
 
     // console.log('vocabularyArray', vocabularyArray, 'foreignArray', foreignArray);
     if(vocabularyArray.includes(this.card1)){
       indexCard1 = vocabularyArray.indexOf(this.card1);
+      // vocabularyArray.splice(indexCard1);
+      // console.log('vocabularyArray', vocabularyArray);
     }
 
     if(foreignArray.includes(this.card2)){
       indexCard2 = foreignArray.indexOf(this.card2);
+      // console.log('foreignArray', foreignArray);
     }
 
     // console.log('indexCard1', indexCard1, 'indexCard2', indexCard2);
     if (this.id1 !== this.id2) {
         if (indexCard1 == indexCard2) {
+          //console.log('indexCard1', indexCard1);
           return true;
         } else {
           return false;

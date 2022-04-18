@@ -81,9 +81,8 @@ function playPairs(vocabularies, countCols, jsVariable){
 
     let interval;
     tds.forEach(function(value, index) {
-      
       value.onclick = function(e) {
-        
+                
         if (pairsCounter == 0) {
           interval = setInterval(function() {
             pairsCounter++;
