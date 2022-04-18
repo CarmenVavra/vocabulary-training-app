@@ -363,6 +363,7 @@
             datatyp: "json",
             data:{radioDirection:radioDirection},
             success:function(data){
+              
               fakVoc = data.fakeVoc;
               cardSet = new CardSet(vocFromDB[length], fakVoc, radioDirection);
               question = cardSet.getQuestion();
@@ -370,13 +371,14 @@
               // console.log(question, answer);
               
               fakeAnswers = cardSet.getFakeAnswers();
-    
+              
               if( i % 4 === 0 || flexContainer === undefined){
-                content.insertAdjacentHTML('beforeend', '<div id="contId_'+i+'" class="card-flex-container">');
+                content.insertAdjacentHTML('beforeend', '<div id="contId_'+i+'" class="row">');
+                // content.insertAdjacentHTML('beforeend', '<div id="contId_'+i+'" class="card-flex-container">');
                 flexContainer = document.querySelector('#contId_'+i);
               }
               
-              flexContainer.insertAdjacentHTML('beforeend', '<div id="card_' + i + '" class="card bg-turkis" style="width: 18rem;"><div class="card-body">');
+              flexContainer.insertAdjacentHTML('beforeend', '<div id="card_' + i + '" class="col-md-3 card bg-turkis" style="width: 18rem;"><div class="card-body">');
               outputQuestion = document.querySelector('#card_' + i + ' .card-body');
               outputQuestion.insertAdjacentHTML('beforeend', '<div class="card-title bg-darkgray">' + question + '</div><ul class="list-group list-group-flush">');
               outputAnswers = document.querySelector('#card_' + i + ' .card-body .list-group');
