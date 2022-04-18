@@ -39,12 +39,10 @@ class Pair {
     // console.log('vocabularyArray', vocabularyArray, 'foreignArray', foreignArray);
     if(vocabularyArray.includes(this.card1)){
       indexCard1 = vocabularyArray.indexOf(this.card1);
-      vocabularyArray.splice(indexCard1, 1);
     }
 
     if(foreignArray.includes(this.card2)){
       indexCard2 = foreignArray.indexOf(this.card2);
-      foreignArray.splice(indexCard2, 1);
     }
 
     // console.log('indexCard1', indexCard1, 'indexCard2', indexCard2);
