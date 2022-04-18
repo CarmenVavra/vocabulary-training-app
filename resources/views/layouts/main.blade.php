@@ -20,12 +20,11 @@
       <!-- Container wrapper -->
       <div class="container-fluid">
         <!-- Toggle button -->
-        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-          <i class="fas fa-bars"></i>
-        </button>
-
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+          <span class="navbar-toggler-icon"></span>
+      </button>
         <!-- Collapsible wrapper -->
-        <div class="collapse navbar-collapse" id="navbarContent">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- Navbar brand -->
           <a class="navbar-brand mt-2 mt-lg-0" href="{{ route('vocabulary.index') }}">
             CARYSSA - DEIN VOKABELTRAINER
@@ -54,7 +53,7 @@
             </li>
           </ul>
           @endif
-        </div>
+        
         <!-- Right elements -->
         <div class="d-flex align-items-center btn-group" role="group">
 
@@ -97,7 +96,7 @@
           </div>
           @endif
         </div>
-
+      </div>
       </div>
     </nav>
   </header>
@@ -122,6 +121,7 @@
     </footer>
     <script src="{{ asset('js/classes/Modal.js') }}"></script>
     <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="{{ asset('js/logic.js') }}"></script>
     @yield('javascript')
 
