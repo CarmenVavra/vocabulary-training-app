@@ -4,9 +4,7 @@ function playPairs(vocabularies, countCols, jsVariable){
 
   console.log('window.screen.orientation.type', window.screen.orientation.type, 'window.screen.orientation.angle', window.screen.orientation.angle);
   if(window.screen.orientation.type == 'portrait-primary'){
-    screen.orientation.lock('landscape-primary');
-    // alert('Es wird empfohlen, Pairs im Querformat zu spielen!');
-
+    alert('Es wird empfohlen, Pairs im Querformat zu spielen!');
   }
   
   let language = [];
