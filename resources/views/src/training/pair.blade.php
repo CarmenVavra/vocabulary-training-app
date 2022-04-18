@@ -145,7 +145,9 @@
   <script src="{{ asset('js/classes/Pair.js') }}"></script>
 
   <script>
+    screen.orientation.lock('landscape');
     $(function() {
+      
       $('input[name="daterange"]').daterangepicker({
         locale: {
           format: 'DD.MM.YYYY'
