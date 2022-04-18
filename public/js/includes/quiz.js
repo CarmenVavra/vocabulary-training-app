@@ -19,7 +19,6 @@ function playQuiz(limit, vocFromDB, radioDirection){
   });
 
   for (let i = 1; i <= vocFromDB.length; i++) {
-
       $.ajax({
           type:'GET',
           url:"{{ route('quiz.fetch.fake') }}",
