@@ -9,6 +9,7 @@ use App\Models\Vocabulary;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class QuizController extends Controller
 {
@@ -119,7 +120,8 @@ class QuizController extends Controller
                                                 ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
                                                 ->where('vocabularies.user_id', Auth::user()->id)
                                                 ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                                ->where('vocabularies.name','like',$request->question)
+                                                ->where(Vocabulary::raw("BINARY vocabularies.name"), $request->question)
+                                                ->where(ForeignVocabulary::raw("BINARY foreign_vocabularies.name"), $request->selectedAnswer)
                                                 ->first();
                 //::Peter:: ich würde ein weiteren Wert check (boolean) mitgeben
                 $check = ( $quizPair && $quizPair->fvn == "$request->selectedAnswer" ) ? true : false;
@@ -129,7 +131,8 @@ class QuizController extends Controller
                                                 ->select('vocabularies.name as vn', 'foreign_vocabularies.name as fvn')
                                                 ->where('vocabularies.user_id', Auth::user()->id)
                                                 ->where('foreign_vocabularies.language_id', session('foreign_id'))
-                                                ->where('foreign_vocabularies.name','like',$request->question)
+                                                ->where(ForeignVocabulary::raw("BINARY foreign_vocabularies.name"), $request->question)
+                                                ->where(Vocabulary::raw("BINARY vocabularies.name"), $request->selectedAnswer)
                                                 ->first();
                 //::Peter:: ich würde ein weiteren Wert check (boolean) mitgeben
                 $check = ( $quizPair && $quizPair->vn == "$request->selectedAnswer" ) ? true : false;
@@ -137,7 +140,9 @@ class QuizController extends Controller
             
             return response()->json([
                 'quizPair'=>$quizPair,
-                'check'=>$check
+                'check'=>$check,
+                'requestQuestion'=>$request->question,
+                'requestSelectedAnswer'=>$request->selectedAnswer,
             ]);
         
         

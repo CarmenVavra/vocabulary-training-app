@@ -433,6 +433,7 @@
                   direction:radioDirection
                 },
                 success:function(data){
+                  console.log(data);
                     if(typeof data.check !== undefined  && data.check ){
                         listItem.classList.add('correct');
                         value.classList.add('prevent-pointer-events'); //::Peter:: die CSS Class nur noch auf die UL setzten
