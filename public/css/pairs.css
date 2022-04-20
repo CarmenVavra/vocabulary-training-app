@@ -38,6 +38,7 @@ table, td{
 .hide-card{
   background: transparent !important;
   color: transparent !important;
+  pointer-events: none;
 }
 
 .card-turkis{

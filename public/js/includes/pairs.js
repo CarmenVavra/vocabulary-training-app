@@ -12,10 +12,10 @@ function playPairs(vocabularies, countCols, jsVariable){
   
   for(let i=0; i<vocabularies.length; i++){
     language.push(vocabularies[i].vn);
-    console.log('vocabularies[i].vn', vocabularies[i].vn, 'i', i);
+    // console.log('vocabularies[i].vn', vocabularies[i].vn, 'i', i);
     
     foreign.push(vocabularies[i].fvn);
-    console.log('vocabularies[i].fvn', vocabularies[i].fvn, 'i', i);
+    // console.log('vocabularies[i].fvn', vocabularies[i].fvn, 'i', i);
   }
 
   let mixedWords = [];
@@ -34,12 +34,14 @@ function playPairs(vocabularies, countCols, jsVariable){
     countColumns = countCols;
     // für die Anzeige --> Vokabel aus beiden Tabellen werden in ein gemeinsames Array gespeichert
     language.forEach(function(value, index) {
-      mixedWords[index] = value;
+      mixedWords[index] = [index, value];
+      // console.log('mixedWordsfromhere', mixedWords);
       indexCount++;
     });
 
     foreign.forEach(function(value, index) {
-      mixedWords[indexCount] = value;
+      // console.log('Foreignvalue', value, 'Foreignindex', index)
+      mixedWords[indexCount] = [index, value];
       indexCount++;
     });
 
@@ -49,12 +51,13 @@ function playPairs(vocabularies, countCols, jsVariable){
     let td;
     
     shuffledMixedWords.forEach(function(value, index) {
+      // console.log('shuffledMixedWords value', value[0], value[1]);
       if (index % countColumns === 0) {
         tr = document.createElement('tr');
         table.appendChild(tr);
 
       }
-      tr.insertAdjacentHTML('beforeend', '<td id="td_' + index + '" class="td-pairs">' + value + '</td>');
+      tr.insertAdjacentHTML('beforeend', '<td id="td_' + index + '" class="td-pairs" data-index="' + value[0] + '">' + value[1] + '</td>');
 
     });
 
@@ -86,7 +89,7 @@ function playPairs(vocabularies, countCols, jsVariable){
     let interval;
     tds.forEach(function(value, index) {
       value.onclick = function(e) {
-                
+             
         if (pairsCounter == 0) {
           interval = setInterval(function() {
             pairsCounter++;
@@ -96,11 +99,13 @@ function playPairs(vocabularies, countCols, jsVariable){
         
         if (idxCards <= 1) {
 
-          cards[idxCards] = e.target.innerHTML;
+          cards[idxCards] = [e.target.getAttribute('data-index'), e.target.innerHTML];
+          // console.log('cards['+idxCards+']', cards[idxCards])
           cardElements[idxCards] = e.target;
 
 
           if (idxCards == 1) {
+            // console.log('cards[0]', cards[0]);
             let pair = new Pair(cards[0], cards[1], cardElements[0].getAttribute('id'), cardElements[1].getAttribute('id'));
             let isPair = pair.compareCards(language, foreign);
 
